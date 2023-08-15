@@ -5,16 +5,12 @@ type Props = {
   value: string,
 }
 
-const handleClick = () => {
-  console.log(`Props filtered`)
-}
-
 const TagContainer = (props: {tags: Props[]}) => {
   return (
     <Grid container spacing={1} justifyContent={'center'} justifyItems={'center'} alignItems={'center'} sx={{margin: '0 auto 20px', padding: '0 0px', width: '100%'}}>
       {props.tags.map((item) => {
         return <Grid key={uuidv4()} item xs='auto'>
-        <Chip label={item.value} variant='outlined' onClick={handleClick}/>
+        <Chip label={item.value} variant='outlined' />
         </Grid>
       })}
     </Grid>

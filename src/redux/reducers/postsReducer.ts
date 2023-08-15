@@ -1,4 +1,4 @@
-import { IPostsState } from '../actions/postActions';
+import { IPostsState, PostAction } from '../actions/postActions';
 import { POSTS_ACTIONS } from '../constants';
 
 const initialState: IPostsState = {

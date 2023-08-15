@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Alert, CircularProgress } from '@mui/material';
 
-import PostContainer from '../components/PostContainer/PostContainer'
+import PostContainer from '../components/PostContainer/PostContainer';
 import { createRequested } from '../redux/actions/postActions';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 
@@ -12,18 +13,22 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(createRequested())
-  }, [])
+  }, []);
 
-  if (isLoading) return <h1>Loading...</h1>;
+  // if (isLoading) return <CircularProgress sx={{position: 'absolute', top: '50%', left: '50%'}} />;
 
-  if (error) return <h1>ERROR</h1>
-  console.log(news);
+  // if (error) return <h1>ERROR</h1>
+
+  const stylesForInf = {position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}
+
   return (
     <>
-     
-      <PostContainer posts={news}/>
+    {
+      isLoading ? 
+      <CircularProgress sx={stylesForInf} /> : error ? 
+      <Alert sx={{...stylesForInf, width: '500px'}} severity="error">{error}</Alert> : <PostContainer posts={news}/>
+    }
     </>
-  )
-}
+)}
 
-export default MainPage
+export default MainPage;
