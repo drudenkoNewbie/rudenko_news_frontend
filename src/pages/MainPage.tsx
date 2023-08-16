@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Alert, CircularProgress } from '@mui/material';
 
 import PostContainer from '../components/PostContainer/PostContainer';
 import { createRequested } from '../redux/actions/postActions';
 import { useTypedSelector } from '../hooks/useTypedSelector';
+import { Loader } from '../components/Loader/Loader';
+import { Notification } from '../components/Notification/Notification'
 
 const MainPage: React.FC = () => {
-  const { news, isLoading, error } = useTypedSelector(state => state.news)
+  let { news, isLoading, error } = useTypedSelector(state => state.news)
   
   const dispatch = useDispatch();
 
@@ -15,20 +16,16 @@ const MainPage: React.FC = () => {
     dispatch(createRequested())
   }, []);
 
-  // if (isLoading) return <CircularProgress sx={{position: 'absolute', top: '50%', left: '50%'}} />;
-
-  // if (error) return <h1>ERROR</h1>
-
-  const stylesForInf = {position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}
-
-  return (
-    <>
-    {
-      isLoading ? 
-      <CircularProgress sx={stylesForInf} /> : error ? 
-      <Alert sx={{...stylesForInf, width: '500px'}} severity="error">{error}</Alert> : <PostContainer posts={news}/>
-    }
-    </>
-)}
-
+  if (isLoading) return <Loader />
+  if (news) {
+    news = []
+    return (
+      <>
+        { error && <Notification type="error" message={ String(error) } /> }
+        { !news.length && !error &&  <Notification type="info" message="No news for you" />}
+        { news.length && <PostContainer posts={news}/> }
+      </>
+  )
+  }
+}
 export default MainPage;

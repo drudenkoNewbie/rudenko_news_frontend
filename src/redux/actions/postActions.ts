@@ -1,5 +1,5 @@
-import { IPost } from "../../types/post/post"
-import { POSTS_ACTIONS } from "../constants"
+import { IPost } from "../../types/post/post";
+import { POSTS_ACTIONS } from "../constants";
 
 interface IRequested {
   type: POSTS_ACTIONS.REQUESTED
@@ -33,7 +33,7 @@ export const createFailed  = (error: string): IFailed => ({
 export type PostAction = IRequested | IReceived | IFailed;
 
 export interface IPostsState {
-  news: IPost[],
+  news: IPost[] | null,
   isLoading: boolean,
   error: null | string,
 }

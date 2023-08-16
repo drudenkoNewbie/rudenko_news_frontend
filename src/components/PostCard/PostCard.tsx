@@ -1,9 +1,10 @@
 import { Card, CardContent, CardMedia, Typography, CardActionArea } from '@mui/material';
+import { FC } from 'react';
 
 import { IPost } from '../../types/post/post';
 import TagContainer from '../TagContainer/TagContainer';
 
-const PostCard = (props: IPost) => {
+const PostCard: FC<IPost> = (props: IPost) => {
   return (
     <Card sx={{ maxWidth: 345, position: 'relative', margin: '10px auto'}}>
       <CardActionArea>
