@@ -3,15 +3,18 @@ import { FC } from 'react';
 
 import { IPost } from '../../types/post/post';
 import TagContainer from '../TagContainer/TagContainer';
+import { sxCard, sxData, sxAuthor, sxTextAlignCenter } from './sxStyles';
+
+
 
 const PostCard: FC<IPost> = (props: IPost) => {
   return (
-    <Card sx={{ maxWidth: 345, position: 'relative', margin: '10px auto'}}>
+    <Card sx={sxCard}>
       <CardActionArea>
-        <Typography sx={{position: 'absolute', left: '10%', top: 10, width: '40%'}} gutterBottom variant='body1' component='div'>
+        <Typography sx={sxData} gutterBottom variant='body1' component='div'>
             Data: {String(props.createdAt).slice(0, 10)}
           </Typography>
-        <Typography sx={{position: 'absolute', right: '10%', top: 10, width: '40%'}} gutterBottom variant='body1' component='div'>
+        <Typography sx={sxAuthor} gutterBottom variant='body1' component='div'>
             Author: {props.user.username}
           </Typography>
         <CardMedia
@@ -21,7 +24,7 @@ const PostCard: FC<IPost> = (props: IPost) => {
           alt='placeholder'
         />
         <CardContent>
-          <Typography textAlign={'center'} gutterBottom variant='h3' component='div'>
+          <Typography sx={sxTextAlignCenter} gutterBottom variant='h3' component='div'>
             {props.title}
           </Typography>
           <Typography variant='body2' color='text.secondary'>

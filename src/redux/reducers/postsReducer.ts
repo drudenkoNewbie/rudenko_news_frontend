@@ -1,34 +1,34 @@
-import { IPostsState, PostAction } from '../actions/postActions';
-import { POSTS_ACTIONS } from '../constants';
+import { type IPostsState, type PostAction } from '../actions/postActions'
+import { POSTS_ACTIONS } from '../constants'
 
 const initialState: IPostsState = {
   news: null,
   isLoading: false,
-  error: null,
-};
+  error: null
+}
 
-export default function newsReducer(state = initialState, action: PostAction): IPostsState {
+export default function newsReducer (state = initialState, action: PostAction): IPostsState {
   switch (action.type) {
     case POSTS_ACTIONS.REQUESTED:
       return {
         ...state,
         isLoading: true,
-        error: null,
-      };
+        error: null
+      }
     case POSTS_ACTIONS.RECEIVED:
       return {
         ...state,
         isLoading: false,
         news: action.payload,
-        error: null,
-      };
+        error: null
+      }
     case POSTS_ACTIONS.FAILED:
       return {
         ...state,
         isLoading: false,
         news: [],
-        error: action.error,
-      };
-    default: return state;
+        error: action.error
+      }
+    default: return state
   }
 }

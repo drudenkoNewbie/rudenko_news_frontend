@@ -7,8 +7,10 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 import { Loader } from '../components/Loader/Loader';
 import { Notification } from '../components/Notification/Notification'
 
+import {NO_NEWS_MESSAGE} from '../locales/en.json'
+
 const MainPage: React.FC = () => {
-  let { news, isLoading, error } = useTypedSelector(state => state.news)
+  const { news, isLoading, error } = useTypedSelector(state => state.news)
   
   const dispatch = useDispatch();
 
@@ -18,14 +20,14 @@ const MainPage: React.FC = () => {
 
   if (isLoading) return <Loader />
   if (news) {
-    news = []
     return (
       <>
         { error && <Notification type="error" message={ String(error) } /> }
-        { !news.length && !error &&  <Notification type="info" message="No news for you" />}
+        { !news.length && !error &&  <Notification type="info" message={NO_NEWS_MESSAGE} />}
         { news.length && <PostContainer posts={news}/> }
       </>
   )
   }
 }
+
 export default MainPage;

@@ -1,14 +1,15 @@
-import { Grid, Chip } from "@mui/material"
-import { v4 as uuidv4 } from 'uuid';
-import { FC } from "react";
+// import React from 'react'
+import { Grid, Chip } from '@mui/material'
+import { type FC } from 'react'
 
-import { ITags } from "./TagContainer.props";
+import { type ITags } from './TagContainer.props'
+import { sxTagContainer } from './sxStyles'
 
-const TagContainer: FC<ITags> = ({tags}: ITags) => {
+const TagContainer: FC<ITags> = ({ tags }) => {
   return (
-    <Grid container spacing={1} justifyContent={'center'} justifyItems={'center'} alignItems={'center'} sx={{margin: '0 auto 20px', padding: '0 0px', width: '100%'}}>
+    <Grid container sx={sxTagContainer}>
       {tags.map((item) => {
-        return <Grid key={uuidv4()} item xs='auto'>
+        return <Grid key={item.id} item xs='auto'>
         <Chip label={item.value} variant='outlined' />
         </Grid>
       })}
