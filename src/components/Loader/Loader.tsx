@@ -1,5 +1,6 @@
-import { CircularProgress } from "@mui/material"
 import { FC } from "react"
+
+import { CircularProgress } from "@mui/material"
 
 import { sxCentering } from "../sxStyles"
 

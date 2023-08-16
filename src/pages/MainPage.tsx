@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import PostContainer from '../components/PostContainer/PostContainer';
+import { PostContainer } from '../components/PostContainer/PostContainer';
 import { createRequested } from '../redux/actions/postActions';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { Loader } from '../components/Loader/Loader';

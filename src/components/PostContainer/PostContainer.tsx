@@ -1,12 +1,14 @@
-import { Grid } from "@mui/material"
 import { FC } from "react";
+
+import { Grid } from "@mui/material"
 
 import PostCard from "../PostCard/PostCard"
 
 import { IPosts } from "./PostContainer.props";
+
 import { sxPostContainer } from "./sxStyles";
 
-const PostContainer: FC<IPosts> = ({posts}: IPosts) => {
+export const PostContainer: FC<IPosts> = ({posts}: IPosts) => {
   return (
     <Grid container sx={sxPostContainer}>
       {posts.map((post) => {
@@ -15,5 +17,3 @@ const PostContainer: FC<IPosts> = ({posts}: IPosts) => {
     </Grid>
   )
 }
-
-export default PostContainer

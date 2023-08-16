@@ -3,6 +3,7 @@ import { FC } from 'react';
 
 import { IPost } from '../../types/post/post';
 import TagContainer from '../TagContainer/TagContainer';
+
 import { sxCard, sxData, sxAuthor, sxTextAlignCenter } from './sxStyles';
 
 
