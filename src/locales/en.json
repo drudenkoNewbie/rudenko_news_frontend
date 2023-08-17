@@ -1,4 +1,6 @@
 {
   "NEWS": "News",
-  "NO_NEWS_MESSAGE": "No news for you"
+  "NO_NEWS_MESSAGE": "No news for you",
+  "SIGN_IN": "Sign in",
+  "SING_UP": "Sign up"
 }

@@ -1,19 +1,15 @@
-import { FC } from "react";
+import { type FC } from 'react';
 
-import { Grid } from "@mui/material"
+import { Grid } from '@mui/material';
 
-import PostCard from "../PostCard/PostCard"
+import PostCard from '../PostCard';
 
-import { IPosts } from "./PostContainer.props";
+import { IPosts } from './PostContainer.props';
 
-import { sxPostContainer } from "./sxStyles";
+import { sxPostContainer } from './sxStyles';
 
-export const PostContainer: FC<IPosts> = ({posts}: IPosts) => {
-  return (
-    <Grid container sx={sxPostContainer}>
-      {posts.map((post) => {
-        return <Grid key={post.id} item xs='auto'><PostCard {...post} /></Grid>
-      })}
-    </Grid>
-  )
-}
+export const PostContainer: FC<IPosts> = ({ posts }) => (
+  <Grid container sx={sxPostContainer}>
+    {posts.map((post) => <PostCard key={post.id} {...post} />)}
+  </Grid>
+);

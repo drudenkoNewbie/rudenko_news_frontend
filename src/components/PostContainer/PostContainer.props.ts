@@ -1,4 +1,4 @@
-import { IPost } from "../../types/post/post";
+import { IPost } from '../../types/post/post';
 
 export interface IPosts {
   posts: IPost[]

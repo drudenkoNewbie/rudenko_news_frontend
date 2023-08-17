@@ -1,7 +1,7 @@
-import Header from './components/Header/Header'
-import MainPage from './pages/MainPage'
+import Header from './components/Header/Header';
+import MainPage from './pages/MainPage';
 
-import './App.css'
+import './App.css';
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <Header />
       <MainPage />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

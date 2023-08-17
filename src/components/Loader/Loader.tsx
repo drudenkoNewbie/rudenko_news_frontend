@@ -1,9 +1,8 @@
-import { FC } from "react"
+import { type FC } from 'react';
 
-import { CircularProgress } from "@mui/material"
+import { CircularProgress } from '@mui/material';
 
-import { sxCentering } from "../sxStyles"
+import { sxCentering } from '../sxStyles';
 
-export const Loader: FC = () => {
-  return <CircularProgress sx={ sxCentering } />
-}
+export const Loader: FC = () => <CircularProgress sx={sxCentering} />;
+
