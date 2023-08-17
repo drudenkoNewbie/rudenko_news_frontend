@@ -1,7 +1,5 @@
-import { IPost } from "../../types/post/post"
+import { IPost } from '../../types/post/post';
 
-import api from "./api"
+import api from './api';
 
-export const getPosts = async ():Promise<IPost[]> => {
-  return await api.get('posts')
-}
+export const getPosts = async ():Promise<IPost[]> => api.get('posts');
