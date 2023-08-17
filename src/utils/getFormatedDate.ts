@@ -1,0 +1,1 @@
+export const formatDate = (date: Date) => String(date).slice(0, 10);
