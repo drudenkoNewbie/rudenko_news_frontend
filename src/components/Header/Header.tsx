@@ -20,7 +20,7 @@ import {
   sxIconButton,
 } from './sxStyles';
 
-const Header: FC = () => (
+export const Header: FC = () => (
   <Box sx={sxFlexGrow}>
     <AppBar sx={sxPositionStatic}>
       <Toolbar>
@@ -41,5 +41,3 @@ const Header: FC = () => (
     </AppBar>
   </Box>
 );
-
-export default Header;

@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 
 import PostCard from '../PostCard';
 
-import { Posts } from './PostContainer.props';
+import Posts from './types';
 
 import { sxPostContainer } from './sxStyles';
 

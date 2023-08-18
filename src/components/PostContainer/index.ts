@@ -1,3 +1,1 @@
-import { PostContainer } from './PostContainer';
-
-export default PostContainer
+export { PostContainer } from './PostContainer';

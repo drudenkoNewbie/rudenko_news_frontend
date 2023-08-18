@@ -2,7 +2,7 @@ import { memo, type FC } from 'react';
 
 import { Grid, Chip } from '@mui/material';
 
-import { Tags } from './TagContainer.props';
+import Tags from './types';
 
 import { sxTagContainer } from './sxStyles';
 

@@ -2,7 +2,7 @@ import { useEffect, type FC } from 'react';
 import { useDispatch } from 'react-redux';
 
 import PostContainer from '../components/PostContainer';
-import Notification from '../components/Notification';
+import NotificationProps from '../components/Notification';
 import Loader from '../components/Loader';
 import { createRequested } from '../redux/actions/postActions';
 import { useTypedSelector } from '../hooks/useTypedSelector';

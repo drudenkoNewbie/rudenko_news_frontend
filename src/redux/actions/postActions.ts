@@ -1,4 +1,4 @@
-import { Post } from '../../types/post/post';
+import { Post } from '../../types/post';
 import { POSTS_ACTIONS } from '../constants';
 
 interface Requested {
