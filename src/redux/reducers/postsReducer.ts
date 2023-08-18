@@ -1,4 +1,3 @@
-import { type PostsState, type PostAction } from '../actions/postActions';
 import { POSTS_ACTIONS } from '../constants';
 
 const initialState: PostsState = {
@@ -17,14 +16,12 @@ export default function newsReducer(state = initialState, action: PostAction): P
     };
   case POSTS_ACTIONS.RECEIVED:
     return {
-      ...state,
       isLoading: false,
       news: action.payload,
       error: null,
     };
   case POSTS_ACTIONS.FAILED:
     return {
-      ...state,
       isLoading: false,
       news: [],
       error: action.error,

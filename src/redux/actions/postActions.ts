@@ -1,33 +1,13 @@
-import { Post } from '../../types/post';
 import { POSTS_ACTIONS } from '../constants';
 
-interface Requested {
-  type: POSTS_ACTIONS.REQUESTED
-}
+export const createPostsRequested = () => ({ type: POSTS_ACTIONS.REQUESTED });
 
-interface Received {
+export const createPostsReceived = (payload: Post[]) => ({ 
   type: POSTS_ACTIONS.RECEIVED,
-  payload: Post[]
-}
+  payload,
+});
 
-interface Failed {
-  type: POSTS_ACTIONS.FAILED,
-  error: string,
-}
-
-export const createRequested = (): Requested => ({ type: POSTS_ACTIONS.REQUESTED, });
-
-export const createReceived = (payload: Post[]): Received => ({ type: POSTS_ACTIONS.RECEIVED, payload, });
-
-export const createFailed = (error: string): Failed => ({
+export const createPostsFailed = (error: string) => ({
   type: POSTS_ACTIONS.FAILED,
   error, 
 });
-
-export type PostAction = Requested | Received | Failed;
-
-export interface PostsState {
-  news: Post[] | null,
-  isLoading: boolean,
-  error: null | string,
-}

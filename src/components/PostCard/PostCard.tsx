@@ -8,9 +8,9 @@ import {
   CardActionArea
 } from '@mui/material';
 
-import { Post } from '../../types/post';
+import { getFormattedDate } from '../../utils/getFormattedDate';
+
 import TagContainer from '../TagContainer';
-import { getFormatedDate } from '../../utils/getFormatedDate';
 
 import {
   sxCard, 
@@ -29,7 +29,7 @@ const PostCard: FC<Post> = ({
   <Card sx={sxCard}>
     <CardActionArea>
       <Typography sx={sxData} gutterBottom variant="body1" component="div">
-        Data: {getFormatedDate(createdAt)}
+        Data: {getFormattedDate(createdAt)}
       </Typography>
       <Typography sx={sxAuthor} gutterBottom variant="body1" component="div">
         Author: {user.username}

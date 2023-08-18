@@ -1,5 +1,3 @@
-interface Posts {
+interface PostContainerProps {
   posts: Post[]
 }
-
-export default Posts

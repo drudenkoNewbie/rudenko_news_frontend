@@ -1,7 +1,4 @@
-import { Tag } from './tag';
-import { User } from './user';
-
-export interface Post {
+interface Post {
   id: number;
   authorId: number;
   title: string;

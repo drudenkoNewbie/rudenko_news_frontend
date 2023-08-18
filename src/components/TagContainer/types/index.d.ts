@@ -1,10 +1,3 @@
-interface Tag {
-  id: number
-  value: string,
-}
-
-interface Tags {
+interface TagContainerProps {
   tags: Tag[],
 }
-
-export default Tags;

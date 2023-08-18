@@ -2,11 +2,9 @@ import { memo, type FC } from 'react';
 
 import { Grid, Chip } from '@mui/material';
 
-import Tags from './types';
-
 import { sxTagContainer } from './sxStyles';
 
-const TagContainer: FC<Tags> = ({ tags }) => {
+const TagContainer: FC<TagContainerProps> = ({ tags }) => {
   return (
     <Grid container sx={sxTagContainer}>
       {tags.map((item) => (
