@@ -10,7 +10,7 @@ import {
 
 import { IPost } from '../../types/post/post';
 import TagContainer from '../TagContainer';
-import { formatDate } from '../../utils/getFormatedDate';
+import { getFormatDate } from '../../utils/getFormatedDate';
 
 import {
   sxCard, 
@@ -29,7 +29,7 @@ const PostCard: FC<IPost> = ({
   <Card sx={sxCard}>
     <CardActionArea>
       <Typography sx={sxData} gutterBottom variant="body1" component="div">
-        Data: {formatDate(createdAt)}
+        Data: {getFormatDate(createdAt)}
       </Typography>
       <Typography sx={sxAuthor} gutterBottom variant="body1" component="div">
         Author: {user.username}
