@@ -1,8 +1,8 @@
 import { POSTS_ACTIONS } from '../../redux/constants';
-import { IPost } from './post';
+import { Post } from './post';
 
-export interface IPostAction {
+export interface PostAction {
   type: POSTS_ACTIONS,
-  payload?: IPost[],
+  payload?: Post[],
   error?: string,
 }

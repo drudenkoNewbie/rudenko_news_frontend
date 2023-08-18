@@ -8,7 +8,7 @@ import {
   CardActionArea
 } from '@mui/material';
 
-import { IPost } from '../../types/post/post';
+import { Post } from '../../types/post/post';
 import TagContainer from '../TagContainer';
 import { getFormatDate } from '../../utils/getFormatedDate';
 
@@ -19,7 +19,7 @@ import {
   sxTextAlignCenter 
 } from './sxStyles';
 
-const PostCard: FC<IPost> = ({ 
+const PostCard: FC<Post> = ({ 
   createdAt, 
   user, 
   title, 

@@ -1,7 +1,7 @@
-import { ITag } from '../tag';
-import { IUser } from '../user';
+import { Tag } from '../tag';
+import { User } from '../user';
 
-export interface IPost {
+export interface Post {
   id: number;
   authorId: number;
   title: string;
@@ -9,6 +9,6 @@ export interface IPost {
   imageUrl?: string | null;
   createdAt: Date;
   updatedAt: Date;
-  user: IUser;
-  tags: ITag[];
+  user: User;
+  tags: Tag[];
 }

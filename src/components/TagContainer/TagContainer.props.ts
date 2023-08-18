@@ -1,8 +1,8 @@
-interface ITag {
+interface Tag {
   id: number
   value: string,
 }
 
-export interface ITags {
-  tags: ITag[],
+export interface Tags {
+  tags: Tag[],
 }

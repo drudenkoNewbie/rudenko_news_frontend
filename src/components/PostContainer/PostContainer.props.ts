@@ -1,5 +1,5 @@
-import { IPost } from '../../types/post/post';
+import { Post } from '../../types/post/post';
 
-export interface IPosts {
-  posts: IPost[]
+export interface Posts {
+  posts: Post[]
 }
