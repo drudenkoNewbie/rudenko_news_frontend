@@ -1,3 +1,0 @@
-interface TagContainerProps {
-  tags: Tag[],
-}

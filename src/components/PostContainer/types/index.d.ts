@@ -1,3 +1,0 @@
-interface PostContainerProps {
-  posts: Post[]
-}

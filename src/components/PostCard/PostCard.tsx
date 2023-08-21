@@ -1,5 +1,4 @@
 import { memo, type FC } from 'react';
-
 import {
   Card,
   CardContent,
@@ -9,7 +8,6 @@ import {
 } from '@mui/material';
 
 import { getFormattedDate } from '../../utils/getFormattedDate';
-
 import TagContainer from '../TagContainer';
 
 import {

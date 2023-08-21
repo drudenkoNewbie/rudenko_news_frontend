@@ -1,5 +1,4 @@
 import { type FC } from 'react';
-
 import { CircularProgress } from '@mui/material';
 
 import { sxCentering } from '../sxStyles';

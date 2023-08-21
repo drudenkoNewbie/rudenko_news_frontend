@@ -15,3 +15,5 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 export default store;
+
+export type AppDispatch = typeof store.dispatch

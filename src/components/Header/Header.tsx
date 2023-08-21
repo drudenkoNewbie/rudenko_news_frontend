@@ -1,5 +1,4 @@
 import { type FC } from 'react';
-
 import {
   AppBar,
   Box,
@@ -8,7 +7,6 @@ import {
   Button,
   IconButton 
 } from '@mui/material'
-
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { NEWS, SIGN_IN, SING_UP } from '../../locales/en.json';

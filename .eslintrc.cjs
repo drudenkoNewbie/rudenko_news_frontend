@@ -16,12 +16,13 @@ module.exports = {
     'react-refresh/only-export-components': 'off',
     'object-curly-spacing': ['error', 'always'],
     'quotes': ['error', 'single'],
-    'indent': ['error', 2],
     'object-curly-newline': ['error', {
       'ObjectExpression': { 'multiline': true, 'minProperties': 4 },
       'ObjectPattern': { 'multiline': true },
       'ImportDeclaration': { 'multiline': true, 'minProperties': 4 },
       'ExportDeclaration': { 'multiline': true, 'minProperties': 4 }
     }],
+    'indent': ['error', 2, { 'SwitchCase': 1 }],
+    'eol-last': ['error', 'always']
   },
 }
