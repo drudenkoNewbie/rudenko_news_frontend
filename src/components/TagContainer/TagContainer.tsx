@@ -11,6 +11,6 @@ const TagContainer: FC<TagContainerProps> = ({ tags }) => {
         <Chip key={item.id} label={item.value} variant="outlined" />
       ))}
     </Grid>
-  );}
+  );};
 
 export default memo(TagContainer);

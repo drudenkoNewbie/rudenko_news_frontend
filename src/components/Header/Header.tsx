@@ -6,7 +6,7 @@ import {
   Typography,
   Button,
   IconButton 
-} from '@mui/material'
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { NEWS, SIGN_IN, SING_UP } from '../../locales/en.json';
@@ -15,7 +15,7 @@ import {
   sxFlexGrow,
   sxPositionStatic,
   sxColorInherit,
-  sxIconButton,
+  sxIconButton
 } from './sxStyles';
 
 export const Header: FC = () => (

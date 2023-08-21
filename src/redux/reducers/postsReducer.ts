@@ -3,7 +3,7 @@ import { POSTS_ACTIONS } from '../constants';
 const initialState: PostsState = {
   news: null,
   isLoading: false,
-  error: null, 
+  error: null 
 };
 
 export default function postsReducer(state = initialState, action: PostAction): PostsState {
@@ -12,19 +12,19 @@ export default function postsReducer(state = initialState, action: PostAction): 
       return {
         ...state,
         isLoading: true,
-        error: null, 
+        error: null 
       };
     case POSTS_ACTIONS.RECEIVED:
       return {
         isLoading: false,
         news: action.payload,
-        error: null,
+        error: null
       };
     case POSTS_ACTIONS.FAILED:
       return {
         isLoading: false,
         news: [],
-        error: action.error,
+        error: action.error
       };
     default: return state;
   }

@@ -7,7 +7,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
+    'plugin:react-hooks/recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
@@ -23,6 +23,8 @@ module.exports = {
       'ExportDeclaration': { 'multiline': true, 'minProperties': 4 }
     }],
     'indent': ['error', 2, { 'SwitchCase': 1 }],
-    'eol-last': ['error', 'always']
-  },
-}
+    'eol-last': ['error', 'always'],
+    'semi': ['error', 'always'],
+    'comma-dangle': ['error', 'never']
+  }
+};

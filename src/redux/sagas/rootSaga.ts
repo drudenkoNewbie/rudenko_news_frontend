@@ -4,7 +4,7 @@ import { postsWatcher } from './postsSaga';
 
 function* rootSaga() {
   yield all([
-    postsWatcher(),
+    postsWatcher()
   ]);
 }
 

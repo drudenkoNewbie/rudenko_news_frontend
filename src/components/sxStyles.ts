@@ -3,7 +3,7 @@ export const sxCentering = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '500px',
+  width: '500px'
 };
 export const sxJustifyContentCenter = { justifyContent: 'center' };
 export const sxJustifyItemsCenter = { justifyItemsCenter: 'center' };

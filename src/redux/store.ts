@@ -9,11 +9,11 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   rootReducer,
-  composeEnchanters(applyMiddleware(sagaMiddleware)),
+  composeEnchanters(applyMiddleware(sagaMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);
 
 export default store;
 
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;

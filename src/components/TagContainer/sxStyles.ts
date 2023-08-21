@@ -12,5 +12,5 @@ export const sxTagContainer = {
   ...sxAlignItemsCenter,
   ...sxMargin,
   ...sxPadding,
-  ...sxWidth,
+  ...sxWidth
 };

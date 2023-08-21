@@ -1,1 +1,1 @@
-export default { Post, Tag, User }
+export default { Post, Tag, User };

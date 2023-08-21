@@ -9,18 +9,18 @@ export const sxData = {
   ...sxPositionAbsolute,
   left: '10%',
   ...sxTop10,
-  ...sxWidth40,
+  ...sxWidth40
 };
 export const sxAuthor = {
   ...sxPositionAbsolute,
   right: '10%',
   ...sxTop10,
-  ...sxWidth40,
+  ...sxWidth40
 };
 export const sxTextAlignCenter = { textAlign: 'center' };
 export const sxCard = {
   ...sxMaxWidth,
   ...sxPositionRelative,
   ...sxMarginCentering,
-  ...{ mt: 2 },
+  ...{ mt: 2 }
 };
