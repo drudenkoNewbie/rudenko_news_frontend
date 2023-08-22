@@ -9,6 +9,7 @@ import {
 
 import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
+import { Post } from '../../types';
 
 import {
   sxCard,

@@ -1,10 +1,12 @@
-interface PostsState {
+import { Post } from '../../types';
+
+export interface PostsState {
   news: Post[] | null | undefined,
   isLoading: boolean,
   error: null | string | undefined,
 }
 
-interface PostAction {
+export interface PostAction {
   type: string,
   payload?: Post[],
   error?: string,

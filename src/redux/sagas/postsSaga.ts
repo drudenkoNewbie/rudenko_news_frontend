@@ -5,7 +5,6 @@ import { createPostsFailed, createPostsReceived } from '../actions/postActions';
 import { POSTS_ACTIONS } from '../constants';
 import { getPosts } from '../api/getPosts';
 
-
 function* postsWorker() {
   try {
     const { data } = yield call(getPosts);

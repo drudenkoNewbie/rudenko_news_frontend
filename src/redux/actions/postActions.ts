@@ -1,3 +1,4 @@
+import { Post } from '../../types';
 import { POSTS_ACTIONS } from '../constants';
 
 export const createPostsRequested = () => ({ type: POSTS_ACTIONS.REQUESTED });

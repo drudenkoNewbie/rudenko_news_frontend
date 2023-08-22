@@ -40,6 +40,7 @@ module.exports = {
     'eol-last': ['error', 'always'],
     'semi': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
-    'no-trailing-spaces': 'error'
+    'no-trailing-spaces': 'error',
+    'no-multiple-empty-lines': ['error', { 'max': 1, 'maxBOF': 0, 'maxEOF': 1 }]
   }
 };

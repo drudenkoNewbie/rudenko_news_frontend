@@ -1,4 +1,5 @@
 import { POSTS_ACTIONS } from '../constants';
+import { PostAction, PostsState } from '../types';
 
 const initialState: PostsState = {
   news: null,
