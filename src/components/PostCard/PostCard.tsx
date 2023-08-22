@@ -11,18 +11,18 @@ import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
 
 import {
-  sxCard, 
-  sxData, 
-  sxAuthor, 
-  sxTextAlignCenter 
+  sxCard,
+  sxData,
+  sxAuthor,
+  sxTextAlignCenter
 } from './sxStyles';
 
-const PostCard: FC<Post> = ({ 
-  createdAt, 
-  user, 
-  title, 
-  content, 
-  tags 
+const PostCard: FC<Post> = ({
+  createdAt,
+  user,
+  title,
+  content,
+  tags
 }) => (
   <Card sx={sxCard}>
     <CardActionArea>
