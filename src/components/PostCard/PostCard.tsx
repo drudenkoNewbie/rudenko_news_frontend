@@ -9,7 +9,7 @@ import {
 
 import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
-import { Post } from '../../types';
+import { CompletePost } from '../../types';
 
 import {
   sxCard,
@@ -18,7 +18,7 @@ import {
   sxTextAlignCenter
 } from './sxStyles';
 
-const PostCard: FC<Post> = ({
+const PostCard: FC<CompletePost> = ({
   createdAt,
   user,
   title,

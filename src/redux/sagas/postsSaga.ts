@@ -17,5 +17,5 @@ function* postsWorker() {
 }
 
 export function* postsWatcher() {
-  yield takeLatest(POSTS_ACTIONS.REQUESTED, postsWorker);
+  yield takeLatest(POSTS_ACTIONS.POSTS_REQUESTED, postsWorker);
 }

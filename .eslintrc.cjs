@@ -10,7 +10,11 @@ module.exports = {
     'plugin:react-hooks/recommended'
   ],
   parser: '@typescript-eslint/parser',
-  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
+  parserOptions: {
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module'
+  },
   plugins: ['react-refresh', 'react', 'import'],
   ignorePatterns: ['dist/'],
   rules: {
@@ -24,7 +28,6 @@ module.exports = {
       'ExportDeclaration': { 'multiline': true, 'minProperties': 4 }
     }],
     'import/newline-after-import': ['error', { 'count': 1 }],
-    'react/jsx-curly-spacing': ['error', 'never'],
     'import/order': ['error', {
       'groups': [['builtin', 'external'], 'parent', 'sibling'],
       'newlines-between': 'always',
@@ -36,6 +39,7 @@ module.exports = {
         }
       ]
     }],
+    'react/jsx-curly-spacing': ['error', 'never'],
     'indent': ['error', 2, { 'SwitchCase': 1 }],
     'eol-last': ['error', 'always'],
     'semi': ['error', 'always'],
