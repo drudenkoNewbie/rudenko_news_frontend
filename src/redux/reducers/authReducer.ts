@@ -10,6 +10,7 @@ const initialState: AuthState = {
 export default function authReducer(state = initialState, action: AuthAction): AuthState {
   switch (action.type) {
     case AUTH_ACTIONS.AUTH_REQUESTED:
+    case AUTH_ACTIONS.AUTH_VERIFY_REQUESTED:
       return {
         ...state,
         isAuthLoading: true,
@@ -27,6 +28,9 @@ export default function authReducer(state = initialState, action: AuthAction): A
         isAuthLoading: false,
         authError: action.error
       };
+    case AUTH_ACTIONS.AUTH_SIGN_OUT:
+      localStorage.removeItem('token');
+      return initialState;
     default: return state;
   }
 }

@@ -1,123 +1,129 @@
-import { FormEvent, useState } from 'react';
 import {
-  TextField,
-  Button,
+  ChangeEvent,
+  FocusEvent,
+  FormEvent,
+  FC,
+  useState
+} from 'react';
+import {
   DialogTitle,
-  DialogActions,
   DialogContent,
-  DialogContentText
+  DialogContentText,
+  DialogActions,
+  Button,
+  TextField,Box
 } from '@mui/material';
 
-import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
+import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAuthRequested } from '../../redux/actions/authActions';
-import { AuthUser } from '../../types';
-import { createChangeModal } from '../../redux/actions/modalActions';
-import Loader from '../Loader';
 
-export const AuthForm = ({ modalType }: {modalType: string}) => {
-  const { isAuthLoading } = useAppSelector(state => state.auth);
+import { AuthFormProps, ErrorData, FormData } from './types';
 
+export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle, actions }) => {
+  const [formData, setFormData] = useState<FormData>({ username: '', email: '', password: '' });
+  const [errors, setErrors] = useState<ErrorData>({ 'username': '', 'email': '', 'password': '' });
   const dispatch = useAppDispatch();
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
 
-  const handleClose = () => dispatch(createChangeModal({ isOpen: false, modalType: '' }));
-
-  const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
-  const fields = [
-    {
-      label: 'Username',
-      value: username,
-      setValue: setUsername,
-      errorText: errors.username,
-      validation: (value: string) => value != '',
-      errorMsg: 'Shouln\'t be empty'
-    },
-    {
-      label: 'Email',
-      value: email,
-      setValue: setEmail,
-      errorText: errors.email,
-      validation: validateEmail,
-      errorMsg: 'Wrong email'
-    },
-    {
-      label: 'Password',
-      type: 'password',
-      value: password,
-      setValue: setPassword,
-      errorText: errors.password,
-      validation: (value: string) => value != '',
-      errorMsg: 'Shouln\'t be empty'
-    }
-  ];
-
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (username && email &&  password) {
-      if(!errors.username && !errors.email && !errors.password) {
-        const user: AuthUser = { username, email, password };
-        dispatch(createAuthRequested(user));
+  const validateField = (name: string, value: string) => {
+    let error = '';
+    if (name === 'email') {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(value)) {
+        error = 'Invalid email';
       }
-    } else setErrors({ username: 'Shouldn\'t be empty', email: 'Wrong email', password: 'Shouln\'t be empty' });
+    } else if (name === 'password' || name === 'username') {
+      if (value.trim() === '') {
+        error = `${name[0].toUpperCase() + name.slice(1)} can't be empty`;
+      }
+    }
+    return error;
   };
 
-  if (isAuthLoading) return <Loader />;
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: error });
+  };
+
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    setErrors({ ...errors, [name]: error });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let isValid = true;
+    const newErrors: ErrorData = {};
+    for (const [name, value] of Object.entries(formData)) {
+      const error = validateField(name, value);
+      newErrors[name] = error;
+      if (error) isValid = false;
+    }
+    setErrors(newErrors);
+    if (isValid) {
+      dispatch(createAuthRequested(formData));
+    }
+  };
 
   return (
     <>
-      <DialogTitle>{modalType}</DialogTitle>
-      <form onSubmit={handleFormSubmit}>
-        <DialogContent>
-          <DialogContentText>
-          To {modalType} to this website, please enter your username, email and password here
-          </DialogContentText>
-          {fields.map((field, index) => (
-            <TextField
-              key={index}
-              label={field.label}
-              type={field.type || 'text'}
-              value={field.value}
-              error={!!field.errorText}
-              helperText={field.errorText}
-              onChange={(e) => {
-                field.setValue(e.target.value);
-                if (!field.validation(e.target.value)) {
-                  setErrors(prev => ({ ...prev, [field.label.toLowerCase()]: field.errorMsg }));
-                } else {
-                  setErrors(prev => ({ ...prev, [field.label.toLowerCase()]: '' }));
-                }
-              }}
-              onBlur={(e) => {
-                field.setValue(e.target.value);
-                if (!field.validation(e.target.value)) {
-                  setErrors(prev => ({ ...prev, [field.label.toLowerCase()]: field.errorMsg }));
-                } else {
-                  setErrors(prev => ({ ...prev, [field.label.toLowerCase()]: '' }));
-                }
-              }}
-              fullWidth
-              margin="normal"
-            />
-          ))}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">{modalType}</Button>
+      <DialogTitle>{formTitle}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          {formSubTitle}
+        </DialogContentText>
+      </DialogContent>
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ marginX: 10 }}>
+          <TextField
+            name="username"
+            label="Username"
+            value={formData.username}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={errors.username}
+            error={Boolean(errors.username)}
+            margin='dense'
+            fullWidth
+          />
+          <TextField
+            name="email"
+            label="Email"
+            value={formData.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={errors.email}
+            error={Boolean(errors.email)}
+            margin='dense'
+            fullWidth
+          />
+          <TextField
+            name="password"
+            label="Password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={errors.password}
+            error={Boolean(errors.password)}
+            margin='dense'
+            fullWidth
+          />
+        </Box>
+        <DialogActions sx={{ justifyContent: 'center' }}>
+          {actions.map((button) =>
+            <Button
+              key={button.name}
+              name={button.name}
+              onClick={button.onClick}
+              type={button.type}
+            >
+              {button.name}
+            </Button>)}
         </DialogActions>
       </form>
     </>
-
   );
 };
-
