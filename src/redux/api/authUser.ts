@@ -6,7 +6,6 @@ export const authUser = async (route: string, payload: AuthUser): Promise<AuthRe
   return api.post(`auth/${route}`, { ...payload });
 };
 
-export const verifyUser = async (token: string): Promise<AuthResponse> => {
-  const headers = { 'Authorization': `Bearer ${token}` };
-  return api.get('auth/whoami', { headers });
+export const verifyUser = async (): Promise<AuthResponse> => {
+  return api.get('auth/whoami');
 };

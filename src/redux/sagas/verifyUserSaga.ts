@@ -5,13 +5,11 @@ import { AUTH_ACTIONS } from '../constants';
 import { createAuthFailed, createAuthReceived } from '../actions/authActions';
 import { verifyUser } from '../api/authUser';
 
-const { takeLatest, put } = Effects;
-const call: any = Effects.call;
+const { takeLatest, put, call } = Effects;
 
 function* verifyWorker() {
-  const token = localStorage.getItem('token');
   try {
-    const  { data } = yield call(verifyUser, token);
+    const  { data } = yield call(verifyUser);
     yield put(createAuthReceived(data));
   } catch (error: unknown) {
     if (error instanceof AxiosError) {

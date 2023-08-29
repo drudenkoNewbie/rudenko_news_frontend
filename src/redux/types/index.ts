@@ -1,4 +1,9 @@
-import { CompletePost, User } from '../../types';
+import {
+  AuthResponse,
+  AuthUser,
+  CompletePost,
+  User
+} from '../../types';
 
 export interface PostsState {
   news: CompletePost[] | null | undefined,
@@ -33,6 +38,6 @@ export interface AuthState {
 
 export interface AuthAction {
   type: string,
-  payload?: User,
+  payload: AuthResponse | AuthUser,
   error?: string,
 }

@@ -1,3 +1,5 @@
+import { removeLSToken } from '../../lib/local-storage';
+import { AuthResponse } from '../../types';
 import { AUTH_ACTIONS } from '../constants';
 import { AuthAction, AuthState } from '../types';
 
@@ -18,7 +20,7 @@ export default function authReducer(state = initialState, action: AuthAction): A
       };
     case AUTH_ACTIONS.AUTH_SUCCEED:
       return {
-        authUser: action.payload,
+        authUser: action.payload.user,
         isAuthLoading: false,
         authError: null
       };
@@ -29,7 +31,7 @@ export default function authReducer(state = initialState, action: AuthAction): A
         authError: action.error
       };
     case AUTH_ACTIONS.AUTH_SIGN_OUT:
-      localStorage.removeItem('token');
+      removeLSToken();
       return initialState;
     default: return state;
   }
