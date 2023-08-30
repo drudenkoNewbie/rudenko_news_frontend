@@ -10,6 +10,6 @@ function* setTokenWorker({ payload }: AuthAction) {
   yield call(setLSToken, payload.token);
 }
 
-export function* setToken() {
+export function* setTokenWatcher() {
   yield takeLatest(AUTH_ACTIONS.AUTH_SUCCEED, setTokenWorker);
 }

@@ -7,6 +7,7 @@ export const getLSToken = () => {
 };
 export const setLSToken = (token: string) => {
   try {
+    console.log(token);
     return localStorage.setItem('token', token);
   } catch (e) {
     console.log(e);
