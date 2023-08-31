@@ -1,9 +1,7 @@
-import * as Effects from 'redux-saga/effects';
+import { call, takeLatest } from 'redux-saga/effects';
 
 import { AUTH_ACTIONS } from '../constants';
 import { removeLSToken } from '../../lib/local-storage';
-
-const { takeLatest, call } = Effects;
 
 function* removeTokenWorker() {
   yield call(removeLSToken);

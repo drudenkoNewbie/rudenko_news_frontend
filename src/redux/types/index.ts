@@ -41,3 +41,8 @@ export interface AuthAction {
   payload: AuthResponse | AuthUser,
   error?: string,
 }
+
+export interface modalPayload {
+  isOpen: boolean,
+  modalType: string
+}

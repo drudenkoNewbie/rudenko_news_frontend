@@ -5,10 +5,8 @@ import { BasicDialogProps } from './types';
 
 export const BasicDialog: FC<BasicDialogProps> = ({ children, handleClose, isOpen }) => {
   return (
-    <>
-      <Dialog open={isOpen} onClose={handleClose}>
-        {children}
-      </Dialog>
-    </>
+    <Dialog open={isOpen} onClose={handleClose}>
+      {children}
+    </Dialog>
   );
 };

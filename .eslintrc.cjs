@@ -11,12 +11,12 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: 'tsconfig.json',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
     sourceType: 'module'
   },
   plugins: ['react-refresh', 'react', 'import'],
-  ignorePatterns: ['dist/'],
+  ignorePatterns: ['dist/', 'tsconfig.json'],
   rules: {
     'react-refresh/only-export-components': 'off',
     'object-curly-spacing': ['error', 'always'],
@@ -40,11 +40,21 @@ module.exports = {
       ]
     }],
     'react/jsx-curly-spacing': ['error', 'never'],
+    'react/jsx-curly-brace-presence': ['error', { 'props': 'never' }],
+    'react/jsx-no-useless-fragment': ['error', { 'allowExpressions': true }],
+    'jsx-quotes': ['error', 'prefer-double'],
     'indent': ['error', 2, { 'SwitchCase': 1 }],
     'eol-last': ['error', 'always'],
     'semi': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
     'no-trailing-spaces': 'error',
-    'no-multiple-empty-lines': ['error', { 'max': 1, 'maxBOF': 0, 'maxEOF': 1 }]
+    'no-multiple-empty-lines': ['error', { 'max': 1, 'maxBOF': 0, 'maxEOF': 1 }],
+    'keyword-spacing': ['error', { 'before': true }],
+    'padding-line-between-statements': [
+      'error',
+      { 'blankLine': 'always', 'prev': ['let', 'const'], 'next': ['if', 'expression', 'try', 'switch'] },
+      { 'blankLine': 'always', 'prev': '*', 'next': ['export', 'return'] },
+      { 'blankLine': 'always', 'prev': 'if', 'next': 'let' }
+    ]
   }
 };

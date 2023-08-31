@@ -1,13 +1,13 @@
 export const getLSToken = () => {
-  try{
+  try {
     return localStorage.getItem('token');
   } catch (e) {
     console.log(e);
   }
 };
+
 export const setLSToken = (token: string) => {
   try {
-    console.log(token);
     return localStorage.setItem('token', token);
   } catch (e) {
     console.log(e);

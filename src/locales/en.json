@@ -2,5 +2,13 @@
   "NEWS": "News",
   "NO_NEWS_MESSAGE": "No news for you",
   "SIGN_IN": "Sign in",
-  "SING_UP": "Sign up"
+  "SING_UP": "Sign up",
+  "SUBMIT": "submit",
+  "CANCEL": "Cancel",
+  "USERNAME": "Username",
+  "EMAIL": "Email",
+  "PASSWORD": "Password",
+  "CANT_BE_EMPTY": "can't be empty",
+  "DATE": "Date",
+  "AUTHOR": "Author"
 }

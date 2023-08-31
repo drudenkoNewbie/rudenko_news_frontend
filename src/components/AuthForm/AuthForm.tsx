@@ -16,32 +16,45 @@ import {
 
 import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAuthRequested } from '../../redux/actions/authActions';
+import { createChangeModal } from '../../redux/actions/modalActions';
+import { isValidEmail } from '../../utils/validateEmail';
+import {
+  USERNAME,
+  EMAIL,
+  PASSWORD,
+  CANCEL,
+  CANT_BE_EMPTY,
+  SUBMIT
+} from '../../locales/en.json';
 
 import { AuthFormProps, ErrorData, FormData } from './types';
+import { sxJustifyCenter, sxMargin10 } from './sxStyles';
 
-export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle, actions }) => {
+export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
   const [formData, setFormData] = useState<FormData>({ username: '', email: '', password: '' });
-  const [errors, setErrors] = useState<ErrorData>({ 'username': '', 'email': '', 'password': '' });
+  const [errors, setErrors] = useState<ErrorData>({ username: '', email: '', password: '' });
   const dispatch = useAppDispatch();
 
   const validateField = (name: string, value: string) => {
     let error = '';
+
     if (name === 'email') {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(value)) {
+      if (!isValidEmail(value)) {
         error = 'Invalid email';
       }
-    } else if (name === 'password' || name === 'username') {
+    } else if (['password', 'username'].includes(name)) {
       if (value.trim() === '') {
-        error = `${name[0].toUpperCase() + name.slice(1)} can't be empty`;
+        error = `${name[0].toUpperCase() + name.slice(1)} ${CANT_BE_EMPTY}`;
       }
     }
+
     return error;
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const error = validateField(name, value);
+
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: error });
   };
@@ -49,6 +62,7 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle, actions }
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const error = validateField(name, value);
+
     setErrors({ ...errors, [name]: error });
   };
 
@@ -58,6 +72,7 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle, actions }
     const newErrors: ErrorData = {};
     for (const [name, value] of Object.entries(formData)) {
       const error = validateField(name, value);
+
       newErrors[name] = error;
       if (error) isValid = false;
     }
@@ -65,6 +80,10 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle, actions }
     if (isValid) {
       dispatch(createAuthRequested(formData));
     }
+  };
+
+  const handleClose = () => {
+    dispatch(createChangeModal({ isOpen: false, modalType: '' }));
   };
 
   return (
@@ -76,52 +95,55 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle, actions }
         </DialogContentText>
       </DialogContent>
       <form onSubmit={handleSubmit}>
-        <Box sx={{ marginX: 10 }}>
+        <Box sx={sxMargin10}>
           <TextField
             name="username"
-            label="Username"
+            label={USERNAME}
             value={formData.username}
             onChange={handleChange}
             onBlur={handleBlur}
             helperText={errors.username}
             error={Boolean(errors.username)}
-            margin='dense'
+            margin="dense"
             fullWidth
           />
           <TextField
             name="email"
-            label="Email"
+            label={EMAIL}
             value={formData.email}
             onChange={handleChange}
             onBlur={handleBlur}
             helperText={errors.email}
             error={Boolean(errors.email)}
-            margin='dense'
+            margin="dense"
             fullWidth
           />
           <TextField
             name="password"
-            label="Password"
+            label={PASSWORD}
             type="password"
             value={formData.password}
             onChange={handleChange}
             onBlur={handleBlur}
             helperText={errors.password}
             error={Boolean(errors.password)}
-            margin='dense'
+            margin="dense"
             fullWidth
           />
         </Box>
-        <DialogActions sx={{ justifyContent: 'center' }}>
-          {actions.map((button) =>
-            <Button
-              key={button.name}
-              name={button.name}
-              onClick={button.onClick}
-              type={button.type}
-            >
-              {button.name}
-            </Button>)}
+        <DialogActions sx={sxJustifyCenter}>
+          <Button
+            name="cancel"
+            onClick={handleClose}
+          >
+            {CANCEL}
+          </Button>
+          <Button
+            name="submit"
+            type="submit"
+          >
+            {SUBMIT}
+          </Button>
         </DialogActions>
       </form>
     </>

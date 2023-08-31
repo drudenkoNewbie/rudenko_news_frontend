@@ -10,6 +10,7 @@ import {
 import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
 import { CompletePost } from '../../types';
+import { DATE, AUTHOR } from '../../locales/en.json';
 
 import {
   sxCard,
@@ -28,10 +29,10 @@ const PostCard: FC<CompletePost> = ({
   <Card sx={sxCard}>
     <CardActionArea>
       <Typography sx={sxData} gutterBottom variant="body1" component="div">
-        Data: {getFormattedDate(createdAt)}
+        {DATE}: {getFormattedDate(createdAt)}
       </Typography>
       <Typography sx={sxAuthor} gutterBottom variant="body1" component="div">
-        Author: {user.username}
+        {AUTHOR}: {user.username}
       </Typography>
       <CardMedia
         component="img"

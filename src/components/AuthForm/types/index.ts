@@ -1,11 +1,6 @@
 export interface AuthFormProps {
   formTitle: string;
   formSubTitle: string;
-  actions: {
-      name: string;
-      type?: 'button' | 'submit' | 'reset';
-      onClick?: () => void;
-  }[];
   children?: React.ReactNode;
 }
 

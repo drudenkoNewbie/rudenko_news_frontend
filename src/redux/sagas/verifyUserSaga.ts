@@ -10,10 +10,11 @@ const { takeLatest, put, call } = Effects;
 function* verifyWorker() {
   try {
     const  { data } = yield call(verifyUser);
+
     yield put(createAuthReceived(data));
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      yield put(createAuthFailed((error as AxiosError).message));
+      yield put(createAuthFailed(error.response?.data.message));
     }
   }
 }
