@@ -6,8 +6,10 @@ import PostCard from '../PostCard';
 import { sxPostContainer } from './sxStyles';
 import { PostContainerProps } from './types';
 
-export const PostContainer: FC<PostContainerProps> = ({ posts }) => (
-  <Grid container sx={sxPostContainer}>
-    {posts.map((post) => <PostCard key={post.id} {...post} />)}
-  </Grid>
-);
+export const PostContainer: FC<PostContainerProps> = ({ posts }) => {
+  return (
+    <Grid container sx={sxPostContainer}>
+      {posts.map((post) => <PostCard key={post.id} {...post} />)}
+    </Grid>
+  );
+};

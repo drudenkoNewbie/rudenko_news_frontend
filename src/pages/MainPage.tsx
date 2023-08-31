@@ -9,7 +9,6 @@ import { NO_NEWS_MESSAGE } from '../locales/en.json';
 
 const MainPage: FC = () => {
   const { news, isLoading, error } = useAppSelector((state) => state.news);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -20,7 +19,7 @@ const MainPage: FC = () => {
   if (news) {
     return (
       <>
-        { error && <Notification type="error" message={error.valueOf()} /> }
+        { error && <Notification type="error" message={error} /> }
         { !news.length && !error && <Notification type="info" message={NO_NEWS_MESSAGE} />}
         { news.length > 0 && <PostContainer posts={news} /> }
       </>

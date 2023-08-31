@@ -1,5 +1,5 @@
-import { Post } from '../../../types';
+import { CompletePost } from '../../../types';
 
 export interface PostContainerProps {
-  posts: Post[]
+  posts: CompletePost[];
 }

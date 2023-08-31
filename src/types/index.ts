@@ -6,9 +6,32 @@ export interface User {
   createdAt: Date;
 }
 
+export interface AuthResponse{
+  user: User,
+  token: string,
+}
+
+export interface AuthUser {
+  username: string;
+  email: string;
+  password: string;
+}
+
 export interface Tag {
   id: number;
   value: string;
+}
+
+export interface CompletePost {
+  id: number;
+  authorId: number;
+  title: string;
+  content: string;
+  imageUrl?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  user: User;
+  tags: Tag[];
 }
 
 export interface Post {
@@ -19,6 +42,5 @@ export interface Post {
   imageUrl?: string | null;
   createdAt: Date;
   updatedAt: Date;
-  user: User;
   tags: Tag[];
 }
