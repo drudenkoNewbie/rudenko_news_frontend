@@ -12,7 +12,9 @@ function* postsWorker() {
     yield put(createPostsReceived(data));
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      yield put(createPostsFailed(error.response?.data.message));
+      yield put(
+        createPostsFailed(error.response?.data.message || error.message)
+      );
     }
   }
 }

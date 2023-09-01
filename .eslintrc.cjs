@@ -19,42 +19,39 @@ module.exports = {
   ignorePatterns: ['dist/', 'tsconfig.json'],
   rules: {
     'react-refresh/only-export-components': 'off',
-    'object-curly-spacing': ['error', 'always'],
-    'quotes': ['error', 'single'],
-    'object-curly-newline': ['error', {
-      'ObjectExpression': { 'multiline': true, 'minProperties': 4 },
-      'ObjectPattern': { 'multiline': true },
-      'ImportDeclaration': { 'minProperties': 4, 'multiline': true, 'consistent': true },
-      'ExportDeclaration': { 'multiline': true, 'minProperties': 4 }
-    }],
-    'import/newline-after-import': ['error', { 'count': 1 }],
-    'import/order': ['error', {
-      'groups': [['builtin', 'external'], 'parent', 'sibling'],
-      'newlines-between': 'always',
-      'pathGroups': [
-        {
-          'pattern': 'react',
-          'group': 'external',
-          'position': 'before'
-        }
-      ]
-    }],
-    'react/jsx-curly-spacing': ['error', 'never'],
-    'react/jsx-curly-brace-presence': ['error', { 'props': 'never' }],
-    'react/jsx-no-useless-fragment': ['error', { 'allowExpressions': true }],
-    'jsx-quotes': ['error', 'prefer-double'],
-    'indent': ['error', 2, { 'SwitchCase': 1 }],
-    'eol-last': ['error', 'always'],
-    'semi': ['error', 'always'],
-    'comma-dangle': ['error', 'never'],
-    'no-trailing-spaces': 'error',
-    'no-multiple-empty-lines': ['error', { 'max': 1, 'maxBOF': 0, 'maxEOF': 1 }],
-    'keyword-spacing': ['error', { 'before': true }],
+    'import/newline-after-import': ['error', { count: 1 }],
+    'import/order': [
+      'error',
+      {
+        groups: [['builtin', 'external'], 'parent', 'sibling'],
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            pattern: 'react',
+            group: 'external',
+            position: 'before'
+          }
+        ]
+      }
+    ],
+    'react/jsx-curly-brace-presence': ['error', { props: 'never' }],
+    'react/jsx-no-useless-fragment': [
+      'error',
+      { allowExpressions: true }
+    ],
+    'no-multiple-empty-lines': [
+      'error',
+      { max: 1, maxBOF: 0, maxEOF: 1 }
+    ],
     'padding-line-between-statements': [
       'error',
-      { 'blankLine': 'always', 'prev': ['let', 'const'], 'next': ['if', 'expression', 'try', 'switch'] },
-      { 'blankLine': 'always', 'prev': '*', 'next': ['export', 'return'] },
-      { 'blankLine': 'always', 'prev': 'if', 'next': 'let' }
+      {
+        blankLine: 'always',
+        prev: ['let', 'const'],
+        next: ['if', 'expression', 'try', 'switch']
+      },
+      { blankLine: 'always', prev: '*', next: ['export', 'return'] },
+      { blankLine: 'always', prev: 'if', next: 'let' }
     ]
   }
 };

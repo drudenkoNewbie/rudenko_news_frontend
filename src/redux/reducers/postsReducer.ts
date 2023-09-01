@@ -7,7 +7,10 @@ const initialState: PostsState = {
   error: null
 };
 
-export default function postsReducer(state = initialState, action: PostAction): PostsState {
+export default function postsReducer(
+  state = initialState,
+  action: PostAction
+): PostsState {
   switch (action.type) {
     case POSTS_ACTIONS.POSTS_REQUESTED:
       return {
@@ -27,6 +30,7 @@ export default function postsReducer(state = initialState, action: PostAction): 
         news: [],
         error: action.error
       };
-    default: return state;
+    default:
+      return state;
   }
 }

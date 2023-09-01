@@ -1,10 +1,5 @@
 import { AxiosError } from 'axios';
-import {
-  call,
-  put,
-  select,
-  takeLatest
-} from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AUTH_ACTIONS } from '../constants';
 import { authUser } from '../api/authUser';
@@ -25,7 +20,9 @@ function* authWorker({ payload }: AuthAction) {
     yield put(createChangeModal({ isOpen: false, modalType: '' }));
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      yield put(createAuthFailed((error as AxiosError).message));
+      yield put(
+        createAuthFailed(error.response?.data.message || error.message)
+      );
     }
   }
 }

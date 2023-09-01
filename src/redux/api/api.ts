@@ -4,7 +4,7 @@ import { getLSToken } from '../../lib/local-storage';
 
 const api = axios.create({ baseURL: import.meta.env.VITE_APP_API_URL });
 
-api.interceptors.request.use(config => {
+api.interceptors.request.use((config) => {
   const token = getLSToken();
 
   if (token) {
@@ -12,7 +12,6 @@ api.interceptors.request.use(config => {
   }
 
   return config;
-}
-);
+});
 
 export default api;

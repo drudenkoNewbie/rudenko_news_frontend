@@ -1,7 +1,9 @@
 import { User } from '../../types';
 import { AUTH_ACTIONS } from '../constants';
 
-export const createVerifyRequested = () => ({ type: AUTH_ACTIONS.AUTH_REQUESTED });
+export const createVerifyRequested = () => ({
+  type: AUTH_ACTIONS.AUTH_REQUESTED
+});
 
 export const createVerifyReceived = (payload: User) => ({
   type: AUTH_ACTIONS.AUTH_SUCCEED,

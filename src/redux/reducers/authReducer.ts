@@ -8,7 +8,10 @@ const initialState: AuthState = {
   authError: null
 };
 
-export default function authReducer(state = initialState, action: AuthAction): AuthState {
+export default function authReducer(
+  state = initialState,
+  action: AuthAction
+): AuthState {
   switch (action.type) {
     case AUTH_ACTIONS.AUTH_REQUESTED:
     case AUTH_ACTIONS.AUTH_VERIFY_REQUESTED:
@@ -31,6 +34,7 @@ export default function authReducer(state = initialState, action: AuthAction): A
       };
     case AUTH_ACTIONS.AUTH_SIGN_OUT:
       return initialState;
-    default: return state;
+    default:
+      return state;
   }
 }

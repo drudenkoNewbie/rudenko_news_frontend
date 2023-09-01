@@ -19,9 +19,11 @@ const MainPage: FC = () => {
   if (news) {
     return (
       <>
-        { error && <Notification type="error" message={error} /> }
-        { !news.length && !error && <Notification type="info" message={NO_NEWS_MESSAGE} />}
-        { news.length > 0 && <PostContainer posts={news} /> }
+        {error && <Notification type="error" message={error} />}
+        {!news.length && !error && (
+          <Notification type="info" message={NO_NEWS_MESSAGE} />
+        )}
+        {news.length > 0 && <PostContainer isSelfDisplayed posts={news} />}
       </>
     );
   }

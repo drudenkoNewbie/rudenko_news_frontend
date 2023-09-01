@@ -10,5 +10,6 @@
   "PASSWORD": "Password",
   "CANT_BE_EMPTY": "can't be empty",
   "DATE": "Date",
-  "AUTHOR": "Author"
+  "AUTHOR": "Author",
+  "INVALID_EMAIL": "Invalid email"
 }
