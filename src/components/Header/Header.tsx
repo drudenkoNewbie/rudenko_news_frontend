@@ -4,92 +4,130 @@ import {
   Toolbar,
   Typography,
   Button,
-  IconButton,
   CircularProgress,
   Snackbar
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { createChangeModal } from '../../redux/actions/modalActions';
 import AuthForm from '../AuthForm';
 import BasicDialog from '../BasicDialog';
-import { createAuthSignOut, createAuthVerifyRequested } from '../../redux/actions/authActions';
+import { createAuthSignOut } from '../../redux/actions/authActions';
+import { createUserRequested } from '../../redux/actions/userActions';
+import { SNACKBAR_DELAY } from '../../constants';
+import { createVerifyRequested } from '../../redux/actions/verifyUserActions';
 
-import {
-  sxLoaderInvisible,
-  sxLoaderVisible,
-  sxFlexGrow,
-  sxMarginRight
-} from './sxStyles';
+import { sxLoaderInvisible, sxLoaderVisible, sxFlexGrow } from './sxStyles';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  const { isOpen, modalType } = useAppSelector(state => state.modal);
-  const { authUser, isAuthLoading, authError } = useAppSelector(state => state.auth);
+  const { isOpen, modalType } = useAppSelector((state) => state.modal);
+  const { authUser, isAuthLoading, authError } = useAppSelector(
+    (state) => state.auth
+  );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (authError) {
+    if (authError != null) {
       setSnackbarOpen(true);
       const timer = setTimeout(() => {
         setSnackbarOpen(false);
-      }, 5000);
+      }, SNACKBAR_DELAY);
 
       return () => clearTimeout(timer);
     }
   }, [authError]);
   useEffect(() => {
-    dispatch(createAuthVerifyRequested());
+    dispatch(createVerifyRequested());
   }, []);
 
-  const handleAuthButtonClick = ({ target }: MouseEvent<HTMLButtonElement> & {target: {name: string}} ) => {
+  const handleAuthButtonClick = ({
+    target
+  }: MouseEvent<HTMLButtonElement> & { target: { name: string } }) => {
     dispatch(createChangeModal({ isOpen: true, modalType: target.name }));
   };
 
   const handleSignOut = () => {
     dispatch(createAuthSignOut());
+    navigate('/');
   };
 
   const handleClose = () => {
     dispatch(createChangeModal({ isOpen: false, modalType: '' }));
   };
 
+  const handleUsernameClick = () => {
+    if (authUser != null) dispatch(createUserRequested(authUser.id));
+    navigate(`/users/${authUser?.id}`);
+  };
+
+  const handleTitleClick = () => {
+    navigate('/');
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={sxMarginRight}
+        <Typography
+          color="#fff"
+          onClick={handleTitleClick}
+          variant="h4"
+          component="div"
+          sx={sxFlexGrow}
         >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" component="div" sx={sxFlexGrow}>
-            News
+          <Button color="inherit">News</Button>
         </Typography>
-        {!authUser && <>
-          <Button onClick={handleAuthButtonClick} name="sign-in" color="inherit">Sign In</Button>
-          <Button onClick={handleAuthButtonClick} name="sign-up" color="inherit">Sign Up</Button>
-        </>}
-        {authUser && <>
-          <Button name={`${authUser.username}`} color="inherit">{authUser.username}</Button>
-          <Button name="sign-out" color="inherit" onClick={handleSignOut}>Sign Out</Button>
-        </>}
-        <CircularProgress sx={isAuthLoading ? sxLoaderVisible : sxLoaderInvisible} />
+        {authUser == null ? (
+          <>
+            <Button
+              onClick={handleAuthButtonClick}
+              name="sign-in"
+              color="inherit"
+            >
+              Sign In
+            </Button>
+            <Button
+              onClick={handleAuthButtonClick}
+              name="sign-up"
+              color="inherit"
+            >
+              Sign Up
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              name={authUser.username}
+              onClick={handleUsernameClick}
+              color="inherit"
+            >
+              {authUser.username}
+            </Button>
+
+            <Button name="sign-out" color="inherit" onClick={handleSignOut}>
+              Sign Out
+            </Button>
+          </>
+        )}
+        <CircularProgress
+          sx={isAuthLoading ? sxLoaderVisible : sxLoaderInvisible}
+        />
         <BasicDialog isOpen={isOpen} handleClose={handleClose}>
-          <AuthForm formTitle={modalType}
-            formSubTitle={`To ${modalType} fill out the form and press submit button`}>
-          </AuthForm>
+          <AuthForm
+            formTitle={modalType}
+            formSubTitle={`To ${modalType} fill out the form and press submit button`}
+          ></AuthForm>
         </BasicDialog>
       </Toolbar>
-      {authError && <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={5000}
-        message={`${authError}`}
-      />}
+      {authError != null && (
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={SNACKBAR_DELAY}
+          message={authError}
+        />
+      )}
     </AppBar>
   );
 };

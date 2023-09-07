@@ -1,4 +1,4 @@
-const DATE_START = 0;
-const DATE_END = 10;
+import { DateTime } from 'luxon';
 
-export const getFormattedDate = (date: Date): string => String(date).slice(DATE_START, DATE_END);
+export const getFormattedDate = (date: Date): string =>
+  DateTime.fromISO(String(date)).toFormat('MMMM d, yyyy');

@@ -6,9 +6,9 @@ export interface User {
   createdAt: Date;
 }
 
-export interface AuthResponse{
-  user: User,
-  token: string,
+export interface AuthResponse {
+  user: User;
+  token: string;
 }
 
 export interface AuthUser {
@@ -43,4 +43,13 @@ export interface Post {
   createdAt: Date;
   updatedAt: Date;
   tags: Tag[];
+}
+
+export interface CompleteUser {
+  id: number;
+  username: string;
+  email: string;
+  avatarUrl?: string | null;
+  posts: CompletePost[];
+  createdAt: Date;
 }

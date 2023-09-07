@@ -1,5 +1,6 @@
-import { POSTS_ACTIONS } from '../constants';
-import { PostAction, PostsState } from '../types';
+import { POSTS_REQUESTED, POSTS_RECEIVED, POSTS_REJECTED } from '../constants';
+import { PostsState } from '../types';
+import { PostsActions } from '../types/postsActions';
 
 const initialState: PostsState = {
   news: null,
@@ -7,26 +8,30 @@ const initialState: PostsState = {
   error: null
 };
 
-export default function postsReducer(state = initialState, action: PostAction): PostsState {
+export default function postsReducer(
+  state = initialState,
+  action: PostsActions
+): PostsState {
   switch (action.type) {
-    case POSTS_ACTIONS.POSTS_REQUESTED:
+    case POSTS_REQUESTED:
       return {
         ...state,
         isLoading: true,
         error: null
       };
-    case POSTS_ACTIONS.POSTS_RECEIVED:
+    case POSTS_RECEIVED:
       return {
         isLoading: false,
         news: action.payload,
         error: null
       };
-    case POSTS_ACTIONS.POSTS_FAILED:
+    case POSTS_REJECTED:
       return {
         isLoading: false,
         news: [],
         error: action.error
       };
-    default: return state;
+    default:
+      return state;
   }
 }

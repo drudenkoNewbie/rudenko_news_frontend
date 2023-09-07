@@ -1,4 +1,4 @@
 export interface NotificationProps {
-  type: 'error' | 'info',
-  message: string
+  type: 'error' | 'info';
+  message: string;
 }

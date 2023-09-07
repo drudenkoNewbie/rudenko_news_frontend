@@ -1,18 +1,20 @@
 import { all } from 'redux-saga/effects';
 
-import { postsWatcher } from './postsSaga';
+import { getPostsWatcher } from './getPostsSaga';
 import { authWatcher } from './authSaga';
 import { verifyWatcher } from './verifyUserSaga';
 import { setTokenWatcher } from './setTokenSaga';
 import { removeTokenWatcher } from './removeTokenSaga';
+import { userWatcher } from './userPageSaga';
 
 function* rootSaga() {
   yield all([
-    postsWatcher(),
+    getPostsWatcher(),
     authWatcher(),
     verifyWatcher(),
     setTokenWatcher(),
-    removeTokenWatcher()
+    removeTokenWatcher(),
+    userWatcher()
   ]);
 }
 
