@@ -1,21 +1,9 @@
-import {
-  AuthResponse,
-  AuthUser,
-  CompletePost,
-  CompleteUser,
-  User
-} from '../../types';
+import { CompletePost, CompleteUser, User } from '../../types';
 
 export interface PostsState {
   news: CompletePost[] | null | undefined;
   isLoading: boolean;
   error: null | string | undefined;
-}
-
-export interface PostAction {
-  type: string;
-  payload?: CompletePost[];
-  error?: string;
 }
 
 export interface ModalState {
@@ -32,15 +20,9 @@ export interface ModalAction {
 }
 
 export interface AuthState {
-  authUser: User | null | undefined;
+  authUser: User | null;
   isAuthLoading: boolean;
   authError: null | string;
-}
-
-export interface AuthAction {
-  type: string;
-  payload: AuthResponse | AuthUser;
-  error?: string;
 }
 
 export interface modalPayload {
@@ -52,10 +34,4 @@ export interface UserState {
   user: CompleteUser | null;
   isUserFetching: boolean;
   userError: string;
-}
-
-export interface UserAction {
-  type: string;
-  payload?: number | CompleteUser;
-  error?: string;
 }

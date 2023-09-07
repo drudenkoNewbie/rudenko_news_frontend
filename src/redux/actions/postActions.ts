@@ -1,16 +1,23 @@
 import { CompletePost } from '../../types';
-import { POSTS_ACTIONS } from '../constants';
+import { POSTS_RECEIVED, POSTS_REJECTED, POSTS_REQUESTED } from '../constants';
+import {
+  PostsReceivedAction,
+  PostsRejectedAction,
+  PostsRequestedAction
+} from '../types/postsActions';
 
-export const createPostsRequested = () => ({
-  type: POSTS_ACTIONS.POSTS_REQUESTED
+export const createPostsRequested = (): PostsRequestedAction => ({
+  type: POSTS_REQUESTED
 });
 
-export const createPostsReceived = (payload: CompletePost[]) => ({
-  type: POSTS_ACTIONS.POSTS_RECEIVED,
+export const createPostsReceived = (
+  payload: CompletePost[]
+): PostsReceivedAction => ({
+  type: POSTS_RECEIVED,
   payload
 });
 
-export const createPostsFailed = (error: string) => ({
-  type: POSTS_ACTIONS.POSTS_FAILED,
+export const createPostsRejected = (error: string): PostsRejectedAction => ({
+  type: POSTS_REJECTED,
   error
 });

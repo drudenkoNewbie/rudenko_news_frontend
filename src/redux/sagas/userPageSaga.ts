@@ -1,12 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
 
-import { USER_ACTIONS } from '../constants';
 import { getUser } from '../api/getUser';
-import { UserAction } from '../types';
 import { createUserReceived, createUserRejected } from '../actions/userActions';
+import { USER_REQUESTED } from '../constants';
+import { UserRequestedAction } from '../types/userActions';
 
-function* userWorker({ payload }: UserAction) {
+function* userWorker({ payload }: UserRequestedAction) {
   if (typeof payload === 'number') {
     try {
       const { data } = yield call(getUser, payload);
@@ -23,5 +23,5 @@ function* userWorker({ payload }: UserAction) {
 }
 
 export function* userWatcher() {
-  yield takeLatest(USER_ACTIONS.USER_REQUESTED, userWorker);
+  yield takeLatest(USER_REQUESTED, userWorker);
 }

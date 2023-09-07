@@ -13,12 +13,10 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { createChangeModal } from '../../redux/actions/modalActions';
 import AuthForm from '../AuthForm';
 import BasicDialog from '../BasicDialog';
-import {
-  createAuthSignOut,
-  createAuthVerifyRequested
-} from '../../redux/actions/authActions';
+import { createAuthSignOut } from '../../redux/actions/authActions';
 import { createUserRequested } from '../../redux/actions/userActions';
 import { SNACKBAR_DELAY } from '../../constants';
+import { createVerifyRequested } from '../../redux/actions/verifyUserActions';
 
 import { sxLoaderInvisible, sxLoaderVisible, sxFlexGrow } from './sxStyles';
 
@@ -42,7 +40,7 @@ export const Header = () => {
     }
   }, [authError]);
   useEffect(() => {
-    dispatch(createAuthVerifyRequested());
+    dispatch(createVerifyRequested());
   }, []);
 
   const handleAuthButtonClick = ({

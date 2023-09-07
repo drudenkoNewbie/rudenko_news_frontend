@@ -1,9 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
 
-import { createPostsFailed, createPostsReceived } from '../actions/postActions';
-import { POSTS_ACTIONS } from '../constants';
+import {
+  createPostsRejected,
+  createPostsReceived
+} from '../actions/postActions';
 import { getPosts } from '../api/getPosts';
+import { POSTS_REQUESTED } from '../constants';
 
 function* postsWorker() {
   try {
@@ -13,12 +16,12 @@ function* postsWorker() {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       yield put(
-        createPostsFailed(error.response?.data.message ?? error.message)
+        createPostsRejected(error.response?.data.message ?? error.message)
       );
     }
   }
 }
 
 export function* postsWatcher() {
-  yield takeLatest(POSTS_ACTIONS.POSTS_REQUESTED, postsWorker);
+  yield takeLatest(POSTS_REQUESTED, postsWorker);
 }

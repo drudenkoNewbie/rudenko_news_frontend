@@ -1,26 +1,27 @@
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
-import * as Effects from 'redux-saga/effects';
 
-import { AUTH_ACTIONS } from '../constants';
-import { createAuthFailed, createAuthReceived } from '../actions/authActions';
+import { AUTH_VERIFY_REQUESTED } from '../constants';
 import { verifyUser } from '../api/authUser';
-
-const { takeLatest, put, call } = Effects;
+import {
+  createVerifyReceived,
+  createVerifyRejected
+} from '../actions/verifyUserActions';
 
 function* verifyWorker() {
   try {
     const { data } = yield call(verifyUser);
 
-    yield put(createAuthReceived(data));
+    yield put(createVerifyReceived(data));
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       yield put(
-        createAuthFailed(error.response?.data.message ?? error.message)
+        createVerifyRejected(error.response?.data.message ?? error.message)
       );
     }
   }
 }
 
 export function* verifyWatcher() {
-  yield takeLatest(AUTH_ACTIONS.AUTH_VERIFY_REQUESTED, verifyWorker);
+  yield takeLatest(AUTH_VERIFY_REQUESTED, verifyWorker);
 }

@@ -12,7 +12,7 @@ import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { createUserRequested } from '../../redux/actions/userActions';
-import { defaultImageUrl } from '../../constants';
+import { DEFAULT_IMAGE_URL } from '../../constants';
 
 import {
   sxCard,
@@ -44,7 +44,13 @@ const PostCard: FC<PostCardProps> = ({
   return (
     <Card sx={sxCard}>
       <CardActionArea>
-        <Typography sx={sxData} gutterBottom variant="body1" component="div" noWrap>
+        <Typography
+          sx={sxData}
+          gutterBottom
+          variant="body1"
+          component="div"
+          noWrap
+        >
           {getFormattedDate(createdAt)}
         </Typography>
         <Typography
@@ -60,7 +66,7 @@ const PostCard: FC<PostCardProps> = ({
         <CardMedia
           component="img"
           height="300"
-          image={defaultImageUrl}
+          image={DEFAULT_IMAGE_URL}
           alt="placeholder"
         />
         <CardContent>
