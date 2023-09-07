@@ -15,7 +15,11 @@ export const PostContainer: FC<PostContainerProps> = ({
       {posts.map((post) => (
         <PostCard
           key={post.id}
-          {...post}
+          createdAt={post.createdAt}
+          title={post.title}
+          content={post.content}
+          tags={post.tags}
+          authorId={post.authorId}
           author={isSelfDisplayed ? post.user.username : null}
         />
       ))}

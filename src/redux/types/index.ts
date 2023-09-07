@@ -34,7 +34,7 @@ export interface ModalAction {
 export interface AuthState {
   authUser: User | null | undefined;
   isAuthLoading: boolean;
-  authError: null | string | undefined;
+  authError: null | string;
 }
 
 export interface AuthAction {

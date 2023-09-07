@@ -22,7 +22,7 @@ export default function authReducer(
       };
     case AUTH_ACTIONS.AUTH_SUCCEED:
       return {
-        authUser: (action.payload as AuthResponse).user || action.payload,
+        authUser: (action.payload as AuthResponse).user ?? action.payload,
         isAuthLoading: false,
         authError: null
       };
@@ -30,7 +30,7 @@ export default function authReducer(
       return {
         authUser: null,
         isAuthLoading: false,
-        authError: action.error
+        authError: action.error as string
       };
     case AUTH_ACTIONS.AUTH_SIGN_OUT:
       return initialState;

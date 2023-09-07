@@ -13,7 +13,7 @@ function* postsWorker() {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       yield put(
-        createPostsFailed(error.response?.data.message || error.message)
+        createPostsFailed(error.response?.data.message ?? error.message)
       );
     }
   }

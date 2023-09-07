@@ -16,11 +16,11 @@ const MainPage: FC = () => {
   }, []);
 
   if (isLoading) return <Loader />;
-  if (news) {
+  if (news != null) {
     return (
       <>
-        {error && <Notification type="error" message={error} />}
-        {!news.length && !error && (
+        {error != null && <Notification type="error" message={error} />}
+        {news.length === 0 && error == null && (
           <Notification type="info" message={NO_NEWS_MESSAGE} />
         )}
         {news.length > 0 && <PostContainer isSelfDisplayed posts={news} />}

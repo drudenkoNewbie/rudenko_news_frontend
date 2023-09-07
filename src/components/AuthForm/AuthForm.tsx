@@ -22,6 +22,7 @@ import {
   SUBMIT,
   INVALID_EMAIL
 } from '../../locales/en.json';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 import { AuthFormProps, ErrorData, FormData } from './types';
 import { sxJustifyCenter, sxMargin10 } from './sxStyles';
@@ -48,7 +49,7 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
       }
     } else if (['password', 'username'].includes(name)) {
       if (value.trim() === '') {
-        error = `${name[0].toUpperCase() + name.slice(1)} ${CANT_BE_EMPTY}`;
+        error = `${capitalizeFirstLetter(name)} ${CANT_BE_EMPTY}`;
       }
     }
 
@@ -78,7 +79,7 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
       const error = validateField(name, value);
 
       newErrors[name] = error;
-      if (error) isValid = false;
+      if (error !== '') isValid = false;
     }
     setErrors(newErrors);
     if (isValid) {

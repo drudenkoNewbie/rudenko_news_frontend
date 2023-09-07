@@ -1,4 +1,4 @@
-import { useEffect, type FC } from 'react';
+import { type FC } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import UserCard from '../components/UserCard';
@@ -18,22 +18,24 @@ const UserPage: FC = () => {
   const userId = Number(location.pathname.split('/').pop());
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (authUser && userId) {
-      dispatch(createUserRequested(userId));
-    } else navigate('/');
-  }, []);
+  if (authUser != null) {
+    dispatch(createUserRequested(userId));
+  } else {
+    navigate('/');
+
+    return null;
+  }
 
   if (isUserFetching) return <Loader />;
 
-  if (user) {
+  if (user != null) {
     return (
       <>
-        {user && !userError && <UserCard />}
+        {user != null && userError === '' && <UserCard />}
         {user.posts.length > 0 && (
           <PostContainer posts={user.posts} isSelfDisplayed={false} />
         )}
-        {userError && (
+        {userError !== '' && (
           <Notification type="error" message="Something goes wrong" />
         )}
       </>

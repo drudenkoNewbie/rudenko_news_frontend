@@ -14,7 +14,7 @@ function* userWorker({ payload }: UserAction) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       yield put(
-        createUserRejected(error.response?.data.message || error.message)
+        createUserRejected(error.response?.data.message ?? error.message)
       );
     }
   }

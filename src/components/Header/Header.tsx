@@ -29,13 +29,14 @@ export const Header = () => {
   );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
+  const SNACKBAR_DELAY = 5000;
 
   useEffect(() => {
-    if (authError) {
+    if (authError != null) {
       setSnackbarOpen(true);
       const timer = setTimeout(() => {
         setSnackbarOpen(false);
-      }, 5000);
+      }, SNACKBAR_DELAY);
 
       return () => clearTimeout(timer);
     }
@@ -60,10 +61,8 @@ export const Header = () => {
   };
 
   const handleUsernameClick = () => {
-    if (authUser) {
-      dispatch(createUserRequested(authUser.id));
-    }
-    navigate(`/user/${authUser?.id}`);
+    if (authUser != null) dispatch(createUserRequested(authUser.id));
+    navigate(`/users/${authUser?.id}`);
   };
 
   const handleTitleClick = () => {
@@ -82,7 +81,7 @@ export const Header = () => {
         >
           <Button color="inherit">News</Button>
         </Typography>
-        {!authUser && (
+        {authUser == null ? (
           <>
             <Button
               onClick={handleAuthButtonClick}
@@ -99,11 +98,10 @@ export const Header = () => {
               Sign Up
             </Button>
           </>
-        )}
-        {authUser && (
+        ) : (
           <>
             <Button
-              name={`${authUser.username}`}
+              name={authUser.username}
               onClick={handleUsernameClick}
               color="inherit"
             >
@@ -125,11 +123,11 @@ export const Header = () => {
           ></AuthForm>
         </BasicDialog>
       </Toolbar>
-      {authError && (
+      {authError != null && (
         <Snackbar
           open={snackbarOpen}
-          autoHideDuration={5000}
-          message={`${authError}`}
+          autoHideDuration={SNACKBAR_DELAY}
+          message={authError}
         />
       )}
     </AppBar>

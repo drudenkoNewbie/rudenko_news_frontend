@@ -10,14 +10,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
-import { Post } from '../../types';
 import { DATE } from '../../locales/en.json';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { createUserRequested } from '../../redux/actions/userActions';
 
 import { sxCard, sxData, sxAuthor, sxTextAlignCenter } from './sxStyles';
+import { PostCardProps } from './types';
 
-const PostCard: FC<Post & { author: string | null }> = ({
+const PostCard: FC<PostCardProps> = ({
   createdAt,
   title,
   content,
@@ -30,8 +30,8 @@ const PostCard: FC<Post & { author: string | null }> = ({
   const { authUser } = useAppSelector((state) => state.auth);
 
   const handleAuthorClick = () => {
-    if (authUser) {
-      navigate(`/user/${authorId}`);
+    if (authUser != null) {
+      navigate(`/users/${authorId}`);
       dispatch(createUserRequested(authorId));
     }
   };

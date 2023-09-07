@@ -21,7 +21,7 @@ function* authWorker({ payload }: AuthAction) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       yield put(
-        createAuthFailed(error.response?.data.message || error.message)
+        createAuthFailed(error.response?.data.message ?? error.message)
       );
     }
   }
