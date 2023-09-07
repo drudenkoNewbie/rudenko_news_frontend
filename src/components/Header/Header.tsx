@@ -18,6 +18,7 @@ import {
   createAuthVerifyRequested
 } from '../../redux/actions/authActions';
 import { createUserRequested } from '../../redux/actions/userActions';
+import { SNACKBAR_DELAY } from '../../constants';
 
 import { sxLoaderInvisible, sxLoaderVisible, sxFlexGrow } from './sxStyles';
 
@@ -29,7 +30,6 @@ export const Header = () => {
   );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
-  const SNACKBAR_DELAY = 5000;
 
   useEffect(() => {
     if (authError != null) {

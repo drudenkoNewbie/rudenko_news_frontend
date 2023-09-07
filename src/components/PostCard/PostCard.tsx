@@ -10,11 +10,16 @@ import { useNavigate } from 'react-router-dom';
 
 import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
-import { DATE } from '../../locales/en.json';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { createUserRequested } from '../../redux/actions/userActions';
+import { defaultImageUrl } from '../../constants';
 
-import { sxCard, sxData, sxAuthor, sxTextAlignCenter } from './sxStyles';
+import {
+  sxCard,
+  sxData,
+  sxAuthor,
+  sxTextAlignCenter
+} from './sxStyles';
 import { PostCardProps } from './types';
 
 const PostCard: FC<PostCardProps> = ({
@@ -39,8 +44,8 @@ const PostCard: FC<PostCardProps> = ({
   return (
     <Card sx={sxCard}>
       <CardActionArea>
-        <Typography sx={sxData} gutterBottom variant="body1" component="div">
-          {DATE}: {getFormattedDate(createdAt)}
+        <Typography sx={sxData} gutterBottom variant="body1" component="div" noWrap>
+          {getFormattedDate(createdAt)}
         </Typography>
         <Typography
           sx={sxAuthor}
@@ -48,13 +53,14 @@ const PostCard: FC<PostCardProps> = ({
           gutterBottom
           variant="body1"
           component="div"
+          noWrap
         >
           {author}
         </Typography>
         <CardMedia
           component="img"
           height="300"
-          image="https://placehold.co/600x400/EEE/31343C"
+          image={defaultImageUrl}
           alt="placeholder"
         />
         <CardContent>

@@ -7,15 +7,17 @@ import { UserAction } from '../types';
 import { createUserReceived, createUserRejected } from '../actions/userActions';
 
 function* userWorker({ payload }: UserAction) {
-  try {
-    const { data } = yield call(getUser, payload as number);
+  if (typeof payload === 'number') {
+    try {
+      const { data } = yield call(getUser, payload);
 
-    yield put(createUserReceived(data));
-  } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      yield put(
-        createUserRejected(error.response?.data.message ?? error.message)
-      );
+      yield put(createUserReceived(data));
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        yield put(
+          createUserRejected(error.response?.data.message ?? error.message)
+        );
+      }
     }
   }
 }

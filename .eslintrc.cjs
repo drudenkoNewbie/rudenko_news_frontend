@@ -11,7 +11,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json', './tsconfig.node.json'],
+    project: ['tsconfig.json', 'tsconfig.node.json'],
     tsconfigRootDir: __dirname,
     sourceType: 'module'
   },
@@ -34,6 +34,7 @@ module.exports = {
         ]
       }
     ],
+    'no-magic-numbers': ['error', { 'ignoreArrayIndexes': true, 'ignore': [0, 1] }],
     'react/jsx-curly-brace-presence': ['error', { props: 'never' }],
     'react/jsx-no-useless-fragment': [
       'error',
@@ -52,6 +53,19 @@ module.exports = {
       },
       { blankLine: 'always', prev: '*', next: ['export', 'return'] },
       { blankLine: 'always', prev: 'if', next: 'let' }
-    ]
+    ],
+    '@typescript-eslint/strict-boolean-expressions': [
+      'error',
+      {
+        'allowString': false,
+        'allowNumber': false,
+        'allowAny': false,
+        'allowNullableObject': false,
+        'allowNullableBoolean': false,
+        'allowNullableString': false,
+        'allowNullableNumber': false
+      }
+    ],
+    'no-implicit-coercion': 'error'
   }
 };

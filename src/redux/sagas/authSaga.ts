@@ -1,5 +1,10 @@
 import { AxiosError } from 'axios';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  select,
+  takeLatest
+} from 'redux-saga/effects';
 
 import { AUTH_ACTIONS } from '../constants';
 import { authUser } from '../api/authUser';

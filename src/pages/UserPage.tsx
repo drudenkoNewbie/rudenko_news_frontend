@@ -15,10 +15,11 @@ const UserPage: FC = () => {
   const { authUser } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const userId = Number(location.pathname.split('/').pop());
   const navigate = useNavigate();
 
   if (authUser != null) {
+    const userId = Number(location.pathname.split('/').pop());
+    
     dispatch(createUserRequested(userId));
   } else {
     navigate('/');
