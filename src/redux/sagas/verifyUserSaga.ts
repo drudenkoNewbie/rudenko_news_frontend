@@ -8,7 +8,7 @@ import {
   createVerifyRejected
 } from '../actions/verifyUserActions';
 
-function* verifyWorker() {
+function* verifyUserWorker() {
   try {
     const { data } = yield call(verifyUser);
 
@@ -23,5 +23,5 @@ function* verifyWorker() {
 }
 
 export function* verifyWatcher() {
-  yield takeLatest(AUTH_VERIFY_REQUESTED, verifyWorker);
+  yield takeLatest(AUTH_VERIFY_REQUESTED, verifyUserWorker);
 }

@@ -8,7 +8,7 @@ import {
 import { getPosts } from '../api/getPosts';
 import { POSTS_REQUESTED } from '../constants';
 
-function* postsWorker() {
+function* getPostsWorker() {
   try {
     const { data } = yield call(getPosts);
 
@@ -22,6 +22,6 @@ function* postsWorker() {
   }
 }
 
-export function* postsWatcher() {
-  yield takeLatest(POSTS_REQUESTED, postsWorker);
+export function* getPostsWatcher() {
+  yield takeLatest(POSTS_REQUESTED, getPostsWorker);
 }

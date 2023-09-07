@@ -6,7 +6,7 @@ import { createUserReceived, createUserRejected } from '../actions/userActions';
 import { USER_REQUESTED } from '../constants';
 import { UserRequestedAction } from '../types/userActions';
 
-function* userWorker({ payload }: UserRequestedAction) {
+function* getUserByIdWorker({ payload }: UserRequestedAction) {
   try {
     const { data } = yield call(getUser, payload);
 
@@ -21,5 +21,5 @@ function* userWorker({ payload }: UserRequestedAction) {
 }
 
 export function* userWatcher() {
-  yield takeLatest(USER_REQUESTED, userWorker);
+  yield takeLatest(USER_REQUESTED, getUserByIdWorker);
 }
