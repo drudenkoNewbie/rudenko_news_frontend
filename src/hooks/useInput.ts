@@ -20,9 +20,10 @@ const useInput = ({
     } else if (value !== '' && isValid != null && !isValid(value)) {
       setHelperText(`${label} is invalid`);
     } else setHelperText('');
-  }
+  };
 
-  const onChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => setValue(value)
+  const onChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) =>
+    setValue(value);
 
   return {
     value,

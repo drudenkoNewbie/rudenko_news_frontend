@@ -26,7 +26,9 @@ export const Header = () => {
   const { authUser, isAuthLoading, authError } = useAppSelector(
     (state) => state.auth
   );
-  const { userError, isUserFetching, isEditUserFetching } = useAppSelector(state => state.user)
+  const { userError, isUserFetching, isEditUserFetching } = useAppSelector(
+    (state) => state.user
+  );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
 

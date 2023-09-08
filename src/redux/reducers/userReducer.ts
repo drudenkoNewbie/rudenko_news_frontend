@@ -1,4 +1,11 @@
-import { USER_REQUESTED, USER_RECEIVED, USER_REJECTED, EDIT_USER_REQUESTED, EDIT_USER_RECEIVED, EDIT_USER_REJECTED } from '../constants';
+import {
+  USER_REQUESTED,
+  USER_RECEIVED,
+  USER_REJECTED,
+  EDIT_USER_REQUESTED,
+  EDIT_USER_RECEIVED,
+  EDIT_USER_REJECTED
+} from '../constants';
 import { UserState } from '../types';
 import { UserActions } from '../types/userActions';
 
@@ -30,13 +37,13 @@ export default function userReducer(
         user: action.payload,
         isUserFetching: false
       };
-      case EDIT_USER_RECEIVED:
-        return {
-          ...state,
-          user: { ...state.user!, ...action.payload },
-          isEditUserFetching: false,
-          userError: null
-        };
+    case EDIT_USER_RECEIVED:
+      return {
+        ...state,
+        user: { ...state.user!, ...action.payload },
+        isEditUserFetching: false,
+        userError: null
+      };
     case USER_REJECTED:
       return {
         ...state,

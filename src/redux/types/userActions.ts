@@ -1,5 +1,12 @@
 import { CompleteUser, User } from '../../types';
-import { USER_REQUESTED, USER_RECEIVED, USER_REJECTED, EDIT_USER_REJECTED, EDIT_USER_REQUESTED, EDIT_USER_RECEIVED } from '../constants';
+import {
+  USER_REQUESTED,
+  USER_RECEIVED,
+  USER_REJECTED,
+  EDIT_USER_REJECTED,
+  EDIT_USER_REQUESTED,
+  EDIT_USER_RECEIVED
+} from '../constants';
 
 import { EditUserPayload } from './';
 
@@ -39,4 +46,4 @@ export type UserActions =
   | UserRejectedAction
   | EditUserRequestedAction
   | EditUserReceivedAction
-  | EditUserRejectedAction
+  | EditUserRejectedAction;

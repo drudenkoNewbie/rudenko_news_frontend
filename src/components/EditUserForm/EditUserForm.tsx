@@ -28,7 +28,9 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
 }) => {
   const ANIMATION_DURATION = 300;
 
-  const { user, userError, isEditUserFetching } = useAppSelector((state) => state.user);
+  const { user, userError, isEditUserFetching } = useAppSelector(
+    (state) => state.user
+  );
   const dispatch = useAppDispatch();
   const [globalError, setGlobalError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -83,10 +85,10 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     const hasAtLeastOneFilledField = Object.values(formData).some(
       (value) => value.trim() !== ''
-      );
+    );
 
     if (!hasAtLeastOneFilledField) {
       setGlobalError(true);
@@ -95,7 +97,7 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
     } else setGlobalError(false);
 
     setSubmitAttempt((attempts) => attempts + 1);
-    
+
     if (!formError && !globalError) {
       if (user != null && 'id' in user)
         dispatch(createEditUserRequested({ userData: formData, id: user.id }));
@@ -104,72 +106,70 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
 
   return (
     <>
-      <Box sx={isEditUserFetching ? {opacity: 0} : {}}>
-      <DialogTitle>Edit</DialogTitle>
-      <DialogContent>
-        <DialogContentText>You can edit your profile here</DialogContentText>
-      </DialogContent>
-      <form onSubmit={handleSubmit}>
-        <Box sx={sxMargin10}>
-          <TextField
-            {...usernameInputProps}
-            sx={
-              usernameInputProps.error && submitAttempt > 0
-                ? shakeAnimation
-                : {}
-            }
-            margin="dense"
-            fullWidth
-          />
-          <TextField
-            {...emailInputProps}
-            sx={
-              emailInputProps.error && submitAttempt > 0
-                ? shakeAnimation
-                : {}
-            }
-            margin="dense"
-            fullWidth
-          />
-          <TextField
-            {...passwordInputProps}
-            type={type}
-            sx={
-              passwordInputProps.error && submitAttempt > 0
-                ? shakeAnimation
-                : {}
-            }
-            margin="dense"
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-          {globalError ? (
-            <Alert severity="error">
-              {globalError ? 'At least one non empty field' : userError}
-            </Alert>
-          ) : null}
-        </Box>
-        <DialogActions sx={sxJustifyCenter}>
-          <Button name="cancel" onClick={handleClose}>
-            {CANCEL}
-          </Button>
-          <Button name="submit" type="submit">
-            {SUBMIT}
-          </Button>
-        </DialogActions>
-      </form>
+      <Box sx={isEditUserFetching ? { opacity: 0 } : {}}>
+        <DialogTitle>Edit</DialogTitle>
+        <DialogContent>
+          <DialogContentText>You can edit your profile here</DialogContentText>
+        </DialogContent>
+        <form onSubmit={handleSubmit}>
+          <Box sx={sxMargin10}>
+            <TextField
+              {...usernameInputProps}
+              sx={
+                usernameInputProps.error && submitAttempt > 0
+                  ? shakeAnimation
+                  : {}
+              }
+              margin="dense"
+              fullWidth
+            />
+            <TextField
+              {...emailInputProps}
+              sx={
+                emailInputProps.error && submitAttempt > 0 ? shakeAnimation : {}
+              }
+              margin="dense"
+              fullWidth
+            />
+            <TextField
+              {...passwordInputProps}
+              type={type}
+              sx={
+                passwordInputProps.error && submitAttempt > 0
+                  ? shakeAnimation
+                  : {}
+              }
+              margin="dense"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+            {globalError ? (
+              <Alert severity="error">
+                {globalError ? 'At least one non empty field' : userError}
+              </Alert>
+            ) : null}
+          </Box>
+          <DialogActions sx={sxJustifyCenter}>
+            <Button name="cancel" onClick={handleClose}>
+              {CANCEL}
+            </Button>
+            <Button name="submit" type="submit">
+              {SUBMIT}
+            </Button>
+          </DialogActions>
+        </form>
       </Box>
       {isEditUserFetching ? <Loader /> : null}
     </>

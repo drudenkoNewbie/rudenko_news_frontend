@@ -33,7 +33,9 @@ import {
 } from './sxStyles';
 
 export const UserCard: FC = () => {
-  const { user, isUserFetching, userError } = useAppSelector((state) => state.user);
+  const { user, isUserFetching, userError } = useAppSelector(
+    (state) => state.user
+  );
   const { authUser } = useAppSelector((state) => state.auth);
   const { isOpen } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
@@ -83,22 +85,26 @@ export const UserCard: FC = () => {
           </Box>
         </CardContent>
         <BasicDialog isOpen={isOpen} handleClose={handleClose}>
-        <EditUserForm handleClose={handleClose} />
-      </BasicDialog>
-      {userError != null && (
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={5000}
-          message={`${userError}`}
-        />
-      )}
-      {authUser.id === user.id && (
-        <CardActions>
-          <Button sx={sxMarginXAuto} size="small" onClick={handleEditUserClick}>
-            Edit profile
-          </Button>
-        </CardActions>
-      )}
+          <EditUserForm handleClose={handleClose} />
+        </BasicDialog>
+        {userError != null && (
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={5000}
+            message={`${userError}`}
+          />
+        )}
+        {authUser.id === user.id && (
+          <CardActions>
+            <Button
+              sx={sxMarginXAuto}
+              size="small"
+              onClick={handleEditUserClick}
+            >
+              Edit profile
+            </Button>
+          </CardActions>
+        )}
       </Card>
     );
 };
