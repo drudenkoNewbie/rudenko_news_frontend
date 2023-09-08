@@ -43,7 +43,9 @@ export const UserCard: FC = () => {
 
   useEffect(() => {
     if (userError != null) {
+
       setSnackbarOpen(true);
+      
       const timer = setTimeout(() => {
         setSnackbarOpen(false);
       }, SNACKBAR_DELAY);
