@@ -45,11 +45,16 @@ export interface Post {
   tags: Tag[];
 }
 
-export interface CompleteUser {
-  id: number;
-  username: string;
-  email: string;
-  avatarUrl?: string | null;
+export interface CompleteUser extends User {
   posts: CompletePost[];
-  createdAt: Date;
+}
+
+export interface InputProps {
+  name: string;
+  initial?: string;
+  required?: boolean;
+  type?: string;
+  label?: string;
+  autoComplete?: string;
+  isValid?: (value: string) => boolean;
 }

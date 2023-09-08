@@ -18,7 +18,6 @@ import {
 import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAuthRequested } from '../../redux/actions/authActions';
 import { createChangeModal } from '../../redux/actions/modalActions';
-import { isValidEmail } from '../../utils/validateEmail';
 import {
   USERNAME,
   EMAIL,
@@ -29,6 +28,7 @@ import {
   INVALID_EMAIL
 } from '../../locales/en.json';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { validateEmail } from '../../utils/validators';
 
 import { AuthFormProps, ErrorData, FormData } from './types';
 import { sxJustifyCenter, sxMargin10 } from './sxStyles';
@@ -50,7 +50,7 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
     let error = '';
 
     if (name === 'email') {
-      if (!isValidEmail(value)) {
+      if (!validateEmail(value)) {
         error = INVALID_EMAIL;
       }
     } else if (['password', 'username'].includes(name)) {
