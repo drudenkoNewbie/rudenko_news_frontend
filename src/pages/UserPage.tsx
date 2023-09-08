@@ -32,11 +32,11 @@ const UserPage: FC = () => {
   if (user != null) {
     return (
       <>
-        {user != null && userError === '' && <UserCard />}
+        {user != null && <UserCard />}
         {user.posts.length > 0 && (
           <PostContainer posts={user.posts} isSelfDisplayed={false} />
         )}
-        {userError !== '' && (
+        {user == null && userError != null && (
           <Notification type="error" message="Something goes wrong" />
         )}
       </>

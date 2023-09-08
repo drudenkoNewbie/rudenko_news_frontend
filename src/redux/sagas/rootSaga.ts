@@ -6,6 +6,7 @@ import { verifyWatcher } from './verifyUserSaga';
 import { setTokenWatcher } from './setTokenSaga';
 import { removeTokenWatcher } from './removeTokenSaga';
 import { userWatcher } from './userPageSaga';
+import { editUserWatcher } from './editUserSaga';
 
 function* rootSaga() {
   yield all([
@@ -14,7 +15,8 @@ function* rootSaga() {
     verifyWatcher(),
     setTokenWatcher(),
     removeTokenWatcher(),
-    userWatcher()
+    userWatcher(),
+    editUserWatcher()
   ]);
 }
 

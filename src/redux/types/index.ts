@@ -33,5 +33,15 @@ export interface modalPayload {
 export interface UserState {
   user: CompleteUser | null;
   isUserFetching: boolean;
-  userError: string;
+  isEditUserFetching: boolean;
+  userError: null | string;
+}
+
+export interface EditUserPayload {
+  userData: {
+    username: string;
+    email: string;
+    password: string;
+  };
+  id: number;
 }

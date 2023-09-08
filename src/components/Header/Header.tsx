@@ -26,11 +26,12 @@ export const Header = () => {
   const { authUser, isAuthLoading, authError } = useAppSelector(
     (state) => state.auth
   );
+  const { userError, isUserFetching, isEditUserFetching } = useAppSelector(state => state.user)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authError != null) {
+    if (authError != null || userError != null) {
       setSnackbarOpen(true);
       const timer = setTimeout(() => {
         setSnackbarOpen(false);
@@ -38,7 +39,7 @@ export const Header = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [authError]);
+  }, [isAuthLoading, isUserFetching, isEditUserFetching]);
   useEffect(() => {
     dispatch(createVerifyRequested());
   }, []);
@@ -99,7 +100,7 @@ export const Header = () => {
         ) : (
           <>
             <Button
-              name={authUser.username}
+              name="user-page"
               onClick={handleUsernameClick}
               color="inherit"
             >
@@ -121,11 +122,11 @@ export const Header = () => {
           ></AuthForm>
         </BasicDialog>
       </Toolbar>
-      {authError != null && (
+      {(authError != null || userError != null) && (
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={SNACKBAR_DELAY}
-          message={authError}
+          message={authError ?? userError}
         />
       )}
     </AppBar>
