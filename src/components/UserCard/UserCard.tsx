@@ -19,6 +19,7 @@ import { createChangeModal } from '../../redux/actions/modalActions';
 import BasicDialog from '../BasicDialog';
 import { EditUserForm } from '../EditUserForm/EditUserForm';
 import { SNACKBAR_DELAY } from '../../constants';
+import { AddPostForm } from '../AddPostForm';
 
 import {
   sxCard,
@@ -43,9 +44,8 @@ export const UserCard: FC = () => {
 
   useEffect(() => {
     if (userError != null) {
-
       setSnackbarOpen(true);
-      
+
       const timer = setTimeout(() => {
         setSnackbarOpen(false);
       }, SNACKBAR_DELAY);
@@ -56,6 +56,10 @@ export const UserCard: FC = () => {
 
   const handleEditUserClick = () => {
     dispatch(createChangeModal({ isOpen: true, modalType: 'Edit profile' }));
+  };
+
+  const handleAddPostClick = () => {
+    dispatch(createChangeModal({ isOpen: true, modalType: 'Add post' }));
   };
 
   const handleClose = () => {
@@ -89,10 +93,13 @@ export const UserCard: FC = () => {
         <BasicDialog isOpen={isOpen} handleClose={handleClose}>
           <EditUserForm handleClose={handleClose} />
         </BasicDialog>
+        <BasicDialog isOpen={isOpen} handleClose={handleClose}>
+          <AddPostForm handleClose={handleClose} />
+        </BasicDialog>
         {userError != null && (
           <Snackbar
             open={snackbarOpen}
-            autoHideDuration={5000}
+            autoHideDuration={SNACKBAR_DELAY}
             message={`${userError}`}
           />
         )}
@@ -104,6 +111,13 @@ export const UserCard: FC = () => {
               onClick={handleEditUserClick}
             >
               Edit profile
+            </Button>
+            <Button
+              sx={sxMarginXAuto}
+              size="small"
+              onClick={handleAddPostClick}
+            >
+              Add Post
             </Button>
           </CardActions>
         )}

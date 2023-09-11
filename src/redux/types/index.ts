@@ -34,6 +34,7 @@ export interface UserState {
   user: CompleteUser | null;
   isUserFetching: boolean;
   isEditUserFetching: boolean;
+  isAddPostFetching: boolean;
   userError: null | string;
 }
 
@@ -44,4 +45,10 @@ export interface EditUserPayload {
     password: string;
   };
   id: number;
+}
+
+export interface AddPostPayload {
+  title: string;
+  content: string;
+  tagValues: string[];
 }

@@ -18,3 +18,5 @@ export const sxTagContainer = {
   ...sxPadding,
   ...sxWidth
 };
+
+export const sxTag = { marginX: '4px', marginY: '2px' };
