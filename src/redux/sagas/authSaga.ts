@@ -1,9 +1,4 @@
-import {
-  call,
-  put,
-  select,
-  takeLatest
-} from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
 
 import { AUTH_REQUESTED } from '../constants';

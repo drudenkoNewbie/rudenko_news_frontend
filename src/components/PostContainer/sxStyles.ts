@@ -11,5 +11,6 @@ export const sxPostContainer = {
   ...sxRowGap,
   ...sxMarginCentering,
   ...sxWidth90,
-  ...sxJustifyContentCenter
+  ...sxJustifyContentCenter,
+  paddingY: '20px'
 };

@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  FocusEvent,
-  FormEvent,
-  FC,
-  useState
-} from 'react';
+import { ChangeEvent, FocusEvent, FormEvent, FC, useState } from 'react';
 import {
   DialogTitle,
   DialogContent,
