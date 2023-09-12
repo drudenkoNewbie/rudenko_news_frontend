@@ -6,11 +6,10 @@ import {
   ADD_POST_REJECTED
 } from '../constants';
 import { CompletePost } from '../../types';
-
 import {
   AddPostReceivedAction,
   AddPostRequestedAction
-} from './../types/addPostActions';
+} from '../types/addPostActions';
 
 export const createAddPostRequested = (
   payload: AddPostPayload
