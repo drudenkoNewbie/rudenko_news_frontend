@@ -14,12 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { createUserRequested } from '../../redux/actions/userActions';
 import { DEFAULT_IMAGE_URL } from '../../constants';
 
-import {
-  sxCard,
-  sxData,
-  sxAuthor,
-  sxTextAlignCenter
-} from './sxStyles';
+import { sxCard, sxData, sxAuthor, sxTextAlignCenter } from './sxStyles';
 import { PostCardProps } from './types';
 
 const PostCard: FC<PostCardProps> = ({
