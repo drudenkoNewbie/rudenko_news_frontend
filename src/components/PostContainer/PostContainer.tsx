@@ -5,7 +5,7 @@ import PostCard from '../PostCard';
 import SearchBar from '../SearchBar/SearchBar';
 
 import { sxPostContainer } from './sxStyles';
-import { PostContainerProps } from './types';
+import { PostContainerProps, filterParams } from './types';
 
 export const PostContainer: FC<PostContainerProps> = ({
   posts,
@@ -22,23 +22,31 @@ export const PostContainer: FC<PostContainerProps> = ({
     setCurrentSearch(event.target.value);
   };
 
-  const filterPosts = () => posts.filter((post) => {
-    const filterOptions: {[key: string]: string[]} = {
-      all: [
-        post.title,
-        post.content,
-        isSelfDisplayed ? post.user.username : '',
-        ...post.tags.map(({ value }) => value)
-      ],
-      title: [post.title],
-      tags: [...post.tags.map(({ value }) => value)],
-      authors: [isSelfDisplayed ? post.user.username : '']
-    }
-  
-    return filterOptions[currentFilter].some((value) => value.includes(currentSearch));
-  });
+  const filterPosts = ({ currentFilter, currentSearch, posts }: filterParams) =>
+    posts.filter((post) => {
+      const author = isSelfDisplayed ? post.user.username : '';
+      const title = post.title;
+      const tags = [...post.tags.map(({ value }) => value)];
 
-  const filteredPosts = filterPosts();
+      if (currentFilter === 'title') return title.includes(currentSearch);
+
+      if (currentFilter === 'authors')
+        return author.includes(
+          currentSearch
+        );
+
+      if (currentFilter === 'tags')
+        return tags.some(name => name.includes(currentSearch));
+
+      if (currentFilter === 'all')
+        return (
+          title.includes(currentSearch) ||
+          author.includes(currentSearch) ||
+          tags.some(name => name.includes(currentSearch))
+        );
+    });
+
+  const filteredPosts = filterPosts({ currentFilter, currentSearch, posts });
 
   return (
     <Grid container sx={sxPostContainer}>
