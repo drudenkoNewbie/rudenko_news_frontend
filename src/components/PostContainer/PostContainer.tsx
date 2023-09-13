@@ -22,29 +22,23 @@ export const PostContainer: FC<PostContainerProps> = ({
     setCurrentSearch(event.target.value);
   };
 
-  const filteredPosts = posts.filter((post) => {
-    switch (currentFilter) {
-      case 'all':
-        return [
-          post.title,
-          post.content,
-          isSelfDisplayed ? post.user.username : '',
-          ...post.tags.map(({ value }) => value)
-        ].some((value) => value.includes(currentSearch));
-      case 'title':
-        return [post.title].some((value) => value.includes(currentSearch));
-      case 'tags':
-        return [...post.tags.map(({ value }) => value)].some((value) =>
-          value.includes(currentSearch)
-        );
-      case 'authors':
-        return [isSelfDisplayed ? post.user.username : ''].some((value) =>
-          value.includes(currentSearch)
-        );
-      default:
-        return true;
+  const filterPosts = () => posts.filter((post) => {
+    const filterOptions: {[key: string]: string[]} = {
+      all: [
+        post.title,
+        post.content,
+        isSelfDisplayed ? post.user.username : '',
+        ...post.tags.map(({ value }) => value)
+      ],
+      title: [post.title],
+      tags: [...post.tags.map(({ value }) => value)],
+      authors: [isSelfDisplayed ? post.user.username : '']
     }
+  
+    return filterOptions[currentFilter].some((value) => value.includes(currentSearch));
   });
+
+  const filteredPosts = filterPosts();
 
   return (
     <Grid container sx={sxPostContainer}>
