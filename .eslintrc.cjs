@@ -34,15 +34,10 @@ module.exports = {
         ]
       }
     ],
-    'no-magic-numbers': ['error', { 'ignoreArrayIndexes': true, 'ignore': [0, 1] }],
     'react/jsx-curly-brace-presence': ['error', { props: 'never' }],
     'react/jsx-no-useless-fragment': [
       'error',
       { allowExpressions: true }
-    ],
-    'no-multiple-empty-lines': [
-      'error',
-      { max: 1, maxBOF: 0, maxEOF: 1 }
     ],
     'padding-line-between-statements': [
       'error',

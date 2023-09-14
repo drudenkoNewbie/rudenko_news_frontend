@@ -1,10 +1,11 @@
-import { useState, type FC, ChangeEvent } from 'react';
-import { Grid, SelectChangeEvent } from '@mui/material';
+import { useState, type FC, ChangeEvent, useMemo } from 'react';
+import { Grid, Pagination, SelectChangeEvent } from '@mui/material';
 
 import PostCard from '../PostCard';
 import SearchBar from '../SearchBar/SearchBar';
+import usePagination from '../../hooks/usePagination';
 
-import { sxPostContainer } from './sxStyles';
+import { sxPagination, sxPostContainer } from './sxStyles';
 import { PostContainerProps, filterParams } from './types';
 
 export const PostContainer: FC<PostContainerProps> = ({
@@ -24,29 +25,36 @@ export const PostContainer: FC<PostContainerProps> = ({
 
   const filterPosts = ({ currentFilter, currentSearch, posts }: filterParams) =>
     posts.filter((post) => {
-      const author = isSelfDisplayed ? post.user.username : '';
-      const title = post.title;
-      const tags = [...post.tags.map(({ value }) => value)];
+      const author = isSelfDisplayed ? post.user.username.toLowerCase() : '';
+      const tags = [...post.tags.map(({ value }) => value.toLowerCase())];
+      const title = post.title.toLowerCase();
+      const content = post.title.toLowerCase();
+      const loweredCurrentSearch = currentSearch.toLowerCase();
 
-      if (currentFilter === 'title') return title.includes(currentSearch);
+      if (currentFilter === 'title') return title.includes(loweredCurrentSearch);
 
-      if (currentFilter === 'authors')
-        return author.includes(
-          currentSearch
-        );
+      if (currentFilter === 'authors') return author.includes(loweredCurrentSearch);
 
       if (currentFilter === 'tags')
-        return tags.some(name => name.includes(currentSearch));
+        return tags.some((name) => name.includes(loweredCurrentSearch));
 
       if (currentFilter === 'all')
         return (
-          title.includes(currentSearch) ||
-          author.includes(currentSearch) ||
-          tags.some(name => name.includes(currentSearch))
+          title.includes(loweredCurrentSearch) ||
+          author.includes(loweredCurrentSearch) ||
+          content.includes(loweredCurrentSearch) ||
+          tags.some((name) => name.includes(loweredCurrentSearch))
         );
     });
 
-  const filteredPosts = filterPosts({ currentFilter, currentSearch, posts });
+  const filteredPosts = useMemo(
+    () => filterPosts({ currentFilter, currentSearch, posts }),
+    [currentFilter, currentSearch]
+  );
+  const pagination = usePagination({
+    postsArray: filteredPosts,
+    itemsPerPage: 12
+  });
 
   return (
     <Grid container sx={sxPostContainer}>
@@ -57,7 +65,12 @@ export const PostContainer: FC<PostContainerProps> = ({
         changeSearch={handleChangeSearch}
         isAuthorFilterEnabled={isSelfDisplayed}
       />
-      {filteredPosts.map((post) => (
+      <Pagination
+        sx={sxPagination}
+        count={pagination.numberOfPages}
+        onChange={pagination.changePage}
+      />
+      {pagination.slicedArray.map((post) => (
         <PostCard
           key={post.id}
           createdAt={post.createdAt}
