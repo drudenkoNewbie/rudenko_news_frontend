@@ -20,7 +20,7 @@ const usePagination = ({ postsArray, itemsPerPage }: PaginationProps) => {
 
   useEffect(() => {
     slicePosts();
-  }, [currentPage]);
+  }, [currentPage, postsArray]);
 
   const length = postsArray.length;
   const numberOfPages = Math.ceil(length / itemsPerPage);
