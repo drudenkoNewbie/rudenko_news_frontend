@@ -9,6 +9,8 @@ import { filterPosts } from '../../utils/filterPosts';
 import { sxPagination, sxPostContainer } from './sxStyles';
 import { PostContainerProps } from './types';
 
+const ITEMS_PER_PAGE = 6;
+
 export const PostContainer: FC<PostContainerProps> = ({
   posts,
   isSelfDisplayed
@@ -30,7 +32,7 @@ export const PostContainer: FC<PostContainerProps> = ({
   );
   const pagination = usePagination({
     postsArray: filteredPosts,
-    itemsPerPage: 6
+    itemsPerPage: ITEMS_PER_PAGE
   });
 
   return (
