@@ -78,9 +78,9 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
 
   return (
     <Box>
-      <DialogTitle>Edit</DialogTitle>
+      <DialogTitle>Add</DialogTitle>
       <DialogContent>
-        <DialogContentText>You can edit your profile here</DialogContentText>
+        <DialogContentText>You can write your thoughts here</DialogContentText>
       </DialogContent>
       <form onSubmit={handleSubmit}>
         <Box sx={sxMargin10}>

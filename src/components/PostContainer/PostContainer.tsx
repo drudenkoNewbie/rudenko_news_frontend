@@ -26,10 +26,13 @@ export const PostContainer: FC<PostContainerProps> = ({
     setCurrentSearch(event.target.value);
   };
 
-  const filteredPosts = useMemo(
-    () => filterPosts({ currentFilter, currentSearch, posts, isSelfDisplayed }),
-    [currentFilter, currentSearch, posts]
-  );
+  const filteredPosts = useMemo(() => filterPosts({
+    currentFilter,
+    currentSearch,
+    posts,
+    isSelfDisplayed
+  }), [currentFilter, currentSearch]);
+
   const pagination = usePagination({
     postsArray: filteredPosts,
     itemsPerPage: ITEMS_PER_PAGE

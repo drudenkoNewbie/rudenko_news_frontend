@@ -11,19 +11,14 @@ const usePagination = ({ postsArray, itemsPerPage }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [slicedArray, setSlicedArray] = useState(postsArray);
 
-  const slicePosts = () => {
+  useEffect(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
     setSlicedArray(postsArray.slice(startIndex, endIndex));
-  };
+  }, [currentPage, ...postsArray]);
 
-  useEffect(() => {
-    slicePosts();
-  }, [currentPage, postsArray]);
-
-  const length = postsArray.length;
-  const numberOfPages = Math.ceil(length / itemsPerPage);
+  const numberOfPages = Math.ceil(postsArray.length / itemsPerPage);
 
   const changePage = (_: ChangeEvent<unknown>, pageNumber: number) => {
     setCurrentPage(pageNumber);

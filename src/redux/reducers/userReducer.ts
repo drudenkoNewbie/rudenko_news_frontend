@@ -60,7 +60,7 @@ export default function userReducer(
         isAddPostFetching: false,
         user: {
           ...state.user!,
-          posts: state.user!.posts.concat([action.payload])
+          posts: [...state.user!.posts, action.payload]
         },
         userError: null
       };
