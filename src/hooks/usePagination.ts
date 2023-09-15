@@ -16,7 +16,7 @@ const usePagination = ({ postsArray, itemsPerPage }: PaginationProps) => {
     const endIndex = startIndex + itemsPerPage;
 
     setSlicedArray(postsArray.slice(startIndex, endIndex));
-  }, [currentPage, ...postsArray]);
+  }, [currentPage, postsArray]);
 
   const numberOfPages = Math.ceil(postsArray.length / itemsPerPage);
 

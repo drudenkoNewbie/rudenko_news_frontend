@@ -31,7 +31,7 @@ export const PostContainer: FC<PostContainerProps> = ({
     currentSearch,
     posts,
     isSelfDisplayed
-  }), [currentFilter, currentSearch]);
+  }), [currentFilter, currentSearch, posts, isSelfDisplayed]);
 
   const pagination = usePagination({
     postsArray: filteredPosts,
