@@ -11,5 +11,8 @@
   "CANT_BE_EMPTY": "can't be empty",
   "DATE": "Date",
   "AUTHOR": "Author",
-  "INVALID_EMAIL": "Invalid email"
+  "INVALID_EMAIL": "Invalid email",
+  "POSTS_FILTER_SELECTOR_HELPER": "Please select filter",
+  "FILTER_LABEL": "Filter",
+  "SEARCH_LABEL": "Search"
 }

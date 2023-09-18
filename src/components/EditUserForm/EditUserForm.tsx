@@ -16,49 +16,34 @@ import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { CANCEL, SUBMIT } from '../../locales/en.json';
 import useInput from '../../hooks/useInput';
-import { InputProps } from '../../types';
 import Loader from '../Loader';
 import { createEditUserRequested } from '../../redux/actions/userActions';
-import { validateEmail, validatePassword } from '../../utils/validators';
+import { SHAKE_INPUT_DURATION } from '../../constants';
 
 import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
+import { usernameSchema, emailSchema, passwordSchema } from './constants';
 
 export const EditUserForm: FC<{ handleClose: () => void }> = ({
   handleClose
 }) => {
-  const ANIMATION_DURATION = 300;
+  const dispatch = useAppDispatch();
 
   const { user, userError, isEditUserFetching } = useAppSelector(
     (state) => state.user
   );
-  const dispatch = useAppDispatch();
+
   const [globalError, setGlobalError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [submitAttempt, setSubmitAttempt] = useState(0);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
-  const type = showPassword ? 'text' : 'password';
 
-  const usernameSchema: InputProps = {
-    name: 'username',
-    autoComplete: 'username'
-  };
-
-  const emailSchema: InputProps = {
-    name: 'email',
-    autoComplete: 'email',
-    isValid: validateEmail
-  };
-
-  const passwordSchema: InputProps = {
-    name: 'password',
-    autoComplete: 'new-password',
-    isValid: validatePassword
-  };
+  const passwordInputType = showPassword ? 'text' : 'password';
 
   const usernameInputProps = useInput(usernameSchema);
   const emailInputProps = useInput(emailSchema);
@@ -66,7 +51,7 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
 
   useEffect(() => {
     if (submitAttempt > 0) {
-      const timer = setTimeout(() => setSubmitAttempt(0), ANIMATION_DURATION);
+      const timer = setTimeout(() => setSubmitAttempt(0), SHAKE_INPUT_DURATION);
 
       return () => clearTimeout(timer);
     }
@@ -133,7 +118,7 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
             />
             <TextField
               {...passwordInputProps}
-              type={type}
+              type={passwordInputType}
               sx={
                 passwordInputProps.error && submitAttempt > 0
                   ? shakeAnimation

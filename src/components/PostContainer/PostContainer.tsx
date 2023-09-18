@@ -5,17 +5,17 @@ import PostCard from '../PostCard';
 import SearchBar from '../SearchBar/SearchBar';
 import usePagination from '../../hooks/usePagination';
 import { filterPosts } from '../../utils/filterPosts';
+import { POSTS_FILTER_OPTIONS } from '../../constants';
 
 import { sxPagination, sxPostContainer } from './sxStyles';
 import { PostContainerProps } from './types';
-
-const ITEMS_PER_PAGE = 6;
+import { ITEMS_PER_PAGE } from './constants';
 
 export const PostContainer: FC<PostContainerProps> = ({
   posts,
   isSelfDisplayed
 }) => {
-  const [currentFilter, setCurrentFilter] = useState('all');
+  const [currentFilter, setCurrentFilter] = useState(POSTS_FILTER_OPTIONS.all);
   const [currentSearch, setCurrentSearch] = useState('');
 
   const handleChangeFilter = (event: SelectChangeEvent<unknown>) => {
@@ -26,12 +26,16 @@ export const PostContainer: FC<PostContainerProps> = ({
     setCurrentSearch(event.target.value);
   };
 
-  const filteredPosts = useMemo(() => filterPosts({
-    currentFilter,
-    currentSearch,
-    posts,
-    isSelfDisplayed
-  }), [currentFilter, currentSearch, posts, isSelfDisplayed]);
+  const filteredPosts = useMemo(
+    () =>
+      filterPosts({
+        currentFilter,
+        currentSearch,
+        posts,
+        isSelfDisplayed
+      }),
+    [currentFilter, currentSearch, posts, isSelfDisplayed]
+  );
 
   const pagination = usePagination({
     postsArray: filteredPosts,
