@@ -1,7 +1,6 @@
 export interface AuthFormProps {
   formTitle: string;
   formSubTitle: string;
-  children?: React.ReactNode;
 }
 
 export interface FormData {

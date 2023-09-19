@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, FormEvent, FC, useState } from 'react';
+import { FormEvent, FC, useState, useEffect } from 'react';
 import {
   DialogTitle,
   DialogContent,
@@ -6,143 +6,137 @@ import {
   DialogActions,
   Button,
   TextField,
-  Box
+  Box,
+  IconButton,
+  InputAdornment
 } from '@mui/material';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
 
-import { useAppDispatch } from '../../redux/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
+import { SUBMIT, TOGGLE_VISIBILITY } from '../../locales/en.json';
+import useInput from '../../hooks/useInput';
+import Loader from '../Loader';
+import { SHAKE_INPUT_DURATION } from '../../constants';
+import { AuthUser } from '../../types';
+
+import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
+import { usernameSchema, emailSchema, passwordSchema } from './constants';
+import { AuthFormProps } from './types';
 import { createAuthRequested } from '../../redux/actions/authActions';
-import { createChangeModal } from '../../redux/actions/modalActions';
-import {
-  USERNAME,
-  EMAIL,
-  PASSWORD,
-  CANCEL,
-  CANT_BE_EMPTY,
-  SUBMIT,
-  INVALID_EMAIL
-} from '../../locales/en.json';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
-import { validateEmail } from '../../utils/validators';
 
-import { AuthFormProps, ErrorData, FormData } from './types';
-import { sxJustifyCenter, sxMargin10 } from './sxStyles';
-
-export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
-  const [formData, setFormData] = useState<FormData>({
-    username: '',
-    email: '',
-    password: ''
-  });
-  const [errors, setErrors] = useState<ErrorData>({
-    username: '',
-    email: '',
-    password: ''
-  });
+export const AuthForm: FC<AuthFormProps> = ({
+  formTitle, formSubTitle
+}) => {
   const dispatch = useAppDispatch();
 
-  const validateField = (name: string, value: string) => {
-    let error = '';
+  const { isAuthLoading } = useAppSelector((state) => state.auth)
 
-    if (name === 'email') {
-      if (!validateEmail(value)) {
-        error = INVALID_EMAIL;
-      }
-    } else if (['password', 'username'].includes(name)) {
-      if (value.trim() === '') {
-        error = `${capitalizeFirstLetter(name)} ${CANT_BE_EMPTY}`;
-      }
+  const [showPassword, setShowPassword] = useState(false);
+  const [submitAttempt, setSubmitAttempt] = useState(0);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const passwordInputType = showPassword ? 'text' : 'password';
+
+  const usernameInputProps = useInput(usernameSchema);
+  const emailInputProps = useInput(emailSchema);
+  const passwordInputProps = useInput(passwordSchema);
+
+  useEffect(() => {
+    if (submitAttempt > 0) {
+      const timer = setTimeout(() => setSubmitAttempt(0), SHAKE_INPUT_DURATION);
+
+      return () => clearTimeout(timer);
     }
+  }, [submitAttempt]);
 
-    return error;
+  const formData: AuthUser = {
+    username: usernameInputProps.value,
+    email: emailInputProps.value,
+    password: passwordInputProps.value
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const error = validateField(name, value);
+  const isFormError =
+    usernameInputProps.error ||
+    emailInputProps.error ||
+    passwordInputProps.error ||
+    Object.values(formData).some((v) => v === '');
 
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: error });
-  };
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const error = validateField(name, value);
+    setSubmitAttempt((attempts) => attempts + 1);
 
-    setErrors({ ...errors, [name]: error });
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let isValid = true;
-    const newErrors: ErrorData = {};
-    for (const [name, value] of Object.entries(formData)) {
-      const error = validateField(name, value);
-
-      newErrors[name] = error;
-      if (error !== '') isValid = false;
-    }
-    setErrors(newErrors);
-    if (isValid) {
+    if (!isFormError) {
       dispatch(createAuthRequested(formData));
     }
   };
 
-  const handleClose = () => {
-    dispatch(createChangeModal({ isOpen: false, modalType: '' }));
-  };
-
   return (
     <>
-      <DialogTitle>{formTitle}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{formSubTitle}</DialogContentText>
-      </DialogContent>
-      <form onSubmit={handleSubmit}>
-        <Box sx={sxMargin10}>
-          <TextField
-            name="username"
-            label={USERNAME}
-            value={formData.username}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={errors.username}
-            error={Boolean(errors.username)}
-            margin="dense"
-            fullWidth
-          />
-          <TextField
-            name="email"
-            label={EMAIL}
-            value={formData.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={errors.email}
-            error={Boolean(errors.email)}
-            margin="dense"
-            fullWidth
-          />
-          <TextField
-            name="password"
-            label={PASSWORD}
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={errors.password}
-            error={Boolean(errors.password)}
-            margin="dense"
-            fullWidth
-          />
-        </Box>
-        <DialogActions sx={sxJustifyCenter}>
-          <Button name="cancel" onClick={handleClose}>
-            {CANCEL}
-          </Button>
-          <Button name="submit" type="submit">
-            {SUBMIT}
-          </Button>
-        </DialogActions>
-      </form>
+      <Box sx={isAuthLoading ? { opacity: 0 } : {}}>
+        <DialogTitle>{formTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{formSubTitle}</DialogContentText>
+        </DialogContent>
+        <form onSubmit={handleSubmit}>
+          <Box sx={sxMargin10}>
+            <TextField
+              {...usernameInputProps}
+              sx={
+                usernameInputProps.error && submitAttempt > 0
+                  ? shakeAnimation
+                  : {}
+              }
+              margin="dense"
+              fullWidth
+            />
+            <TextField
+              {...emailInputProps}
+              sx={
+                emailInputProps.error && submitAttempt > 0 ? shakeAnimation : {}
+              }
+              margin="dense"
+              fullWidth
+            />
+            <TextField
+              {...passwordInputProps}
+              type={passwordInputType}
+              sx={
+                passwordInputProps.error && submitAttempt > 0
+                  ? shakeAnimation
+                  : {}
+              }
+              margin="dense"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={TOGGLE_VISIBILITY}
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Box>
+          <DialogActions sx={sxJustifyCenter}>
+            <Button disabled={isFormError} name="submit" type="submit">
+              {SUBMIT}
+            </Button>
+          </DialogActions>
+        </form>
+      </Box>
+      {isAuthLoading ? <Loader /> : null}
     </>
   );
 };
