@@ -11,33 +11,18 @@ import {
 
 import { CANCEL, SUBMIT } from '../../locales/en.json';
 import useInput from '../../hooks/useInput';
-import { InputProps } from '../../types';
 import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAddPostRequested } from '../../redux/actions/addPostActions';
+import { SHAKE_INPUT_DURATION } from '../../constants';
 
 import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
+import { titleSchema, contentSchema, tagsSchema } from './constants';
 
 export const AddPostForm: FC<{ handleClose: () => void }> = ({
   handleClose
 }) => {
-  const ANIMATION_DURATION = 300;
   const [submitAttempt, setSubmitAttempt] = useState(0);
   const dispatch = useAppDispatch();
-
-  const titleSchema: InputProps = {
-    name: 'title',
-    required: true
-  };
-
-  const contentSchema: InputProps = {
-    name: 'content',
-    required: true
-  };
-
-  const tagsSchema: InputProps = {
-    name: 'tags',
-    required: true
-  };
 
   const titleInputProps = useInput(titleSchema);
   const contentInputProps = useInput(contentSchema);
@@ -45,7 +30,7 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
 
   useEffect(() => {
     if (submitAttempt > 0) {
-      const timer = setTimeout(() => setSubmitAttempt(0), ANIMATION_DURATION);
+      const timer = setTimeout(() => setSubmitAttempt(0), SHAKE_INPUT_DURATION);
 
       return () => clearTimeout(timer);
     }
@@ -78,9 +63,9 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
 
   return (
     <Box>
-      <DialogTitle>Edit</DialogTitle>
+      <DialogTitle>Add</DialogTitle>
       <DialogContent>
-        <DialogContentText>You can edit your profile here</DialogContentText>
+        <DialogContentText>You can write your thoughts here</DialogContentText>
       </DialogContent>
       <form onSubmit={handleSubmit}>
         <Box sx={sxMargin10}>

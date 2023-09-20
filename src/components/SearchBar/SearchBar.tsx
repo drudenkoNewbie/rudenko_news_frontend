@@ -1,6 +1,15 @@
 import { ChangeEvent, FC } from 'react';
 import { MenuItem, SelectChangeEvent, TextField } from '@mui/material';
 
+import { POSTS_FILTER_OPTIONS } from '../../constants';
+import {
+  POSTS_FILTER_SELECTOR_HELPER,
+  FILTER_LABEL,
+  SEARCH_LABEL
+} from '../../locales/en.json';
+
+import { sxFilterSelector, sxSearchBar } from './sxStyles';
+
 interface SearchBarProps {
   currentFilter: string;
   changeFilter: (event: SelectChangeEvent<unknown>) => void;
@@ -17,24 +26,24 @@ const SearchBar: FC<SearchBarProps> = ({
   isAuthorFilterEnabled
 }) => {
   const filters = [
-    'all',
-    'title',
-    'tags',
-    ...(isAuthorFilterEnabled ? ['authors'] : [])
+    POSTS_FILTER_OPTIONS.all,
+    POSTS_FILTER_OPTIONS.title,
+    POSTS_FILTER_OPTIONS.tags,
+    ...(isAuthorFilterEnabled ? [POSTS_FILTER_OPTIONS.author] : [])
   ];
 
   return (
     <>
       <TextField
-        sx={{ maxWidth: '15%' }}
+        sx={sxFilterSelector}
         select
         SelectProps={{
           value: currentFilter,
-          defaultValue: 'all',
+          defaultValue: POSTS_FILTER_OPTIONS.all,
           onChange: changeFilter
         }}
-        label="Filter"
-        helperText="Please select filter"
+        label={FILTER_LABEL}
+        helperText={POSTS_FILTER_SELECTOR_HELPER}
       >
         {filters.map((filter) => (
           <MenuItem key={filter} value={filter}>
@@ -43,8 +52,8 @@ const SearchBar: FC<SearchBarProps> = ({
         ))}
       </TextField>
       <TextField
-        label="Search"
-        sx={{ width: '80%' }}
+        label={SEARCH_LABEL}
+        sx={sxSearchBar}
         defaultValue={currentSearch}
         onChange={changeSearch}
       />

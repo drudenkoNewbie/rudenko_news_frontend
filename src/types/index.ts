@@ -58,3 +58,10 @@ export interface InputProps {
   autoComplete?: string;
   isValid?: (value: string) => boolean;
 }
+
+export interface FilterParams {
+  currentFilter: string;
+  currentSearch: string;
+  posts: CompletePost[];
+  isSelfDisplayed: boolean;
+}
