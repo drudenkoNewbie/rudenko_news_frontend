@@ -1,4 +1,9 @@
-import { useState, type FC, ChangeEvent, useMemo } from 'react';
+import {
+  useState,
+  type FC,
+  ChangeEvent,
+  useMemo
+} from 'react';
 import { Grid, Pagination, SelectChangeEvent } from '@mui/material';
 
 import PostCard from '../PostCard';

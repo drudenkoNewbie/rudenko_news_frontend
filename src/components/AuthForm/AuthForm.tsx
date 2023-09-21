@@ -1,4 +1,9 @@
-import { FormEvent, FC, useState, useEffect } from 'react';
+import {
+  FormEvent,
+  FC,
+  useState,
+  useEffect
+} from 'react';
 import {
   DialogTitle,
   DialogContent,
@@ -8,7 +13,8 @@ import {
   TextField,
   Box,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  CircularProgress
 } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 
@@ -16,7 +22,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { SUBMIT, TOGGLE_VISIBILITY } from '../../locales/en.json';
 import useTextInput from '../../hooks/useTextInput';
 import useFileInput from '../../hooks/useFileInput';
-import Loader from '../Loader';
 import { SHAKE_INPUT_DURATION } from '../../constants';
 import { AuthUser } from '../../types';
 import { createAuthRequested } from '../../redux/actions/authActions';
@@ -85,8 +90,7 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
   };
 
   return (
-    <>
-      <Box sx={isAuthLoading ? { opacity: 0 } : {}}>
+    <Box>
         <DialogTitle>{formTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText>{formSubTitle}</DialogContentText>
@@ -145,12 +149,10 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
           </Box>
           <DialogActions sx={sxJustifyCenter}>
             <Button disabled={isFormError} name="submit" type="submit">
-              {SUBMIT}
+              {isAuthLoading ? <CircularProgress /> : SUBMIT}
             </Button>
           </DialogActions>
         </form>
       </Box>
-      {isAuthLoading ? <Loader /> : null}
-    </>
   );
 };

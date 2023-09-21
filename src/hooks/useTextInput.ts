@@ -7,7 +7,7 @@ const useTextInput = ({
   initial = '',
   required = false,
   type = 'text',
-  label = name[0].toUpperCase() + name.slice(1),
+  label = `${name[0].toUpperCase()}${name.slice(1)}`,
   autoComplete = 'off',
   isValid = () => true
 }: TextInputProps) => {

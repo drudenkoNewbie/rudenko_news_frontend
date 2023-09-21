@@ -1,3 +1,1 @@
-import FileField from './FileField';
-
-export { FileField };
+export {default as FileField} from './FileField';

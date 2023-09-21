@@ -1,4 +1,9 @@
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import {
+  FC,
+  useEffect,
+  useState,
+  MouseEvent
+} from 'react';
 import {
   Card,
   CardContent,
@@ -20,6 +25,7 @@ import BasicDialog from '../BasicDialog';
 import { EditUserForm } from '../EditUserForm/EditUserForm';
 import { SNACKBAR_DELAY } from '../../constants';
 import { AddPostForm } from '../AddPostForm';
+import { getAvatarPath } from '../../utils/getAvatarPath';
 
 import {
   sxCard,
@@ -32,10 +38,9 @@ import {
   sxMarginXAuto,
   sxAvatarBox
 } from './sxStyles';
+import { MODAL_TYPES } from './constants';
 
-const imgBaseUrl = import.meta.env.VITE_APP_PUBLIC_URL;
-const editUserPayload = { isOpen: true, modalType: 'Edit profile' };
-const addPostPayload = { isOpen: true, modalType: 'Add post' };
+
 
 export const UserCard: FC = () => {
   const { user, isUserFetching, userError } = useAppSelector(
@@ -45,7 +50,6 @@ export const UserCard: FC = () => {
   const { isOpen, modalType } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [isImageFetchingError, setIsImageFetchingError] = useState(false);
 
   useEffect(() => {
     if (userError != null) {
@@ -59,97 +63,78 @@ export const UserCard: FC = () => {
     }
   }, [userError]);
 
-  const handleEditUserClick = () => {
-    dispatch(createChangeModal(editUserPayload));
-  };
+  const openModal = ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
+      const modalType = currentTarget.textContent;
 
-  const handleAddPostClick = () => {
-    dispatch(createChangeModal(addPostPayload));
+      if (modalType != null) dispatch(createChangeModal({ isOpen: true, modalType }));
   };
 
   const handleClose = () => {
     dispatch(createChangeModal({ isOpen: false, modalType: '' }));
   };
 
-  const handleError = ({
-    currentTarget
-  }: SyntheticEvent<HTMLImageElement, ErrorEvent>) => {
-    currentTarget.onerror = null;
-    setIsImageFetchingError(true);
-  };
-
   if (isUserFetching) return <CircularProgress />;
 
-  if (user != null && authUser != null)
-    return (
-      <Card variant="outlined" sx={sxCard}>
-        <Box sx={sxTopBgBox} />
-        <Box sx={sxAvatarBox}>
-          <Avatar
-            src={
-              user.avatarUrl != null
-                ? `${imgBaseUrl}/avatar/${user.avatarUrl}`
-                : '#'
-            }
-            sx={sxAvatar}
-            onError={handleError}
-          >
-            {(user.avatarUrl == null || isImageFetchingError) &&
-              user.username[0]}
-          </Avatar>
-        </Box>
-        <CardContent sx={sxUsername}>
-          <Typography gutterBottom variant="h4" component="div">
-            {user.username}
+  if (user == null || authUser == null) return null;
+
+  return (
+    <Card variant="outlined" sx={sxCard}>
+      <Box sx={sxTopBgBox} />
+      <Box sx={sxAvatarBox}>
+        <Avatar
+          src={
+            getAvatarPath(user) || ''
+          }
+          sx={sxAvatar}
+        />
+      </Box>
+      <CardContent sx={sxUsername}>
+        <Typography gutterBottom variant="h4" component="div">
+          {user.username}
+        </Typography>
+        <Box sx={sxUserInfoBox}>
+          <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
+            <AlternateEmailIcon sx={sxUserInfoIcon} />
+            {user.email}
           </Typography>
-          <Box sx={sxUserInfoBox}>
-            <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
-              <AlternateEmailIcon sx={sxUserInfoIcon} />
-              {user.email}
-            </Typography>
-            <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
-              <CalendarMonthIcon sx={sxUserInfoIcon} />
-              {getFormattedDate(user.createdAt)}
-            </Typography>
-          </Box>
-        </CardContent>
-        <BasicDialog
-          isOpen={isOpen && editUserPayload.modalType === modalType}
-          handleClose={handleClose}
-        >
-          <EditUserForm handleClose={handleClose} />
-        </BasicDialog>
-        <BasicDialog
-          isOpen={isOpen && addPostPayload.modalType === modalType}
-          handleClose={handleClose}
-        >
-          <AddPostForm handleClose={handleClose} />
-        </BasicDialog>
-        {userError != null && (
-          <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={SNACKBAR_DELAY}
-            message={`${userError}`}
-          />
-        )}
-        {authUser.id === user.id && (
-          <CardActions>
-            <Button
-              sx={sxMarginXAuto}
-              size="small"
-              onClick={handleEditUserClick}
-            >
-              Edit profile
-            </Button>
-            <Button
-              sx={sxMarginXAuto}
-              size="small"
-              onClick={handleAddPostClick}
-            >
-              Add Post
-            </Button>
-          </CardActions>
-        )}
-      </Card>
-    );
+          <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
+            <CalendarMonthIcon sx={sxUserInfoIcon} />
+            {getFormattedDate(user.createdAt)}
+          </Typography>
+        </Box>
+      </CardContent>
+      <BasicDialog
+        isOpen={isOpen}
+        handleClose={handleClose}
+      >
+        {modalType === MODAL_TYPES.EDIT_USER && <EditUserForm handleClose={handleClose} />}
+        {modalType === MODAL_TYPES.ADD_POST && <AddPostForm handleClose={handleClose} />}
+      </BasicDialog>
+      {userError != null && (
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={SNACKBAR_DELAY}
+          message={`${userError}`}
+        />
+      )}
+      {authUser.id === user.id && (
+        <CardActions>
+          <Button
+            sx={sxMarginXAuto}
+            size="small"
+            onClick={openModal}
+          >
+            Edit profile
+          </Button>
+          <Button
+            sx={sxMarginXAuto}
+            size="small"
+            onClick={openModal}
+          >
+            Add Post
+          </Button>
+        </CardActions>
+      )}
+    </Card>
+  );
 };

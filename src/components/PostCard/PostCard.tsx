@@ -10,11 +10,15 @@ import { useNavigate } from 'react-router-dom';
 
 import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
-import { createUserRequested } from '../../redux/actions/userActions';
+import { useAppSelector } from '../../redux/hooks/hooks';
 import { DEFAULT_IMAGE_URL } from '../../constants';
 
-import { sxCard, sxData, sxAuthor, sxTextAlignCenter } from './sxStyles';
+import {
+  sxCard,
+  sxData,
+  sxAuthor,
+  sxTextAlignCenter
+} from './sxStyles';
 import { PostCardProps } from './types';
 
 const imgBaseUrl = import.meta.env.VITE_APP_PUBLIC_URL;
@@ -28,7 +32,6 @@ const PostCard: FC<PostCardProps> = ({
   authorId,
   imageUrl
 }) => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { authUser } = useAppSelector((state) => state.auth);
 
@@ -40,7 +43,6 @@ const PostCard: FC<PostCardProps> = ({
   const handleAuthorClick = () => {
     if (authUser != null) {
       navigate(`/users/${authorId}`);
-      dispatch(createUserRequested(authorId));
     }
   };
   const handleImageFetchingError = ({

@@ -1,4 +1,9 @@
-import { ChangeEvent, FocusEvent, useState, useRef } from 'react';
+import {
+  ChangeEvent,
+  FocusEvent,
+  useState,
+  useRef
+} from 'react';
 
 import { FileInputProps } from '../types';
 
@@ -8,7 +13,7 @@ const useFileInput = ({
   initialPreviewSrc = '',
   required = false,
   accept = '',
-  label = name[0].toUpperCase() + name.slice(1),
+  label = `${name[0].toUpperCase()}${name.slice(1)}`,
   autoComplete = 'off',
   maxSize = Number(import.meta.env.VITE_MAX_FILE_SIZE)
 }: FileInputProps) => {

@@ -1,4 +1,9 @@
-import { FormEvent, FC, useState, useEffect } from 'react';
+import {
+  FormEvent,
+  FC,
+  useState,
+  useEffect
+} from 'react';
 import {
   DialogTitle,
   DialogContent,
@@ -72,7 +77,7 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
     avatar: avatarInputProps.file
   };
 
-  const formError =
+  const isFormError =
     usernameInputProps.error ||
     emailInputProps.error ||
     passwordInputProps.error ||
@@ -95,7 +100,7 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
 
     setSubmitAttempt((attempts) => attempts + 1);
 
-    if (!formError && !globalError) {
+    if (!isFormError && !globalError) {
       if (user != null && 'id' in user)
         dispatch(createEditUserRequested({ userData: formData, id: user.id }));
     }
@@ -167,7 +172,7 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
             <Button name="cancel" onClick={handleClose}>
               {CANCEL}
             </Button>
-            <Button name="submit" type="submit">
+            <Button name="submit" type="submit" disabled={isFormError}>
               {SUBMIT}
             </Button>
           </DialogActions>
