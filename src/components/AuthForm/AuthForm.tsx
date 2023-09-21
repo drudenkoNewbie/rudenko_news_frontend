@@ -14,22 +14,27 @@ import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { SUBMIT, TOGGLE_VISIBILITY } from '../../locales/en.json';
-import useInput from '../../hooks/useInput';
+import useTextInput from '../../hooks/useTextInput';
+import useFileInput from '../../hooks/useFileInput';
 import Loader from '../Loader';
 import { SHAKE_INPUT_DURATION } from '../../constants';
 import { AuthUser } from '../../types';
+import { createAuthRequested } from '../../redux/actions/authActions';
+import { FileField } from '../FileField';
 
 import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
-import { usernameSchema, emailSchema, passwordSchema } from './constants';
+import {
+  avatarSchema,
+  usernameSchema,
+  emailSchema,
+  passwordSchema
+} from './constants';
 import { AuthFormProps } from './types';
-import { createAuthRequested } from '../../redux/actions/authActions';
 
-export const AuthForm: FC<AuthFormProps> = ({
-  formTitle, formSubTitle
-}) => {
+export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
   const dispatch = useAppDispatch();
 
-  const { isAuthLoading } = useAppSelector((state) => state.auth)
+  const { isAuthLoading } = useAppSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
   const [submitAttempt, setSubmitAttempt] = useState(0);
@@ -43,9 +48,10 @@ export const AuthForm: FC<AuthFormProps> = ({
 
   const passwordInputType = showPassword ? 'text' : 'password';
 
-  const usernameInputProps = useInput(usernameSchema);
-  const emailInputProps = useInput(emailSchema);
-  const passwordInputProps = useInput(passwordSchema);
+  const avatarInputProps = useFileInput(avatarSchema);
+  const usernameInputProps = useTextInput(usernameSchema);
+  const emailInputProps = useTextInput(emailSchema);
+  const passwordInputProps = useTextInput(passwordSchema);
 
   useEffect(() => {
     if (submitAttempt > 0) {
@@ -58,18 +64,19 @@ export const AuthForm: FC<AuthFormProps> = ({
   const formData: AuthUser = {
     username: usernameInputProps.value,
     email: emailInputProps.value,
-    password: passwordInputProps.value
+    password: passwordInputProps.value,
+    avatar: avatarInputProps.file
   };
 
   const isFormError =
     usernameInputProps.error ||
     emailInputProps.error ||
     passwordInputProps.error ||
+    avatarInputProps.error ||
     Object.values(formData).some((v) => v === '');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setSubmitAttempt((attempts) => attempts + 1);
 
     if (!isFormError) {
@@ -86,6 +93,13 @@ export const AuthForm: FC<AuthFormProps> = ({
         </DialogContent>
         <form onSubmit={handleSubmit}>
           <Box sx={sxMargin10}>
+            {formTitle === 'sign-up' && (
+              <FileField
+                component="avatar"
+                {...avatarInputProps}
+                ref={avatarInputProps.inputRef}
+              />
+            )}
             <TextField
               {...usernameInputProps}
               sx={

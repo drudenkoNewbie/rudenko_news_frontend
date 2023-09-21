@@ -1,28 +1,27 @@
-import { InputProps } from "../../types";
-import { validateEmail, validatePassword } from "../../utils/validators";
+import { FileInputProps, TextInputProps } from '../../types';
+import { validateEmail, validatePassword } from '../../utils/validators';
 
-export const usernameSchema: InputProps = {
+export const usernameSchema: TextInputProps = {
   name: 'username',
   autoComplete: 'username',
   required: true
 };
 
-export const emailSchema: InputProps = {
+export const emailSchema: TextInputProps = {
   name: 'email',
   autoComplete: 'email',
   isValid: validateEmail,
   required: true
 };
 
-export const passwordSchema: InputProps = {
+export const passwordSchema: TextInputProps = {
   name: 'password',
   autoComplete: 'new-password',
   isValid: validatePassword,
   required: true
 };
 
-export const avatarSchema: InputProps = {
+export const avatarSchema: FileInputProps = {
   name: 'avatar',
-  autoComplete: 'off',
-  required: true
+  accept: 'image/*'
 };

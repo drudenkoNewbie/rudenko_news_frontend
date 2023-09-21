@@ -15,5 +15,6 @@
   "POSTS_FILTER_SELECTOR_HELPER": "Please select filter",
   "FILTER_LABEL": "Filter",
   "SEARCH_LABEL": "Search",
-  "TOGGLE_VISIBILITY": "toggle password visibility"
+  "TOGGLE_VISIBILITY": "toggle password visibility",
+  "CHOOSE_AVATAR": "Choose your avatar file"
 }

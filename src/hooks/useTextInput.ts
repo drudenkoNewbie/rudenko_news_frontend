@@ -1,8 +1,8 @@
 import { ChangeEvent, FocusEvent, useState } from 'react';
 
-import { InputProps } from '../types';
+import { TextInputProps } from '../types';
 
-const useInput = ({
+const useTextInput = ({
   name = '',
   initial = '',
   required = false,
@@ -10,14 +10,14 @@ const useInput = ({
   label = name[0].toUpperCase() + name.slice(1),
   autoComplete = 'off',
   isValid = () => true
-}: InputProps) => {
+}: TextInputProps) => {
   const [value, setValue] = useState(initial);
   const [helperText, setHelperText] = useState('');
 
   const onBlur = ({ target: { value } }: FocusEvent<HTMLInputElement>) => {
     if (value === '' && required) {
       setHelperText(`${label} is required`);
-    } else if (value !== '' && isValid != null && !isValid(value)) {
+    } else if (value !== '' && !isValid(value)) {
       setHelperText(`${label} is invalid`);
     } else setHelperText('');
   };
@@ -38,4 +38,4 @@ const useInput = ({
   };
 };
 
-export default useInput;
+export default useTextInput;

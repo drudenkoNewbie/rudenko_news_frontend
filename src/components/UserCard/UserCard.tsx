@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -33,14 +33,19 @@ import {
   sxAvatarBox
 } from './sxStyles';
 
+const imgBaseUrl = import.meta.env.VITE_APP_PUBLIC_URL;
+const editUserPayload = { isOpen: true, modalType: 'Edit profile' };
+const addPostPayload = { isOpen: true, modalType: 'Add post' };
+
 export const UserCard: FC = () => {
   const { user, isUserFetching, userError } = useAppSelector(
     (state) => state.user
   );
   const { authUser } = useAppSelector((state) => state.auth);
-  const { isOpen } = useAppSelector((state) => state.modal);
+  const { isOpen, modalType } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isImageFetchingError, setIsImageFetchingError] = useState(false);
 
   useEffect(() => {
     if (userError != null) {
@@ -55,15 +60,22 @@ export const UserCard: FC = () => {
   }, [userError]);
 
   const handleEditUserClick = () => {
-    dispatch(createChangeModal({ isOpen: true, modalType: 'Edit profile' }));
+    dispatch(createChangeModal(editUserPayload));
   };
 
   const handleAddPostClick = () => {
-    dispatch(createChangeModal({ isOpen: true, modalType: 'Add post' }));
+    dispatch(createChangeModal(addPostPayload));
   };
 
   const handleClose = () => {
     dispatch(createChangeModal({ isOpen: false, modalType: '' }));
+  };
+
+  const handleError = ({
+    currentTarget
+  }: SyntheticEvent<HTMLImageElement, ErrorEvent>) => {
+    currentTarget.onerror = null;
+    setIsImageFetchingError(true);
   };
 
   if (isUserFetching) return <CircularProgress />;
@@ -73,7 +85,18 @@ export const UserCard: FC = () => {
       <Card variant="outlined" sx={sxCard}>
         <Box sx={sxTopBgBox} />
         <Box sx={sxAvatarBox}>
-          <Avatar sx={sxAvatar}>{user.username[0]}</Avatar>
+          <Avatar
+            src={
+              user.avatarUrl != null
+                ? `${imgBaseUrl}/avatar/${user.avatarUrl}`
+                : '#'
+            }
+            sx={sxAvatar}
+            onError={handleError}
+          >
+            {(user.avatarUrl == null || isImageFetchingError) &&
+              user.username[0]}
+          </Avatar>
         </Box>
         <CardContent sx={sxUsername}>
           <Typography gutterBottom variant="h4" component="div">
@@ -90,10 +113,16 @@ export const UserCard: FC = () => {
             </Typography>
           </Box>
         </CardContent>
-        <BasicDialog isOpen={isOpen} handleClose={handleClose}>
+        <BasicDialog
+          isOpen={isOpen && editUserPayload.modalType === modalType}
+          handleClose={handleClose}
+        >
           <EditUserForm handleClose={handleClose} />
         </BasicDialog>
-        <BasicDialog isOpen={isOpen} handleClose={handleClose}>
+        <BasicDialog
+          isOpen={isOpen && addPostPayload.modalType === modalType}
+          handleClose={handleClose}
+        >
           <AddPostForm handleClose={handleClose} />
         </BasicDialog>
         {userError != null && (

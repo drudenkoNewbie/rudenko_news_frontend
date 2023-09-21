@@ -65,6 +65,7 @@ export const PostContainer: FC<PostContainerProps> = ({
           tags={post.tags}
           authorId={post.authorId}
           author={isSelfDisplayed ? post.user.username : null}
+          imageUrl={post.imageUrl}
         />
       ))}
     </Grid>

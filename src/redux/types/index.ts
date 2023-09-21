@@ -51,4 +51,5 @@ export interface AddPostPayload {
   title: string;
   content: string;
   tagValues: string[];
+  image: File | null;
 }

@@ -15,13 +15,20 @@ import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { CANCEL, SUBMIT } from '../../locales/en.json';
-import useInput from '../../hooks/useInput';
+import useTextInput from '../../hooks/useTextInput';
 import Loader from '../Loader';
 import { createEditUserRequested } from '../../redux/actions/userActions';
 import { SHAKE_INPUT_DURATION } from '../../constants';
+import useFileInput from '../../hooks/useFileInput';
+import { FileField } from '../FileField';
 
 import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
-import { usernameSchema, emailSchema, passwordSchema } from './constants';
+import {
+  usernameSchema,
+  emailSchema,
+  passwordSchema,
+  avatarSchema
+} from './constants';
 
 export const EditUserForm: FC<{ handleClose: () => void }> = ({
   handleClose
@@ -45,9 +52,10 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
 
   const passwordInputType = showPassword ? 'text' : 'password';
 
-  const usernameInputProps = useInput(usernameSchema);
-  const emailInputProps = useInput(emailSchema);
-  const passwordInputProps = useInput(passwordSchema);
+  const avatarInputProps = useFileInput(avatarSchema);
+  const usernameInputProps = useTextInput(usernameSchema);
+  const emailInputProps = useTextInput(emailSchema);
+  const passwordInputProps = useTextInput(passwordSchema);
 
   useEffect(() => {
     if (submitAttempt > 0) {
@@ -60,20 +68,24 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
   const formData = {
     username: usernameInputProps.value,
     email: emailInputProps.value,
-    password: passwordInputProps.value
+    password: passwordInputProps.value,
+    avatar: avatarInputProps.file
   };
 
   const formError =
     usernameInputProps.error ||
     emailInputProps.error ||
-    passwordInputProps.error;
+    passwordInputProps.error ||
+    avatarInputProps.error;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const hasAtLeastOneFilledField = Object.values(formData).some(
-      (value) => value.trim() !== ''
-    );
+    const hasAtLeastOneFilledField = Object.values(formData).some((value) => {
+      if (value == null) return false;
+      if (typeof value === 'string' && value.trim() === '') return false;
+      else return true;
+    });
 
     if (!hasAtLeastOneFilledField) {
       setGlobalError(true);
@@ -98,6 +110,11 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
         </DialogContent>
         <form onSubmit={handleSubmit}>
           <Box sx={sxMargin10}>
+            <FileField
+              component="avatar"
+              {...avatarInputProps}
+              ref={avatarInputProps.inputRef}
+            />
             <TextField
               {...usernameInputProps}
               sx={

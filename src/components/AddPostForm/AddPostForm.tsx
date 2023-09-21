@@ -9,14 +9,21 @@ import {
   Box
 } from '@mui/material';
 
-import { CANCEL, SUBMIT } from '../../locales/en.json';
-import useInput from '../../hooks/useInput';
+import useTextInput from '../../hooks/useTextInput';
+import useFileInput from '../../hooks/useFileInput';
 import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAddPostRequested } from '../../redux/actions/addPostActions';
+import { CANCEL, SUBMIT } from '../../locales/en.json';
 import { SHAKE_INPUT_DURATION } from '../../constants';
+import { FileField } from '../FileField';
 
 import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
-import { titleSchema, contentSchema, tagsSchema } from './constants';
+import {
+  titleSchema,
+  contentSchema,
+  tagsSchema,
+  imageSchema
+} from './constants';
 
 export const AddPostForm: FC<{ handleClose: () => void }> = ({
   handleClose
@@ -24,9 +31,10 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
   const [submitAttempt, setSubmitAttempt] = useState(0);
   const dispatch = useAppDispatch();
 
-  const titleInputProps = useInput(titleSchema);
-  const contentInputProps = useInput(contentSchema);
-  const tagsInputProps = useInput(tagsSchema);
+  const imageInputProps = useFileInput(imageSchema);
+  const titleInputProps = useTextInput(titleSchema);
+  const contentInputProps = useTextInput(contentSchema);
+  const tagsInputProps = useTextInput(tagsSchema);
 
   useEffect(() => {
     if (submitAttempt > 0) {
@@ -39,11 +47,16 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
   const formData = {
     title: titleInputProps.value,
     content: contentInputProps.value,
-    tags: tagsInputProps.value
+    tagValues: tagsInputProps.value,
+    image: imageInputProps.file
   };
 
   const formError =
-    titleInputProps.error || contentInputProps.error || tagsInputProps.error;
+    titleInputProps.error ||
+    contentInputProps.error ||
+    tagsInputProps.error ||
+    imageInputProps.error ||
+    Object.values(formData).some((v) => v != null && v === '');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,13 +64,12 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
     setSubmitAttempt((attempts) => attempts + 1);
 
     if (!formError) {
-      const dataForSending = {
-        title: formData.title,
-        content: formData.content,
-        tagValues: formData.tags.split(/[ ,]+/)
-      };
-
-      dispatch(createAddPostRequested(dataForSending));
+      dispatch(
+        createAddPostRequested({
+          ...formData,
+          tagValues: formData.tagValues.split(/[ ,]+/)
+        })
+      );
     }
   };
 
@@ -69,6 +81,11 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
       </DialogContent>
       <form onSubmit={handleSubmit}>
         <Box sx={sxMargin10}>
+          <FileField
+            component="post"
+            {...imageInputProps}
+            ref={imageInputProps.inputRef}
+          />
           <TextField
             {...titleInputProps}
             sx={
@@ -96,7 +113,7 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
           <Button name="cancel" onClick={handleClose}>
             {CANCEL}
           </Button>
-          <Button name="submit" type="submit">
+          <Button name="submit" type="submit" disabled={formError}>
             {SUBMIT}
           </Button>
         </DialogActions>
