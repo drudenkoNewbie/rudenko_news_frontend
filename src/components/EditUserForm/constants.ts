@@ -22,3 +22,8 @@ export const avatarSchema: FileInputProps = {
   name: 'avatar',
   accept: 'image/*'
 };
+
+export const BUTTON_NAMES = {
+  CANCEL: 'cancel',
+  SUBMIT: 'submit'
+}

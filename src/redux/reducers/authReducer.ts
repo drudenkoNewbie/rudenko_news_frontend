@@ -1,3 +1,4 @@
+import { getLSToken } from '../../lib/local-storage';
 import {
   AUTH_REJECTED,
   AUTH_REQUESTED,
@@ -13,7 +14,8 @@ import { AuthActions } from '../types/authActions';
 const initialState: AuthState = {
   authUser: null,
   isAuthLoading: false,
-  authError: null
+  authError: null,
+  isLoggedIn: Boolean(getLSToken())
 };
 
 export default function authReducer(
@@ -30,12 +32,14 @@ export default function authReducer(
       };
     case AUTH_SUCCEED:
       return {
+        ...state,
         authUser: action.payload.user,
         isAuthLoading: false,
         authError: null
       };
     case AUTH_VERIFY_SUCCEED:
       return {
+        ...state,
         authUser: action.payload,
         isAuthLoading: false,
         authError: null
@@ -43,6 +47,7 @@ export default function authReducer(
     case AUTH_REJECTED:
     case AUTH_VERIFY_REJECTED:
       return {
+        ...state,
         authUser: null,
         isAuthLoading: false,
         authError: action.error

@@ -3,17 +3,17 @@ import { FileInputProps, TextInputProps } from '../../types';
 
 export const titleSchema: TextInputProps = {
   name: 'title',
-  required: true
+  isRequired: true
 };
 
 export const contentSchema: TextInputProps = {
   name: 'content',
-  required: true
+  isRequired: true
 };
 
 export const tagsSchema: TextInputProps = {
   name: 'tags',
-  required: true
+  isRequired: true
 };
 
 export const imageSchema: FileInputProps = {
@@ -21,3 +21,8 @@ export const imageSchema: FileInputProps = {
   accept: 'image/*',
   initialPreviewSrc: DEFAULT_IMAGE_URL
 };
+
+export const BUTTON_NAMES = {
+  CANCEL: 'cancel',
+  SUBMIT: 'submit'
+}

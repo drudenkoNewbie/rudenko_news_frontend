@@ -45,7 +45,7 @@ export interface CompleteUser extends User {
 export interface TextInputProps {
   name: string;
   initial?: string;
-  required?: boolean;
+  isRequired?: boolean;
   type?: string;
   label?: string;
   autoComplete?: string;
@@ -56,7 +56,7 @@ export interface FileInputProps {
   name: string;
   initialFileName?: string;
   initialPreviewSrc?: string;
-  required?: boolean;
+  isRequired?: boolean;
   accept?: string;
   label?: string;
   autoComplete?: string;

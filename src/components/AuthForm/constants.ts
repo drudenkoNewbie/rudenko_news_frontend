@@ -4,21 +4,21 @@ import { validateEmail, validatePassword } from '../../utils/validators';
 export const usernameSchema: TextInputProps = {
   name: 'username',
   autoComplete: 'username',
-  required: true
+  isRequired: true
 };
 
 export const emailSchema: TextInputProps = {
   name: 'email',
   autoComplete: 'email',
   isValid: validateEmail,
-  required: true
+  isRequired: true
 };
 
 export const passwordSchema: TextInputProps = {
   name: 'password',
   autoComplete: 'new-password',
   isValid: validatePassword,
-  required: true
+  isRequired: true
 };
 
 export const avatarSchema: FileInputProps = {

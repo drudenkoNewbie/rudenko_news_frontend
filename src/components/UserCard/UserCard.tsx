@@ -1,8 +1,7 @@
 import {
   FC,
   useEffect,
-  useState,
-  MouseEvent
+  useState
 } from 'react';
 import {
   Card,
@@ -23,9 +22,10 @@ import { getFormattedDate } from '../../utils/getFormattedDate';
 import { createChangeModal } from '../../redux/actions/modalActions';
 import BasicDialog from '../BasicDialog';
 import { EditUserForm } from '../EditUserForm/EditUserForm';
-import { SNACKBAR_DELAY } from '../../constants';
+import { MODAL_TYPES, SNACKBAR_DELAY } from '../../constants';
 import { AddPostForm } from '../AddPostForm';
 import { getAvatarPath } from '../../utils/getAvatarPath';
+import { ADD_POST, EDIT_PROFILE } from '../../locales/en.json'
 
 import {
   sxCard,
@@ -38,9 +38,6 @@ import {
   sxMarginXAuto,
   sxAvatarBox
 } from './sxStyles';
-import { MODAL_TYPES } from './constants';
-
-
 
 export const UserCard: FC = () => {
   const { user, isUserFetching, userError } = useAppSelector(
@@ -49,24 +46,22 @@ export const UserCard: FC = () => {
   const { authUser } = useAppSelector((state) => state.auth);
   const { isOpen, modalType } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   useEffect(() => {
     if (userError != null) {
-      setSnackbarOpen(true);
+      setIsSnackbarOpen(true);
 
       const timer = setTimeout(() => {
-        setSnackbarOpen(false);
+        setIsSnackbarOpen(false);
       }, SNACKBAR_DELAY);
 
       return () => clearTimeout(timer);
     }
   }, [userError]);
 
-  const openModal = ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
-      const modalType = currentTarget.textContent;
-
-      if (modalType != null) dispatch(createChangeModal({ isOpen: true, modalType }));
+  const openModal = (type: string) => {
+      dispatch(createChangeModal({ isOpen: true, modalType: type }));
   };
 
   const handleClose = () => {
@@ -82,9 +77,7 @@ export const UserCard: FC = () => {
       <Box sx={sxTopBgBox} />
       <Box sx={sxAvatarBox}>
         <Avatar
-          src={
-            getAvatarPath(user) || ''
-          }
+          src={getAvatarPath(user) || ''}
           sx={sxAvatar}
         />
       </Box>
@@ -112,7 +105,7 @@ export const UserCard: FC = () => {
       </BasicDialog>
       {userError != null && (
         <Snackbar
-          open={snackbarOpen}
+          open={isSnackbarOpen}
           autoHideDuration={SNACKBAR_DELAY}
           message={`${userError}`}
         />
@@ -122,16 +115,16 @@ export const UserCard: FC = () => {
           <Button
             sx={sxMarginXAuto}
             size="small"
-            onClick={openModal}
+            onClick={() => openModal('edit')}
           >
-            Edit profile
+            {EDIT_PROFILE}
           </Button>
           <Button
             sx={sxMarginXAuto}
             size="small"
-            onClick={openModal}
+            onClick={() => openModal('add')}
           >
-            Add Post
+            {ADD_POST}
           </Button>
         </CardActions>
       )}

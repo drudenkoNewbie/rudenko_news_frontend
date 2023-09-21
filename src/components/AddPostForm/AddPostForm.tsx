@@ -1,6 +1,6 @@
 import {
   FormEvent,
-  FC,
+  type FC,
   useState,
   useEffect
 } from 'react';
@@ -18,8 +18,13 @@ import useTextInput from '../../hooks/useTextInput';
 import useFileInput from '../../hooks/useFileInput';
 import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAddPostRequested } from '../../redux/actions/addPostActions';
-import { CANCEL, SUBMIT } from '../../locales/en.json';
-import { SHAKE_INPUT_DURATION } from '../../constants';
+import {
+  CANCEL,
+  SUBMIT,
+  ADD_POST,
+  YOU_CAN_WRITE_YOUR_THOUGHTS_HERE
+} from '../../locales/en.json';
+import { SHAKE_INPUT_DURATION, BUTTON_NAMES } from '../../constants';
 import { FileField } from '../FileField';
 
 import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
@@ -27,7 +32,7 @@ import {
   titleSchema,
   contentSchema,
   tagsSchema,
-  imageSchema
+  imageSchema,
 } from './constants';
 
 export const AddPostForm: FC<{ handleClose: () => void }> = ({
@@ -57,11 +62,11 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
   };
 
   const formError =
-    titleInputProps.error ||
-    contentInputProps.error ||
-    tagsInputProps.error ||
-    imageInputProps.error ||
-    Object.values(formData).some((v) => v != null && v === '');
+    titleInputProps.error
+    || contentInputProps.error
+    || tagsInputProps.error
+    || imageInputProps.error
+    || Object.values(formData).some((v) => v != null && v === '');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,9 +85,9 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
 
   return (
     <Box>
-      <DialogTitle>Add</DialogTitle>
+      <DialogTitle>{ADD_POST}</DialogTitle>
       <DialogContent>
-        <DialogContentText>You can write your thoughts here</DialogContentText>
+        <DialogContentText>{YOU_CAN_WRITE_YOUR_THOUGHTS_HERE}</DialogContentText>
       </DialogContent>
       <form onSubmit={handleSubmit}>
         <Box sx={sxMargin10}>
@@ -115,10 +120,10 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
           />
         </Box>
         <DialogActions sx={sxJustifyCenter}>
-          <Button name="cancel" onClick={handleClose}>
+          <Button name={BUTTON_NAMES.CANCEL} onClick={handleClose}>
             {CANCEL}
           </Button>
-          <Button name="submit" type="submit" disabled={formError}>
+          <Button name={BUTTON_NAMES.SUBMIT} type="submit" disabled={formError}>
             {SUBMIT}
           </Button>
         </DialogActions>

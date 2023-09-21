@@ -23,6 +23,7 @@ export interface AuthState {
   authUser: User | null;
   isAuthLoading: boolean;
   authError: null | string;
+  isLoggedIn: boolean;
 }
 
 export interface modalPayload {

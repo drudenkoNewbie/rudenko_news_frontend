@@ -17,33 +17,39 @@ import { createAuthSignOut } from '../../redux/actions/authActions';
 import { createUserRequested } from '../../redux/actions/userActions';
 import { SNACKBAR_DELAY } from '../../constants';
 import { createVerifyRequested } from '../../redux/actions/verifyUserActions';
+import {
+  SIGN_IN,
+  SIGN_UP,
+  SIGN_OUT,
+  BY_FILLING_THE_FORM
+} from '../../locales/en.json'
 
 import { sxLoaderInvisible, sxLoaderVisible, sxFlexGrow } from './sxStyles';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
   const { isOpen, modalType } = useAppSelector((state) => state.modal);
-  const { authUser, isAuthLoading, authError } = useAppSelector(
+  const { authUser, isAuthLoading, authError, isLoggedIn } = useAppSelector(
     (state) => state.auth
   );
   const { userError, isUserFetching, isEditUserFetching } = useAppSelector(
     (state) => state.user
   );
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (authError != null || userError != null) {
-      setSnackbarOpen(true);
+      setIsSnackbarOpen(true);
       const timer = setTimeout(() => {
-        setSnackbarOpen(false);
+        setIsSnackbarOpen(false);
       }, SNACKBAR_DELAY);
 
       return () => clearTimeout(timer);
     }
   }, [isAuthLoading, isUserFetching, isEditUserFetching]);
   useEffect(() => {
-    dispatch(createVerifyRequested());
+    if (isLoggedIn) dispatch(createVerifyRequested());
   }, []);
 
   const handleAuthButtonClick = ({
@@ -89,14 +95,14 @@ export const Header = () => {
               name="sign-in"
               color="inherit"
             >
-              Sign In
+              {SIGN_IN}
             </Button>
             <Button
               onClick={handleAuthButtonClick}
               name="sign-up"
               color="inherit"
             >
-              Sign Up
+              {SIGN_UP}
             </Button>
           </>
         ) : (
@@ -110,7 +116,7 @@ export const Header = () => {
             </Button>
 
             <Button name="sign-out" color="inherit" onClick={handleSignOut}>
-              Sign Out
+              {SIGN_OUT}
             </Button>
           </>
         )}
@@ -120,13 +126,13 @@ export const Header = () => {
         <BasicDialog isOpen={isOpen} handleClose={handleClose}>
           <AuthForm
             formTitle={modalType}
-            formSubTitle={`To ${modalType} fill out the form and press submit button`}
+            formSubTitle={`${modalType} ${BY_FILLING_THE_FORM}`}
           ></AuthForm>
         </BasicDialog>
       </Toolbar>
       {(authError != null || userError != null) && (
         <Snackbar
-          open={snackbarOpen}
+          open={isSnackbarOpen}
           autoHideDuration={SNACKBAR_DELAY}
           message={authError ?? userError}
         />

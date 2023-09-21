@@ -1,6 +1,6 @@
 import {
   FormEvent,
-  FC,
+  type FC,
   useState,
   useEffect
 } from 'react';
@@ -19,10 +19,10 @@ import {
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
-import { SUBMIT, TOGGLE_VISIBILITY } from '../../locales/en.json';
+import { SUBMIT, TOGGLE_PASSWORD_VISIBILITY } from '../../locales/en.json';
 import useTextInput from '../../hooks/useTextInput';
 import useFileInput from '../../hooks/useFileInput';
-import { SHAKE_INPUT_DURATION } from '../../constants';
+import { SHAKE_INPUT_DURATION, BUTTON_NAMES } from '../../constants';
 import { AuthUser } from '../../types';
 import { createAuthRequested } from '../../redux/actions/authActions';
 import { FileField } from '../FileField';
@@ -41,17 +41,17 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
 
   const { isAuthLoading } = useAppSelector((state) => state.auth);
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [submitAttempt, setSubmitAttempt] = useState(0);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => setIsPasswordVisible((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
 
-  const passwordInputType = showPassword ? 'text' : 'password';
+  const passwordInputType = isPasswordVisible ? 'text' : 'password';
 
   const avatarInputProps = useFileInput(avatarSchema);
   const usernameInputProps = useTextInput(usernameSchema);
@@ -74,11 +74,11 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
   };
 
   const isFormError =
-    usernameInputProps.error ||
-    emailInputProps.error ||
-    passwordInputProps.error ||
-    avatarInputProps.error ||
-    Object.values(formData).some((v) => v === '');
+    usernameInputProps.error
+    || emailInputProps.error
+    || passwordInputProps.error
+    || avatarInputProps.error
+    || Object.values(formData).some((v) => v === '');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -136,11 +136,11 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label={TOGGLE_VISIBILITY}
+                      aria-label={TOGGLE_PASSWORD_VISIBILITY}
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {isPasswordVisible ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 )
@@ -148,7 +148,7 @@ export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
             />
           </Box>
           <DialogActions sx={sxJustifyCenter}>
-            <Button disabled={isFormError} name="submit" type="submit">
+            <Button disabled={isFormError} name={BUTTON_NAMES.SUBMIT} type="submit">
               {isAuthLoading ? <CircularProgress /> : SUBMIT}
             </Button>
           </DialogActions>

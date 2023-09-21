@@ -11,7 +11,7 @@ const useFileInput = ({
   name = '',
   initialFileName = '',
   initialPreviewSrc = '',
-  required = false,
+  isRequired = false,
   accept = '',
   label = `${name[0].toUpperCase()}${name.slice(1)}`,
   autoComplete = 'off',
@@ -27,7 +27,7 @@ const useFileInput = ({
     if (target.files != null) {
       const file = target.files[0];
 
-      if (file == null && required) {
+      if (file == null && isRequired) {
         setHelperText(`${label} is required`);
       } else if (file?.size != null && file.size > maxSize) {
         setHelperText(

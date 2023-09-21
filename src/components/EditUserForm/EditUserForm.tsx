@@ -1,29 +1,33 @@
 import {
   FormEvent,
-  FC,
+  type FC,
   useState,
   useEffect
 } from 'react';
 import {
   DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
   TextField,
   Box,
   Alert,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  CircularProgress
 } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
-import { CANCEL, SUBMIT } from '../../locales/en.json';
+import {
+  CANCEL,
+  SUBMIT,
+  TOGGLE_PASSWORD_VISIBILITY,
+  EDIT_PROFILE,
+  AT_LEAST_ONE_NON_EMPTY_FIELD
+} from '../../locales/en.json';
 import useTextInput from '../../hooks/useTextInput';
-import Loader from '../Loader';
 import { createEditUserRequested } from '../../redux/actions/userActions';
-import { SHAKE_INPUT_DURATION } from '../../constants';
+import { SHAKE_INPUT_DURATION, BUTTON_NAMES } from '../../constants';
 import useFileInput from '../../hooks/useFileInput';
 import { FileField } from '../FileField';
 
@@ -44,18 +48,18 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
     (state) => state.user
   );
 
-  const [globalError, setGlobalError] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [isGlobalError, setIsGlobalError] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [submitAttempt, setSubmitAttempt] = useState(0);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => setIsPasswordVisible((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
 
-  const passwordInputType = showPassword ? 'text' : 'password';
+  const passwordInputType = isPasswordVisible ? 'text' : 'password';
 
   const avatarInputProps = useFileInput(avatarSchema);
   const usernameInputProps = useTextInput(usernameSchema);
@@ -78,10 +82,10 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
   };
 
   const isFormError =
-    usernameInputProps.error ||
-    emailInputProps.error ||
-    passwordInputProps.error ||
-    avatarInputProps.error;
+    usernameInputProps.error
+    || emailInputProps.error
+    || passwordInputProps.error
+    || avatarInputProps.error;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -93,26 +97,22 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
     });
 
     if (!hasAtLeastOneFilledField) {
-      setGlobalError(true);
+      setIsGlobalError(true);
 
       return;
-    } else setGlobalError(false);
+    } else setIsGlobalError(false);
 
     setSubmitAttempt((attempts) => attempts + 1);
 
-    if (!isFormError && !globalError) {
+    if (!isFormError && !isGlobalError) {
       if (user != null && 'id' in user)
         dispatch(createEditUserRequested({ userData: formData, id: user.id }));
     }
   };
 
   return (
-    <>
-      <Box sx={isEditUserFetching ? { opacity: 0 } : {}}>
-        <DialogTitle>Edit</DialogTitle>
-        <DialogContent>
-          <DialogContentText>You can edit your profile here</DialogContentText>
-        </DialogContent>
+    <Box>
+        <DialogTitle>{EDIT_PROFILE}</DialogTitle>
         <form onSubmit={handleSubmit}>
           <Box sx={sxMargin10}>
             <FileField
@@ -152,33 +152,31 @@ export const EditUserForm: FC<{ handleClose: () => void }> = ({
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
+                      aria-label={TOGGLE_PASSWORD_VISIBILITY}
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {isPasswordVisible ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 )
               }}
             />
-            {globalError ? (
+            {isGlobalError ? (
               <Alert severity="error">
-                {globalError ? 'At least one non empty field' : userError}
+                {isGlobalError ? AT_LEAST_ONE_NON_EMPTY_FIELD : userError}
               </Alert>
             ) : null}
           </Box>
           <DialogActions sx={sxJustifyCenter}>
-            <Button name="cancel" onClick={handleClose}>
+            <Button name={BUTTON_NAMES.CANCEL} onClick={handleClose}>
               {CANCEL}
             </Button>
-            <Button name="submit" type="submit" disabled={isFormError}>
-              {SUBMIT}
+            <Button name={BUTTON_NAMES.SUBMIT} type="submit" disabled={isFormError}>
+            {isEditUserFetching ? <CircularProgress /> : SUBMIT}
             </Button>
           </DialogActions>
         </form>
       </Box>
-      {isEditUserFetching ? <Loader /> : null}
-    </>
   );
 };
