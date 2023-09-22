@@ -77,7 +77,7 @@ export const UserCard: FC = () => {
       <Box sx={sxTopBgBox} />
       <Box sx={sxAvatarBox}>
         <Avatar
-          src={getAvatarPath(user) || ''}
+          src={getAvatarPath(user)}
           sx={sxAvatar}
         />
       </Box>
@@ -115,14 +115,14 @@ export const UserCard: FC = () => {
           <Button
             sx={sxMarginXAuto}
             size="small"
-            onClick={() => openModal('edit')}
+            onClick={() => openModal(MODAL_TYPES.EDIT_USER)}
           >
             {EDIT_PROFILE}
           </Button>
           <Button
             sx={sxMarginXAuto}
             size="small"
-            onClick={() => openModal('add')}
+            onClick={() => openModal(MODAL_TYPES.ADD_POST)}
           >
             {ADD_POST}
           </Button>

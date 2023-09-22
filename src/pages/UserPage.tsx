@@ -16,10 +16,10 @@ const UserPage: FC = () => {
   const navigate = useNavigate();
   const userId = parseInt(String(useParams().id));
 
-    useEffect(() => {
-    if (!Number.isNaN(userId)) {
-      dispatch(createUserRequested(userId));
-    } else navigate('/');
+  useEffect(() => {
+  if (!Number.isNaN(userId)) {
+    dispatch(createUserRequested(userId));
+  } else navigate('/');
   }, [userId]);
 
   if (isUserFetching || user == null) return <Loader />;
@@ -28,11 +28,11 @@ const UserPage: FC = () => {
   
   return (
     <>
-      {user != null && <UserCard />}
+      <UserCard />
       {user.posts.length > 0 && (
         <PostContainer posts={user.posts} isSelfDisplayed={false} />
       )}
-      {user == null && userError != null && (
+      {userError != null && (
         <Notification type="error" message="Something goes wrong" />
       )}
     </>

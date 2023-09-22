@@ -12,7 +12,7 @@ export const POSTS_FILTER_OPTIONS = {
 }
 
 export const MODAL_TYPES = {
-  ADD_POST: 'Add Post',
+  ADD_POST: 'Add post',
   EDIT_USER: 'Edit profile'
 };
 
