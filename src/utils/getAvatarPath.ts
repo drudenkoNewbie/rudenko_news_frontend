@@ -1,7 +1,7 @@
-import { User } from '../types';
-
-export const getAvatarPath = ({avatarUrl}: User) => {
+export const getAvatarPath = (avatarUrl: string | null) => {
   const imgBaseUrl = import.meta.env.VITE_APP_PUBLIC_URL;
 
-  return (avatarUrl && `${imgBaseUrl}/avatar/${avatarUrl}`) || '';
+  if (avatarUrl == null) return '';
+
+  return `${imgBaseUrl}/avatar/${avatarUrl}`;
 }

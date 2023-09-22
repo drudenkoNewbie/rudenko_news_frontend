@@ -77,7 +77,7 @@ export const UserCard: FC = () => {
       <Box sx={sxTopBgBox} />
       <Box sx={sxAvatarBox}>
         <Avatar
-          src={getAvatarPath(user)}
+          src={getAvatarPath(user.avatarUrl)}
           sx={sxAvatar}
         />
       </Box>
