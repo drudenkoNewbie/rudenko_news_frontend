@@ -23,9 +23,9 @@ export const filterPosts = ({
 
     if (currentFilter === 'all')
       return (
-        title.includes(loweredCurrentSearch) ||
-        author.includes(loweredCurrentSearch) ||
-        content.includes(loweredCurrentSearch) ||
-        tags.some((name) => name.includes(loweredCurrentSearch))
+        title.includes(loweredCurrentSearch)
+        || author.includes(loweredCurrentSearch)
+        || content.includes(loweredCurrentSearch)
+        || tags.some((name) => name.includes(loweredCurrentSearch))
       );
   });

@@ -1,4 +1,4 @@
-import { memo, type FC } from 'react';
+import { memo, type FC, SyntheticEvent } from 'react';
 import {
   Card,
   CardContent,
@@ -10,12 +10,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { getFormattedDate } from '../../utils/getFormattedDate';
 import TagContainer from '../TagContainer';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
-import { createUserRequested } from '../../redux/actions/userActions';
+import { useAppSelector } from '../../redux/hooks/hooks';
 import { DEFAULT_IMAGE_URL } from '../../constants';
 
-import { sxCard, sxData, sxAuthor, sxTextAlignCenter } from './sxStyles';
+import {
+  sxCard,
+  sxData,
+  sxAuthor,
+  sxTextAlignCenter
+} from './sxStyles';
 import { PostCardProps } from './types';
+
+const imgBaseUrl = import.meta.env.VITE_APP_PUBLIC_URL;
 
 const PostCard: FC<PostCardProps> = ({
   createdAt,
@@ -23,17 +29,27 @@ const PostCard: FC<PostCardProps> = ({
   content,
   tags,
   author,
-  authorId
+  authorId,
+  imageUrl
 }) => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { authUser } = useAppSelector((state) => state.auth);
+
+  const imageSrcUrl =
+    imageUrl != null
+      ? `${imgBaseUrl}/post-image/${imageUrl}`
+      : DEFAULT_IMAGE_URL;
 
   const handleAuthorClick = () => {
     if (authUser != null) {
       navigate(`/users/${authorId}`);
-      dispatch(createUserRequested(authorId));
     }
+  };
+  const handleImageFetchingError = ({
+    currentTarget
+  }: SyntheticEvent<HTMLImageElement, ErrorEvent>) => {
+    currentTarget.onerror = null;
+    currentTarget.src = DEFAULT_IMAGE_URL;
   };
 
   return (
@@ -61,8 +77,9 @@ const PostCard: FC<PostCardProps> = ({
         <CardMedia
           component="img"
           height="300"
-          image={DEFAULT_IMAGE_URL}
+          src={imageSrcUrl}
           alt="placeholder"
+          onError={handleImageFetchingError}
         />
         <CardContent>
           <Typography

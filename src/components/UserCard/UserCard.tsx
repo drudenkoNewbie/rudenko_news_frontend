@@ -1,4 +1,8 @@
-import { FC, useEffect, useState } from 'react';
+import {
+  FC,
+  useEffect,
+  useState
+} from 'react';
 import {
   Card,
   CardContent,
@@ -18,8 +22,10 @@ import { getFormattedDate } from '../../utils/getFormattedDate';
 import { createChangeModal } from '../../redux/actions/modalActions';
 import BasicDialog from '../BasicDialog';
 import { EditUserForm } from '../EditUserForm/EditUserForm';
-import { SNACKBAR_DELAY } from '../../constants';
+import { MODAL_TYPES, SNACKBAR_DELAY } from '../../constants';
 import { AddPostForm } from '../AddPostForm';
+import { getAvatarPath } from '../../utils/getAvatarPath';
+import { ADD_POST, EDIT_PROFILE } from '../../locales/en.json'
 
 import {
   sxCard,
@@ -38,28 +44,24 @@ export const UserCard: FC = () => {
     (state) => state.user
   );
   const { authUser } = useAppSelector((state) => state.auth);
-  const { isOpen } = useAppSelector((state) => state.modal);
+  const { isOpen, modalType } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   useEffect(() => {
     if (userError != null) {
-      setSnackbarOpen(true);
+      setIsSnackbarOpen(true);
 
       const timer = setTimeout(() => {
-        setSnackbarOpen(false);
+        setIsSnackbarOpen(false);
       }, SNACKBAR_DELAY);
 
       return () => clearTimeout(timer);
     }
   }, [userError]);
 
-  const handleEditUserClick = () => {
-    dispatch(createChangeModal({ isOpen: true, modalType: 'Edit profile' }));
-  };
-
-  const handleAddPostClick = () => {
-    dispatch(createChangeModal({ isOpen: true, modalType: 'Add post' }));
+  const openModal = (type: string) => {
+      dispatch(createChangeModal({ isOpen: true, modalType: type }));
   };
 
   const handleClose = () => {
@@ -68,59 +70,64 @@ export const UserCard: FC = () => {
 
   if (isUserFetching) return <CircularProgress />;
 
-  if (user != null && authUser != null)
-    return (
-      <Card variant="outlined" sx={sxCard}>
-        <Box sx={sxTopBgBox} />
-        <Box sx={sxAvatarBox}>
-          <Avatar sx={sxAvatar}>{user.username[0]}</Avatar>
-        </Box>
-        <CardContent sx={sxUsername}>
-          <Typography gutterBottom variant="h4" component="div">
-            {user.username}
+  if (user == null || authUser == null) return null;
+
+  return (
+    <Card variant="outlined" sx={sxCard}>
+      <Box sx={sxTopBgBox} />
+      <Box sx={sxAvatarBox}>
+        <Avatar
+          src={getAvatarPath(user.avatarUrl)}
+          sx={sxAvatar}
+        />
+      </Box>
+      <CardContent sx={sxUsername}>
+        <Typography gutterBottom variant="h4" component="div">
+          {user.username}
+        </Typography>
+        <Box sx={sxUserInfoBox}>
+          <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
+            <AlternateEmailIcon sx={sxUserInfoIcon} />
+            {user.email}
           </Typography>
-          <Box sx={sxUserInfoBox}>
-            <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
-              <AlternateEmailIcon sx={sxUserInfoIcon} />
-              {user.email}
-            </Typography>
-            <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
-              <CalendarMonthIcon sx={sxUserInfoIcon} />
-              {getFormattedDate(user.createdAt)}
-            </Typography>
-          </Box>
-        </CardContent>
-        <BasicDialog isOpen={isOpen} handleClose={handleClose}>
-          <EditUserForm handleClose={handleClose} />
-        </BasicDialog>
-        <BasicDialog isOpen={isOpen} handleClose={handleClose}>
-          <AddPostForm handleClose={handleClose} />
-        </BasicDialog>
-        {userError != null && (
-          <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={SNACKBAR_DELAY}
-            message={`${userError}`}
-          />
-        )}
-        {authUser.id === user.id && (
-          <CardActions>
-            <Button
-              sx={sxMarginXAuto}
-              size="small"
-              onClick={handleEditUserClick}
-            >
-              Edit profile
-            </Button>
-            <Button
-              sx={sxMarginXAuto}
-              size="small"
-              onClick={handleAddPostClick}
-            >
-              Add Post
-            </Button>
-          </CardActions>
-        )}
-      </Card>
-    );
+          <Typography sx={sxTextAlign} variant="body1" color="text.secondary">
+            <CalendarMonthIcon sx={sxUserInfoIcon} />
+            {getFormattedDate(user.createdAt)}
+          </Typography>
+        </Box>
+      </CardContent>
+      <BasicDialog
+        isOpen={isOpen}
+        handleClose={handleClose}
+      >
+        {modalType === MODAL_TYPES.EDIT_USER && <EditUserForm handleClose={handleClose} />}
+        {modalType === MODAL_TYPES.ADD_POST && <AddPostForm handleClose={handleClose} />}
+      </BasicDialog>
+      {userError != null && (
+        <Snackbar
+          open={isSnackbarOpen}
+          autoHideDuration={SNACKBAR_DELAY}
+          message={`${userError}`}
+        />
+      )}
+      {authUser.id === user.id && (
+        <CardActions>
+          <Button
+            sx={sxMarginXAuto}
+            size="small"
+            onClick={() => openModal(MODAL_TYPES.EDIT_USER)}
+          >
+            {EDIT_PROFILE}
+          </Button>
+          <Button
+            sx={sxMarginXAuto}
+            size="small"
+            onClick={() => openModal(MODAL_TYPES.ADD_POST)}
+          >
+            {ADD_POST}
+          </Button>
+        </CardActions>
+      )}
+    </Card>
+  );
 };

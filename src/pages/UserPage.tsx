@@ -1,5 +1,5 @@
 import { useEffect, type FC } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import UserCard from '../components/UserCard';
 import { PostContainer } from '../components/PostContainer';
@@ -12,36 +12,31 @@ const UserPage: FC = () => {
   const { user, isUserFetching, userError } = useAppSelector(
     (state) => state.user
   );
-  const { authUser } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
+  const userId = parseInt(String(useParams().id));
 
   useEffect(() => {
-    if (authUser != null) {
-      const userId = Number(location.pathname.split('/').pop());
+  if (!Number.isNaN(userId)) {
+    dispatch(createUserRequested(userId));
+  } else navigate('/');
+  }, [userId]);
 
-      dispatch(createUserRequested(userId));
-    } else {
-      navigate('/');
-    }
-  }, []);
+  if (isUserFetching || user == null) return <Loader />;
 
-  if (isUserFetching) return <Loader />;
-
-  if (user != null) {
-    return (
-      <>
-        {user != null && <UserCard />}
-        {user.posts.length > 0 && (
-          <PostContainer posts={user.posts} isSelfDisplayed={false} />
-        )}
-        {user == null && userError != null && (
-          <Notification type="error" message="Something goes wrong" />
-        )}
-      </>
-    );
-  }
+  if (user == null) return null;
+  
+  return (
+    <>
+      <UserCard />
+      {user.posts.length > 0 && (
+        <PostContainer posts={user.posts} isSelfDisplayed={false} />
+      )}
+      {userError != null && (
+        <Notification type="error" message="Something goes wrong" />
+      )}
+    </>
+  );
 };
 
 export default UserPage;

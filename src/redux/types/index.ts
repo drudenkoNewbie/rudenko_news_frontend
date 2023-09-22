@@ -23,6 +23,7 @@ export interface AuthState {
   authUser: User | null;
   isAuthLoading: boolean;
   authError: null | string;
+  isLoggedIn: boolean;
 }
 
 export interface modalPayload {
@@ -51,4 +52,5 @@ export interface AddPostPayload {
   title: string;
   content: string;
   tagValues: string[];
+  image: File | null;
 }

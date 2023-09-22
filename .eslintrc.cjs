@@ -49,18 +49,7 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: ['export', 'return'] },
       { blankLine: 'always', prev: 'if', next: 'let' }
     ],
-    '@typescript-eslint/strict-boolean-expressions': [
-      'error',
-      {
-        'allowString': false,
-        'allowNumber': false,
-        'allowAny': false,
-        'allowNullableObject': false,
-        'allowNullableBoolean': false,
-        'allowNullableString': false,
-        'allowNullableNumber': false
-      }
-    ],
-    'no-implicit-coercion': 'error'
+    'no-implicit-coercion': 'error',
+    'eol-last': ['error', 'always']
   }
 };

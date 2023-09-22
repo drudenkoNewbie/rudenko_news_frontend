@@ -1,4 +1,9 @@
-import { FormEvent, FC, useState, useEffect } from 'react';
+import {
+  FormEvent,
+  type FC,
+  useState,
+  useEffect
+} from 'react';
 import {
   DialogTitle,
   DialogContent,
@@ -9,14 +14,26 @@ import {
   Box
 } from '@mui/material';
 
-import { CANCEL, SUBMIT } from '../../locales/en.json';
-import useInput from '../../hooks/useInput';
+import useTextInput from '../../hooks/useTextInput';
+import useFileInput from '../../hooks/useFileInput';
 import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAddPostRequested } from '../../redux/actions/addPostActions';
-import { SHAKE_INPUT_DURATION } from '../../constants';
+import {
+  CANCEL,
+  SUBMIT,
+  ADD_POST,
+  YOU_CAN_WRITE_YOUR_THOUGHTS_HERE
+} from '../../locales/en.json';
+import { SHAKE_INPUT_DURATION, BUTTON_NAMES } from '../../constants';
+import { FileField } from '../FileField';
 
 import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
-import { titleSchema, contentSchema, tagsSchema } from './constants';
+import {
+  titleSchema,
+  contentSchema,
+  tagsSchema,
+  imageSchema,
+} from './constants';
 
 export const AddPostForm: FC<{ handleClose: () => void }> = ({
   handleClose
@@ -24,9 +41,10 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
   const [submitAttempt, setSubmitAttempt] = useState(0);
   const dispatch = useAppDispatch();
 
-  const titleInputProps = useInput(titleSchema);
-  const contentInputProps = useInput(contentSchema);
-  const tagsInputProps = useInput(tagsSchema);
+  const imageInputProps = useFileInput(imageSchema);
+  const titleInputProps = useTextInput(titleSchema);
+  const contentInputProps = useTextInput(contentSchema);
+  const tagsInputProps = useTextInput(tagsSchema);
 
   useEffect(() => {
     if (submitAttempt > 0) {
@@ -39,11 +57,16 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
   const formData = {
     title: titleInputProps.value,
     content: contentInputProps.value,
-    tags: tagsInputProps.value
+    tagValues: tagsInputProps.value,
+    image: imageInputProps.file
   };
 
   const formError =
-    titleInputProps.error || contentInputProps.error || tagsInputProps.error;
+    titleInputProps.error
+    || contentInputProps.error
+    || tagsInputProps.error
+    || imageInputProps.error
+    || Object.values(formData).some((v) => v != null && v === '');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,24 +74,28 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
     setSubmitAttempt((attempts) => attempts + 1);
 
     if (!formError) {
-      const dataForSending = {
-        title: formData.title,
-        content: formData.content,
-        tagValues: formData.tags.split(/[ ,]+/)
-      };
-
-      dispatch(createAddPostRequested(dataForSending));
+      dispatch(
+        createAddPostRequested({
+          ...formData,
+          tagValues: formData.tagValues.split(/[ ,]+/)
+        })
+      );
     }
   };
 
   return (
     <Box>
-      <DialogTitle>Add</DialogTitle>
+      <DialogTitle>{ADD_POST}</DialogTitle>
       <DialogContent>
-        <DialogContentText>You can write your thoughts here</DialogContentText>
+        <DialogContentText>{YOU_CAN_WRITE_YOUR_THOUGHTS_HERE}</DialogContentText>
       </DialogContent>
       <form onSubmit={handleSubmit}>
         <Box sx={sxMargin10}>
+          <FileField
+            component="post"
+            {...imageInputProps}
+            ref={imageInputProps.inputRef}
+          />
           <TextField
             {...titleInputProps}
             sx={
@@ -93,10 +120,10 @@ export const AddPostForm: FC<{ handleClose: () => void }> = ({
           />
         </Box>
         <DialogActions sx={sxJustifyCenter}>
-          <Button name="cancel" onClick={handleClose}>
+          <Button name={BUTTON_NAMES.CANCEL} onClick={handleClose}>
             {CANCEL}
           </Button>
-          <Button name="submit" type="submit">
+          <Button name={BUTTON_NAMES.SUBMIT} type="submit" disabled={formError}>
             {SUBMIT}
           </Button>
         </DialogActions>

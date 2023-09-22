@@ -9,4 +9,14 @@ export const POSTS_FILTER_OPTIONS = {
   title: 'title',
   tags: 'tags',
   author: 'author'
+}
+
+export const MODAL_TYPES = {
+  ADD_POST: 'Add post',
+  EDIT_USER: 'Edit profile'
 };
+
+export const BUTTON_NAMES = {
+  CANCEL: 'cancel',
+  SUBMIT: 'submit'
+} as const;

@@ -1,16 +1,28 @@
-import { InputProps } from '../../types';
+import { DEFAULT_IMAGE_URL } from '../../constants';
+import { FileInputProps, TextInputProps } from '../../types';
 
-export const titleSchema: InputProps = {
+export const titleSchema: TextInputProps = {
   name: 'title',
-  required: true
+  isRequired: true
 };
 
-export const contentSchema: InputProps = {
+export const contentSchema: TextInputProps = {
   name: 'content',
-  required: true
+  isRequired: true
 };
 
-export const tagsSchema: InputProps = {
+export const tagsSchema: TextInputProps = {
   name: 'tags',
-  required: true
+  isRequired: true
 };
+
+export const imageSchema: FileInputProps = {
+  name: 'image',
+  accept: 'image/*',
+  initialPreviewSrc: DEFAULT_IMAGE_URL
+};
+
+export const BUTTON_NAMES = {
+  CANCEL: 'cancel',
+  SUBMIT: 'submit'
+}

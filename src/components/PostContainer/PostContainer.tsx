@@ -1,4 +1,9 @@
-import { useState, type FC, ChangeEvent, useMemo } from 'react';
+import {
+  useState,
+  type FC,
+  ChangeEvent,
+  useMemo
+} from 'react';
 import { Grid, Pagination, SelectChangeEvent } from '@mui/material';
 
 import PostCard from '../PostCard';
@@ -65,6 +70,7 @@ export const PostContainer: FC<PostContainerProps> = ({
           tags={post.tags}
           authorId={post.authorId}
           author={isSelfDisplayed ? post.user.username : null}
+          imageUrl={post.imageUrl}
         />
       ))}
     </Grid>

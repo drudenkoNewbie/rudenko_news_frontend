@@ -1,5 +1,10 @@
 import { AxiosError } from 'axios';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  select,
+  takeLatest
+} from 'redux-saga/effects';
 
 import { createChangeModal } from '../actions/modalActions';
 import { editUser } from '../api/editUser';

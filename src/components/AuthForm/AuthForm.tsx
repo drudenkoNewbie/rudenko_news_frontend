@@ -1,4 +1,9 @@
-import { ChangeEvent, FocusEvent, FormEvent, FC, useState } from 'react';
+import {
+  FormEvent,
+  type FC,
+  useState,
+  useEffect
+} from 'react';
 import {
   DialogTitle,
   DialogContent,
@@ -6,143 +11,148 @@ import {
   DialogActions,
   Button,
   TextField,
-  Box
+  Box,
+  IconButton,
+  InputAdornment,
+  CircularProgress
 } from '@mui/material';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
 
-import { useAppDispatch } from '../../redux/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
+import { SUBMIT, TOGGLE_PASSWORD_VISIBILITY } from '../../locales/en.json';
+import useTextInput from '../../hooks/useTextInput';
+import useFileInput from '../../hooks/useFileInput';
+import { SHAKE_INPUT_DURATION, BUTTON_NAMES } from '../../constants';
+import { AuthUser } from '../../types';
 import { createAuthRequested } from '../../redux/actions/authActions';
-import { createChangeModal } from '../../redux/actions/modalActions';
-import {
-  USERNAME,
-  EMAIL,
-  PASSWORD,
-  CANCEL,
-  CANT_BE_EMPTY,
-  SUBMIT,
-  INVALID_EMAIL
-} from '../../locales/en.json';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
-import { validateEmail } from '../../utils/validators';
+import { FileField } from '../FileField';
 
-import { AuthFormProps, ErrorData, FormData } from './types';
-import { sxJustifyCenter, sxMargin10 } from './sxStyles';
+import { shakeAnimation, sxJustifyCenter, sxMargin10 } from './sxStyles';
+import {
+  avatarSchema,
+  usernameSchema,
+  emailSchema,
+  passwordSchema
+} from './constants';
+import { AuthFormProps } from './types';
 
 export const AuthForm: FC<AuthFormProps> = ({ formTitle, formSubTitle }) => {
-  const [formData, setFormData] = useState<FormData>({
-    username: '',
-    email: '',
-    password: ''
-  });
-  const [errors, setErrors] = useState<ErrorData>({
-    username: '',
-    email: '',
-    password: ''
-  });
   const dispatch = useAppDispatch();
 
-  const validateField = (name: string, value: string) => {
-    let error = '';
+  const { isAuthLoading } = useAppSelector((state) => state.auth);
 
-    if (name === 'email') {
-      if (!validateEmail(value)) {
-        error = INVALID_EMAIL;
-      }
-    } else if (['password', 'username'].includes(name)) {
-      if (value.trim() === '') {
-        error = `${capitalizeFirstLetter(name)} ${CANT_BE_EMPTY}`;
-      }
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [submitAttempt, setSubmitAttempt] = useState(0);
+
+  const handleClickShowPassword = () => setIsPasswordVisible((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const passwordInputType = isPasswordVisible ? 'text' : 'password';
+
+  const avatarInputProps = useFileInput(avatarSchema);
+  const usernameInputProps = useTextInput(usernameSchema);
+  const emailInputProps = useTextInput(emailSchema);
+  const passwordInputProps = useTextInput(passwordSchema);
+
+  useEffect(() => {
+    if (submitAttempt > 0) {
+      const timer = setTimeout(() => setSubmitAttempt(0), SHAKE_INPUT_DURATION);
+
+      return () => clearTimeout(timer);
     }
+  }, [submitAttempt]);
 
-    return error;
+  const formData: AuthUser = {
+    username: usernameInputProps.value,
+    email: emailInputProps.value,
+    password: passwordInputProps.value,
+    avatar: avatarInputProps.file
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const error = validateField(name, value);
+  const isFormError =
+    usernameInputProps.error
+    || emailInputProps.error
+    || passwordInputProps.error
+    || avatarInputProps.error
+    || Object.values(formData).some((v) => v === '');
 
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: error });
-  };
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitAttempt((attempts) => attempts + 1);
 
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const error = validateField(name, value);
-
-    setErrors({ ...errors, [name]: error });
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let isValid = true;
-    const newErrors: ErrorData = {};
-    for (const [name, value] of Object.entries(formData)) {
-      const error = validateField(name, value);
-
-      newErrors[name] = error;
-      if (error !== '') isValid = false;
-    }
-    setErrors(newErrors);
-    if (isValid) {
+    if (!isFormError) {
       dispatch(createAuthRequested(formData));
     }
   };
 
-  const handleClose = () => {
-    dispatch(createChangeModal({ isOpen: false, modalType: '' }));
-  };
-
   return (
-    <>
-      <DialogTitle>{formTitle}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{formSubTitle}</DialogContentText>
-      </DialogContent>
-      <form onSubmit={handleSubmit}>
-        <Box sx={sxMargin10}>
-          <TextField
-            name="username"
-            label={USERNAME}
-            value={formData.username}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={errors.username}
-            error={Boolean(errors.username)}
-            margin="dense"
-            fullWidth
-          />
-          <TextField
-            name="email"
-            label={EMAIL}
-            value={formData.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={errors.email}
-            error={Boolean(errors.email)}
-            margin="dense"
-            fullWidth
-          />
-          <TextField
-            name="password"
-            label={PASSWORD}
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={errors.password}
-            error={Boolean(errors.password)}
-            margin="dense"
-            fullWidth
-          />
-        </Box>
-        <DialogActions sx={sxJustifyCenter}>
-          <Button name="cancel" onClick={handleClose}>
-            {CANCEL}
-          </Button>
-          <Button name="submit" type="submit">
-            {SUBMIT}
-          </Button>
-        </DialogActions>
-      </form>
-    </>
+    <Box>
+        <DialogTitle>{formTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{formSubTitle}</DialogContentText>
+        </DialogContent>
+        <form onSubmit={handleSubmit}>
+          <Box sx={sxMargin10}>
+            {formTitle === 'sign-up' && (
+              <FileField
+                component="avatar"
+                {...avatarInputProps}
+                ref={avatarInputProps.inputRef}
+              />
+            )}
+            <TextField
+              {...usernameInputProps}
+              sx={
+                usernameInputProps.error && submitAttempt > 0
+                  ? shakeAnimation
+                  : {}
+              }
+              margin="dense"
+              fullWidth
+            />
+            <TextField
+              {...emailInputProps}
+              sx={
+                emailInputProps.error && submitAttempt > 0 ? shakeAnimation : {}
+              }
+              margin="dense"
+              fullWidth
+            />
+            <TextField
+              {...passwordInputProps}
+              type={passwordInputType}
+              sx={
+                passwordInputProps.error && submitAttempt > 0
+                  ? shakeAnimation
+                  : {}
+              }
+              margin="dense"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={TOGGLE_PASSWORD_VISIBILITY}
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {isPasswordVisible ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Box>
+          <DialogActions sx={sxJustifyCenter}>
+            <Button disabled={isFormError} name={BUTTON_NAMES.SUBMIT} type="submit">
+              {isAuthLoading ? <CircularProgress /> : SUBMIT}
+            </Button>
+          </DialogActions>
+        </form>
+      </Box>
   );
 };

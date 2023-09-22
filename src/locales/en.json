@@ -2,7 +2,8 @@
   "NEWS": "News",
   "NO_NEWS_MESSAGE": "No news for you",
   "SIGN_IN": "Sign in",
-  "SING_UP": "Sign up",
+  "SIGN_UP": "Sign up",
+  "SIGN_OUT": "Sign out",
   "SUBMIT": "submit",
   "CANCEL": "Cancel",
   "USERNAME": "Username",
@@ -14,5 +15,12 @@
   "INVALID_EMAIL": "Invalid email",
   "POSTS_FILTER_SELECTOR_HELPER": "Please select filter",
   "FILTER_LABEL": "Filter",
-  "SEARCH_LABEL": "Search"
+  "SEARCH_LABEL": "Search",
+  "TOGGLE_PASSWORD_VISIBILITY": "toggle password visibility",
+  "CHOOSE_AVATAR": "Choose your avatar file",
+  "EDIT_PROFILE": "Edit profile",
+  "ADD_POST": "ADD_POST",
+  "YOU_CAN_WRITE_YOUR_THOUGHTS_HERE": "You can write your thoughts here",
+  "AT_LEAST_ONE_NON_EMPTY_FIELD": "At least one non empty field",
+  "BY_FILLING_THE_FORM": "by filling the form"
 }

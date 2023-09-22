@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 import { Dialog } from '@mui/material';
 
 import { BasicDialogProps } from './types';

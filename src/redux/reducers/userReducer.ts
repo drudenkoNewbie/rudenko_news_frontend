@@ -45,7 +45,8 @@ export default function userReducer(
       return {
         ...state,
         user: action.payload,
-        isUserFetching: false
+        isUserFetching: false,
+        userError: null
       };
     case EDIT_USER_RECEIVED:
       return {

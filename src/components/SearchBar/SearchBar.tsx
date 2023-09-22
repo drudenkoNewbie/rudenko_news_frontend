@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, type FC } from 'react';
 import { MenuItem, SelectChangeEvent, TextField } from '@mui/material';
 
 import { POSTS_FILTER_OPTIONS } from '../../constants';
