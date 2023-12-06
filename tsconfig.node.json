@@ -2,10 +2,10 @@
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "es2020",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": true
   },
-  "include": ["vite.config.ts", ".eslintrc.cjs"]
+  "include": ["vite.config.ts", ".eslintrc.cjs", "jest.config.ts", "babel.config.js"]
 }
