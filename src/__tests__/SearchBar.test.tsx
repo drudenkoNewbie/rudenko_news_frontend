@@ -15,13 +15,13 @@ describe("test", () => {
         isAuthorFilterEnabled: true,
     };
 
-    it('should render search bar with all filter', () => {
+    it('should render search bar with "all" filter enabled', () => {
         render(<SearchBar {...props} />)
         expect(screen.getByLabelText(/all/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/Search/i)).toBeInTheDocument();
     })
 
-    it('should handle search field changes', () => {
+    it('should handle search field input changes', () => {
         render(<SearchBar {...props} />);
         const searchField = screen.getByLabelText(/Search/i);
 
